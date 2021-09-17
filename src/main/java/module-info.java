@@ -1,15 +1,8 @@
-module com.sqlservice.sqlservice {
+module com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.web;
 
-    requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires validatorfx;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
 
-    opens com.sqlservice.sqlservice to javafx.fxml;
-    exports com.sqlservice.sqlservice;
+    opens com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice to javafx.fxml;
+    exports com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice;
 }
