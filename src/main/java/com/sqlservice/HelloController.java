@@ -1,4 +1,4 @@
-package com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice;
+package com.sqlservice;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

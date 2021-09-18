@@ -1,4 +1,4 @@
-package com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice;
+package com.sqlservice;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +16,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        //Hej /Maja
-        System.out.println("hello world");
+
     }
 
     public static void main(String[] args) {

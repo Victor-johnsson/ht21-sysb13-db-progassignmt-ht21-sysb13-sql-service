@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice/com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice.HelloApplication
+                                com.example.ht21sysb13dbprogassignmtht21sysb13sqlservice/com.sqlservice.HelloApplication
                             </mainClass>
                         </configuration>
                     </execution>
