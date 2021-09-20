@@ -10,13 +10,17 @@ public class ContosoConnection {
             "database=ProgrammingAssignment;" +
             "user=grupp7;" +
             "password=G00dPassword;";
+    //URL för databasen och servern
 
 
     /**
      * Get a connection to database
      * @return Connection object
      */
-    public static Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException{ //En funktion som returnerar en connection till URL.
+        //throws = om det blir problem när vi ska göra connection(uppdatera en person), då kommer denna funktion
+        //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
+
 
         DriverManager.registerDriver(new Driver() {
             @Override
@@ -58,18 +62,21 @@ public class ContosoConnection {
 
     }
 
-    public static void ConnectionClose(ResultSet rs) throws SQLException{
+    public static void ConnectionClose(ResultSet rs) throws SQLException{ //stänger Connection för den ResultSet man stoppar in när man anropar.
         Statement statement = rs.getStatement();
         Connection connection = statement.getConnection();
+        //inbyggda funktioner från JBDC-library
         rs.close();
         statement.close();
         connection.close();
+        //Vi stänger i den ordning som Björn har rekommenderat.
+        //När man öppnar sker det i motsatt ordning.
     }
 
     /**
      * Test Connection
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) { //Det är för att testa connection med det URL:et. Funkar det inte så får man ett error.
         try(Connection connection = getConnection()){
 
         }catch (SQLException ex){
