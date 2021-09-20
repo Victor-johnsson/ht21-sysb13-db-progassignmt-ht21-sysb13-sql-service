@@ -28,6 +28,7 @@ public class ContosoConnection {
                 return null;
             }
 
+
             @Override
             public boolean acceptsURL(String url) throws SQLException {
                 return false;
