@@ -53,18 +53,15 @@ public class HelloController {
         FilteredList <ObservableList> filteredData = new FilteredList<ObservableList>(dataList,b-> true); //Wrappar dataList i listan filteredData.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
-        textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet. (textField är sökfältet).
+        textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
             //oldValue ändras aldrig, men det gör newValue.
-            filteredData.setPredicate( object -> { //row är en rad.
+            filteredData.setPredicate( row -> {
                 if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
                     return true;
-
                 }
 
-                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //Allt vi skriver in är lowercase.
-                if(object.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
-                    //row är en rad. Gör raden till sträng, lowerCaseFilter är newValue fast i lowerCase. Om raden innehåller det vi skriver in i sökfältet, returnerar
-                    //vi den raden.
+                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
+                if(row.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
                     return true;
                 }
                 else return false; //fail safe.
@@ -128,15 +125,7 @@ public class HelloController {
             System.out.println("Row [1] added" + row);
             dataList.add(row); //lägger till row(är en observableList) i dataList.
         }
-        //tableView.setItems(dataList);
-            /*
-            Connection connection = rs.getStatement().getConnection();
-            Statement statement = rs.getStatement();
-            rs.close();
-            statement.close();
-            connection.close();
 
-             */
         ContosoConnection.ConnectionClose(rs);
         return dataList;
 
