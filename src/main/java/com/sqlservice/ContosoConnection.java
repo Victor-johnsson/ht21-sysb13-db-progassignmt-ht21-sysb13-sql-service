@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 public class ContosoConnection {
     public static final String URL = "jdbc:sqlserver://localhost:1433;" +
             "database=ProgrammingAssignment;" +
-            "user=user1;" +
-            "password=password;";
+            "user=grupp7;" +
+            "password=G00dPassword;";
 
 
     /**
