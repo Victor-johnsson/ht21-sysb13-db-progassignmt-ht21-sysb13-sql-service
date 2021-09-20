@@ -7,12 +7,14 @@ import java.util.Locale;
 public class DataAccessLayer {
 
 
+
     public ResultSet getEmployeeResultSet() throws SQLException {
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM Course;");
         ResultSet rs = statement.executeQuery();
 
         return rs;
+
 
     }
 
@@ -45,12 +47,17 @@ public class DataAccessLayer {
         return st;
 
     }
+    //En metod som returnerar resultSet. Även throws SQLException. Startat en ny connection till vår databas.
+    //En sträng med SQL-statement. Metoden tar in en sträng som är ett tablename. Course, Student etc.
+    //preparedStatement connection, table där är strängen,
+    //resultSet vi kör querien och returnerar det resultSet.
+    // '?' efter FROM går endast att sätta när man gör conditions alltså efter ett WHERE statement.
 
     public ResultSet getAllFromTable(String tableName) throws SQLException{
         Connection connection = ContosoConnection.getConnection();
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
-        //statement.setString(1, tableName);
+        //statement.setString(1, tableName); //test med '?'
 
 
         ResultSet rs = statement.executeQuery();
