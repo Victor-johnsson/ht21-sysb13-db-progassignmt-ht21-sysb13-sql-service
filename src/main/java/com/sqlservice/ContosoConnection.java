@@ -63,7 +63,7 @@ public class ContosoConnection {
 
     }
 
-    public static void ConnectionClose(ResultSet rs) throws SQLException{ //stänger Connection för den ResultSet man stoppar in när man anropar.
+    public static void connectionClose(ResultSet rs) throws SQLException{ //stänger Connection för den ResultSet man stoppar in när man anropar.
         Statement statement = rs.getStatement();
         Connection connection = statement.getConnection();
         //inbyggda funktioner från JBDC-library
@@ -72,6 +72,12 @@ public class ContosoConnection {
         connection.close();
         //Vi stänger i den ordning som Björn har rekommenderat.
         //När man öppnar sker det i motsatt ordning.
+    }
+
+    public static void connectionClose(Statement statement) throws SQLException{
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
     }
 
     /**

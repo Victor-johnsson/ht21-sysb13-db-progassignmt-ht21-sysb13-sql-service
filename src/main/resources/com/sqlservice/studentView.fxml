@@ -42,7 +42,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.HelloController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -85,14 +85,14 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField layoutX="42.0" layoutY="39.0" promptText="Name" />
-            <TextField layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
-            <TextField layoutX="42.0" layoutY="120.0" promptText="Address" />
-            <TextField layoutX="42.0" layoutY="165.0" promptText="PhoneNumber" />
-            <TableView layoutX="368.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button layoutX="380.0" layoutY="270.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
-            <TextField layoutX="405.0" layoutY="233.0" promptText="Searchfield" />
-            <Button layoutX="42.0" layoutY="201.0" mnemonicParsing="false" text="Add Student" />
+            <TextField fx:id="studentNameTextField" layoutX="42.0" layoutY="39.0" promptText="Name" />
+            <TextField fx:id="studentSSNTextField" layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
+            <TextField fx:id="studentAddressTextField" layoutX="42.0" layoutY="120.0" promptText="Address" />
+            <TableView fx:id="studentTableView" layoutX="368.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="deleteStudentButton" layoutX="380.0" layoutY="270.0" mnemonicParsing="false" onAction="#setDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
+            <TextField fx:id="searchStudentTextField" layoutX="405.0" layoutY="233.0" promptText="Searchfield" />
+            <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
+            <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
       </children>
     </AnchorPane>
   </children>
