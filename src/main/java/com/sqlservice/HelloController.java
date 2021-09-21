@@ -35,7 +35,7 @@ public class HelloController {
         // ERRORHANTERING!
         try {
             //searchTableWithTextField(tableView,filteredTextField,"Course");
-            searchTableWithTextField(tableView,filteredTextField,dataAccessLayer.getAllFromTable("Course"));
+            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
