@@ -14,8 +14,6 @@ public class DataAccessLayer {
         ResultSet rs = statement.executeQuery();
 
         return rs;
-
-
     }
 
     public ResultSet getColumnsMetaData(String tableName) throws SQLException{
@@ -64,6 +62,39 @@ public class DataAccessLayer {
 
         return rs;
     }
+
+
+    //NY KOD!!!
+    public int createStudent(String studentID, String studentSSN, String studentName, String studentAddress) throws SQLException{
+        Connection connection = ContosoConnection.getConnection();
+
+        String query  = "INSERT INTO Student VALUES (?,?,?,?)";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,studentSSN);
+        preparedStatement.setString(3,studentName);
+        preparedStatement.setString(4,studentAddress);
+
+        int i = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
+        return i;
+    }
+
+    public ResultSet deleteStudent(String studentID) throws SQLException{ //studentID kommer från tableView Student
+        String query = "DELETE FROM Student WHERE studentID = ?";
+        Connection connection = ContosoConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
+
+
+
 
 
 

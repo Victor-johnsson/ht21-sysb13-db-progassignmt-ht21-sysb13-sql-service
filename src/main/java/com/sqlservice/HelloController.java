@@ -1,7 +1,6 @@
 package com.sqlservice;
 
 
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.Locale;
 
@@ -38,6 +38,7 @@ public class HelloController {
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getErrorCode());
         }
 
 
@@ -145,9 +146,6 @@ public class HelloController {
         return dataList;
     }
 
-    public void test(ResultSet resultSet){
-
-    }
 
 
 
