@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.Locale;
 
@@ -140,7 +139,7 @@ public class HelloController {
             dataList.add(row); //lägger till row(är en observableList) i dataList.
         }
 
-        ContosoConnection.ConnectionClose(resultSet);
+        ContosoConnection.connectionClose(resultSet);
 
 
         return dataList;
