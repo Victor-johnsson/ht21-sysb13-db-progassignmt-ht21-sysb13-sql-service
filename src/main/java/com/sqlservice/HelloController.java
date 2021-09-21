@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -17,16 +18,17 @@ import java.util.Locale;
 
 public class HelloController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
-    @FXML //hur grafiska gränssnittet ska se ut. Det är JavaFX.
-    private TableView tableView;
 
-    @FXML
-    private Label welcomeText;
+    @FXML TableView studentTableView;
+    @FXML TextField studentNameTextField;
+    @FXML TextField studentSSNTextField;
+    @FXML TextField studentAddressTextField;
+    @FXML TextField searchStudentTextField;
+    @FXML Button addStudentButton;
+    @FXML Button deleteStudentButton;
+    @FXML TextField studentIDTextField;
 
-    @FXML TextField filteredTextField;
 
-    @FXML Button searchButton;
-    @FXML Button resetButton;
 
     public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
         //något annat händer.
@@ -37,7 +39,7 @@ public class HelloController {
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getErrorCode());
+
         }
 
 
@@ -80,24 +82,13 @@ public class HelloController {
     }
 
 
-
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-
-
-
-    }
     public ObservableList<ObservableList> fillTableViewByResultSet(TableView tableView, ResultSet resultSet) throws SQLException{
 
         ObservableList<ObservableList> dataList = FXCollections.observableArrayList();
         /**
          * Inuti den observerbara listan, har vi en lista av observerbara listor, den tar in tableName (tex Course) och tableView
-         * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen. **/
-
-
-        /**skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
+         * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen.
+         * skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
          * Vill man istället ha ett resultSet där man joinar två olika tables?
          * getAllfromTableName behövs även ändras då. **/
 
@@ -146,7 +137,67 @@ public class HelloController {
     }
 
 
+    public void onAddStudentButton(ActionEvent event){
+        try{
+            String studentID = studentIDTextField.getText();//kanske skapa en inbyggd räknare
+            String studentName =  studentNameTextField.getText();
+            String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
+            String studentAddress = studentAddressTextField.getText();
 
+            int i = dataAccessLayer.createStudent(studentID,studentSSN,studentName,studentAddress);
+            if(i==0){
+                System.out.println("no rows affected");
+            }else if(i==1){
+                System.out.println("one row affected");
+            }
+            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+        }catch (SQLException e){
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            int errorCode = e.getErrorCode();
+            if(errorCode == 2627){
+                System.out.println("StudentID already exists! ");//Måste brytas ut! 2627 är för alla typer av constraint violations
+            }
+        }
+
+    }
+
+    public void setDeleteStudentButton(ActionEvent event){
+        try{
+            //String studentID = studentTableView.getSelectionModel().getSelectedItems().get(0).toString();
+            String student = studentTableView.getSelectionModel().getSelectedCells().toString();
+            System.out.println(student);
+            //System.out.println(student);
+
+            /*
+            TablePosition pos = studentTableView.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Object item = studentTableView.getItems().get(row);
+            TableColumn col = pos.getTableColumn();
+            String data = (String) col.getCellObservableValue(item).getValue();
+
+            /*
+
+            int i =dataAccessLayer.deleteStudent(studentID);
+            if(i==0){
+                System.out.println("no rows affected");
+            }else if(i==1){
+                System.out.println("one row affected");
+            }
+             */
+            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    //TablePosition pos = studentTableView.getSelectionModel().getSelectedCells().get(0);
+    //int row = pos.getRow();
+    //Item item = studentTableView.getItems().get(row);
+    //TableColumn col = pos.getTableColumn();
+    //String data = (String) col.getCellObservableValue(item).getValue();
 
 
 
