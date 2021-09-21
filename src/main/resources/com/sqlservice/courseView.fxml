@@ -92,6 +92,7 @@
             <Button layoutX="31.0" layoutY="163.0" mnemonicParsing="false" text="Create Course" />
             <Button layoutX="385.0" layoutY="256.0" mnemonicParsing="false" text="Delete Course" />
             <TextArea layoutX="134.0" layoutY="241.0" prefHeight="100.0" prefWidth="178.0" promptText="textArea För info om kurs" />
+            <TextField layoutX="385.0" layoutY="229.0" />
       </children>
     </AnchorPane>
   </children>
