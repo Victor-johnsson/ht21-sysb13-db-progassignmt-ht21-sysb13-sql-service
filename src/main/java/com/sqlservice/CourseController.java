@@ -1,5 +1,6 @@
 package com.sqlservice;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -26,6 +27,18 @@ public class CourseController {
             e.printStackTrace();
 
         }
+    }
+
+    public void createCourse(ActionEvent actionEvent){
+
+        try{
+            String courseID = AppFunctions.randomCode("Course","courseCode","C");
+        }catch (SQLException e){
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+
+
     }
 
 }
