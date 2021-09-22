@@ -38,13 +38,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.StudentController">
    <children>
-      <AnchorPane fx:id="anchorRoot">
+      <AnchorPane fx:id="anchorRoot" prefHeight="553.0" prefWidth="861.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="640.0">
               <children>
@@ -87,7 +88,7 @@
                     </Menu>
                   </menus>
                 </MenuBar>
-                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="475.0" prefWidth="777.0">
                   <children>
                         <TextField fx:id="studentNameTextField" layoutX="42.0" layoutY="39.0" promptText="Name" />
                         <TextField fx:id="studentSSNTextField" layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
@@ -102,6 +103,7 @@
                 </AnchorPane>
               </children>
             </VBox>
+            <TextArea layoutX="630.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
          </children>
       </AnchorPane>
    </children>
