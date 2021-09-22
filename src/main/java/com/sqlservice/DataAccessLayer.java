@@ -80,4 +80,17 @@ public class DataAccessLayer {
         ContosoConnection.connectionClose(preparedStatement);
         return i;
     }
+
+    public int addToStudies(String studentID, String courseCode) throws SQLException{
+
+        String query = "INSERT INTO Studies VALUES(?,?)";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+    }
 }
