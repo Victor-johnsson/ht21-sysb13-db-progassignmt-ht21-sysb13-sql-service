@@ -5,8 +5,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,6 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.Locale;
 
 public class StudentController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
@@ -38,7 +35,7 @@ public class StudentController {
         //något annat händer.
         // ERRORHANTERING!
         try {
-            AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +59,7 @@ public class StudentController {
                 System.out.println("one row affected");
             }
 
-            AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
         }catch (SQLException e){
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -74,19 +71,22 @@ public class StudentController {
 
     }
 
-    public void setDeleteStudentButton(ActionEvent event){
+    public void onDeleteStudentButton(ActionEvent event){
         try{
+
             String studentID = AppFunctions.getValueOfCell(studentTableView,0);
-            try{
-                dataAccessLayer.deleteStudent(studentID);
-                AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-            }catch (SQLException e){
-                e.printStackTrace();
-                System.out.println(e.getErrorCode());
+            int i  = dataAccessLayer.deleteStudent(studentID);
+            if(i==0){
+                System.out.println("No student was removed");
+            }else if(i==1){
+                System.out.println("Student removed");
             }
 
-        }catch (Exception e){
-            System.out.println(e);
+            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+
+        }catch (SQLException e){
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
         }
     }
 
@@ -97,6 +97,7 @@ public class StudentController {
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
 
+    //metod att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         Scene scene = courseViewButton.getScene();

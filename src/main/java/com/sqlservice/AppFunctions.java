@@ -82,7 +82,7 @@ public class AppFunctions {
         return id;
     }
 
-    public static void searchTableWithTextField(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
+    public static void updateSearchableTableView(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
         //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
         //table vi vill kolla på.
 
