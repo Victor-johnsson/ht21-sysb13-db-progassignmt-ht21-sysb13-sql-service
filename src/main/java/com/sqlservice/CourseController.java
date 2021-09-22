@@ -10,11 +10,13 @@ import java.sql.SQLException;
 
 public class CourseController {
 
-    @FXML
-    TableView courseTableView;
-
-    @FXML
-    TextField searchCourseTextField;
+    @FXML TableView courseTableView;
+    @FXML TextField searchCourseTextField;
+    @FXML TextField courseNameTextField;
+    @FXML TextField courseCreditsTextField;
+    @FXML TextArea courseFeedbackArea;
+    @FXML Button createCourseButton;
+    @FXML Button deleteCourseButton;
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
@@ -26,7 +28,6 @@ public class CourseController {
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 

@@ -3,7 +3,6 @@ package com.sqlservice;
 import java.sql.*;
 
 public class DataAccessLayer {
-
     //En metod som returnerar resultSet. Även throws SQLException. Startat en ny connection till vår databas.
     //En sträng med SQL-statement. Metoden tar in en sträng som är ett tablename. Course, Student etc.
     //preparedStatement connection, table där är strängen,
@@ -15,7 +14,6 @@ public class DataAccessLayer {
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
         //statement.setString(1, tableName); //test med '?'
-
 
         ResultSet rs = statement.executeQuery();
 
@@ -53,7 +51,7 @@ public class DataAccessLayer {
         return i; //returnerar x rader som har blivit uppdaterade.
     }
 
-    public int createCourse(String courseCode, String courseName, double courseCredit) throws SQLException{
+    public int createCourse(String courseCode, String courseName, double courseCredits) throws SQLException{
         Connection connection = ContosoConnection.getConnection();
 
         String query  = "INSERT INTO Course VALUES (?,?,?)"; //skapar värde till course table på index visst index.
@@ -61,7 +59,7 @@ public class DataAccessLayer {
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         preparedStatement.setString(2,courseName);
-        preparedStatement.setDouble(3,courseCredit);
+        preparedStatement.setDouble(3,courseCredits);
 
 
         int i = preparedStatement.executeUpdate(); //returnerar en int på vilka rader den uppdaterat.

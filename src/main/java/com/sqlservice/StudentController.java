@@ -27,7 +27,7 @@ public class StudentController {
     @FXML TextField searchStudentTextField;
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
-    @FXML TextField studentIDTextField;
+    @FXML TextArea studentFeedbackArea;
 
 
 
@@ -43,25 +43,31 @@ public class StudentController {
 
         }
     }
-
-
-
+    
     public void onAddStudentButton(ActionEvent event){
         try{
-            String studentID = AppFunctions.randomCode("Student", "studentID","S");//kanske skapa en inbyggd räknare
-            String studentName =  studentNameTextField.getText();
-            String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
-            String studentAddress = studentAddressTextField.getText();
+            String regex = "[0-9]+";
+            if (studentNameTextField.getText().isBlank()){
+                studentFeedbackArea.setText("Please enter a name");
+            }else if (studentSSNTextField.getText().isBlank()){
+                studentFeedbackArea.setText("Please enter a SSN");
+            }else if (!(studentSSNTextField.getText().length() == 10 || studentSSNTextField.getText().matches(regex))){
+                studentFeedbackArea.setText("SSN must be exactly 10 digits!");
+            }else if (studentAddressTextField.getText().isBlank()){
+                studentFeedbackArea.setText("Please enter an address");
+            }else {
+                String studentID = AppFunctions.randomCode("Student", "studentID", "S");
+                String studentName = studentNameTextField.getText();
+                String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
+                String studentAddress = studentAddressTextField.getText();
 
-
-
-            int i = dataAccessLayer.createStudent(studentID,studentSSN,studentName,studentAddress);
-            if(i==0){
-                System.out.println("no rows affected");
-            }else if(i==1){
-                System.out.println("one row affected");
+                int i = dataAccessLayer.createStudent(studentID, studentSSN, studentName, studentAddress);
+                if (i == 0) {
+                    studentFeedbackArea.setText("No student was created");
+                } else if (i == 1) {
+                    studentFeedbackArea.setText("One student was created");
+                }
             }
-
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
         }catch (SQLException e){
             System.out.println(e.getErrorCode());
