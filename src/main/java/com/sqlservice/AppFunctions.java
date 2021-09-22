@@ -128,7 +128,7 @@ public class AppFunctions {
                 arrayList.add(resultSet.getString(idColumnName));
             }
             ContosoConnection.connectionClose(resultSet);
-            int randomNum = ThreadLocalRandom.current().nextInt(10000, 99999);
+            int randomNum = ThreadLocalRandom.current().nextInt(00000, 99999);
             String randomCode = startingLetter + randomNum;
             if (!(arrayList.contains(randomCode))) {
 
