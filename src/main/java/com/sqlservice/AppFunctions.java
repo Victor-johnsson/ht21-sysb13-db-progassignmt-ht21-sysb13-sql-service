@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Parent;
@@ -86,13 +87,14 @@ public class AppFunctions {
     }
 
     public static String getValueOfCell(TableView tableView, int columnIndex){
-            ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems(); //Hämtar raden vi vill få columnen från!
-            ObservableList<ObservableList> object = row.get(columnIndex);
-            Object ob = object.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
-            String value = ob.toString(); //gör objektet till en sträng för att skicka till databasen.
-            System.out.println(value);
-        return value;
+
+            ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar raden vi vill få columnen från!
+            ObservableList<ObservableList> objectList = row.get(columnIndex);
+            Object object = objectList.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
+            String cellValue = object.toString(); //gör objektet till en sträng för att skicka till databasen.
+        return cellValue;
     }
+
 
     public static void updateSearchableTableView(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
         //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
@@ -105,7 +107,7 @@ public class AppFunctions {
 
 
         //ObservableList<ObservableList> dataList = AppFunktioner.fillList(resultSet);
-        FilteredList<ObservableList> filteredData = new FilteredList<>(AppFunctions.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
+        FilteredList<ObservableList> filteredData = new FilteredList<>(AppFunctions.fillList(resultSet), b -> true);//Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
         textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
@@ -146,8 +148,8 @@ public class AppFunctions {
         }
     }
 
-    public static void changeView(Parent root, Button adminViewButton, AnchorPane parentContainer, AnchorPane anchorRoot) {
-        Scene scene = adminViewButton.getScene();
+    public static void changeView(Parent root, Button viewButton, AnchorPane parentContainer, AnchorPane anchorRoot) {
+        Scene scene = viewButton.getScene();
 
         root.translateYProperty().set(scene.getHeight());
 

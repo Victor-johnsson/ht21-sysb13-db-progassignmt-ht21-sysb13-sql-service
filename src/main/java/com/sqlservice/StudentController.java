@@ -5,6 +5,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +41,7 @@ public class StudentController {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
 
+
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -50,6 +52,7 @@ public class StudentController {
         try{
             String regex = "[0-9]+";
             if (studentNameTextField.getText().isBlank()){
+
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
@@ -100,6 +103,7 @@ public class StudentController {
             e.printStackTrace();
         }
     }
+
 
 
 
