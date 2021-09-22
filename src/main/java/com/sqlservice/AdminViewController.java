@@ -74,7 +74,7 @@ public class AdminViewController {
 
             String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
             String courseID = AppFunctions.getValueOfCell(courseTableView, 0);
-            //int i = dataAccessLayer.addToStudies(studentID, courseID);
+            int i = dataAccessLayer.removeFromStudies(studentID, courseID);
             if (i == 0) {
                 System.out.println("No student was removed from course : " + courseID);
             } else if (i == 1) {
