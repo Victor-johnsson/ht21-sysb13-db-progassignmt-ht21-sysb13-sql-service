@@ -16,8 +16,6 @@ public class CourseController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-
-
     public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
         //något annat händer.
         // ERRORHANTERING!
@@ -29,6 +27,5 @@ public class CourseController {
 
         }
     }
-
 
 }

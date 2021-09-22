@@ -80,14 +80,4 @@ public class DataAccessLayer {
         ContosoConnection.connectionClose(preparedStatement);
         return i;
     }
-
-
-
-
-
-
-
-
-
-
 }

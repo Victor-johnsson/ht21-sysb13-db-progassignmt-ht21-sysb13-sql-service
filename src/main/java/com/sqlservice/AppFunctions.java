@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 
 public class AppFunctions {
+    //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
 
     public static ObservableList<ObservableList> fillList(ResultSet resultSet) throws SQLException {
 
