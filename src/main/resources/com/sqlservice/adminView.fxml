@@ -11,17 +11,16 @@
       <TableView fx:id="courseTableView" layoutX="33.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
       <TableView fx:id="studentTableView" layoutX="548.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
       <Button fx:id="showStudentsOnCourse" layoutX="46.0" layoutY="259.0" mnemonicParsing="false" text="Show Students On Course" />
-      <Button fx:id="addStudentOnCourseButton" layoutX="318.0" layoutY="66.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
       <TextField fx:id="searchStudentTextField" layoutX="586.0" layoutY="225.0" promptText="Search Student" />
       <TextField fx:id="searchCourseTextField" layoutX="59.0" layoutY="225.0" promptText="Search Course" />
       <Button fx:id="setGradeButton" layoutX="289.0" layoutY="217.0" mnemonicParsing="false" text="Set Grade/Reg of completed Course" />
       <Button fx:id="showCoursesStudied" layoutX="595.0" layoutY="259.0" mnemonicParsing="false" text="Show Courses Studies" />
-      <Button fx:id="removeStudentFromCourseButton" layoutX="301.0" layoutY="125.0" mnemonicParsing="false" text="Remove Student From Course---&gt;" />
+      <Button fx:id="removeStudentFromCourseButton" layoutX="301.0" layoutY="125.0" mnemonicParsing="false" onAction="#removeStudentFromCourse" text="Remove Student From Course---&gt;" />
       <TextField fx:id="gradeTextField" layoutX="318.0" layoutY="192.0" promptText="Grade A-F" />
       <TextArea layoutX="312.0" layoutY="278.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
       <Button fx:id="showCompletedCourses" layoutX="601.0" layoutY="298.0" mnemonicParsing="false" text="Completed Courses" />
       <Button fx:id="resetButton" layoutX="359.0" layoutY="488.0" mnemonicParsing="false" text="ResetButton" />
       <Button fx:id="showCourseStatistics" layoutX="53.0" layoutY="298.0" mnemonicParsing="false" text="Show Course Statistics" />
-      <Button fx:id="addStudentOnCourseButton" layoutX="328.0" layoutY="76.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
+      <Button fx:id="addStudentOnCourseButton" layoutX="318.0" layoutY="41.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
    </children>
 </AnchorPane>

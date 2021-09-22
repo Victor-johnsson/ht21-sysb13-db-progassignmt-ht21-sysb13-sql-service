@@ -79,10 +79,11 @@ public class AdminViewController {
                 System.out.println("No student was removed from course : " + courseID);
             } else if (i == 1) {
                 System.out.println("The student " + studentID + "has been removed from the course : " + courseID);
+            }
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println(e.getErrorCode());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
         }
     }
 
