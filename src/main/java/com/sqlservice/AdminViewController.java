@@ -47,7 +47,7 @@ public class AdminViewController {
         try{
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-        }catch (SQLException e){
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }

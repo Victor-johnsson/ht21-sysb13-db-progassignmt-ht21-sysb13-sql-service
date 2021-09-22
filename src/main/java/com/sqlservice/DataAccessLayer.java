@@ -112,13 +112,13 @@ public class DataAccessLayer {
         return false;
     }
 
-    public int removeFromStudies(String studentID, String courseID) throws SQLException{
+    public int removeFromStudies(String studentID, String courseCode) throws SQLException{
 
         String query = "DELETE FROM Studies WHERE studentID = ? AND courseCode = ?;";
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
-        preparedStatement.setString(2,courseID);
+        preparedStatement.setString(2,courseCode);
 
         int i = preparedStatement.executeUpdate();
         ContosoConnection.connectionClose(preparedStatement);
