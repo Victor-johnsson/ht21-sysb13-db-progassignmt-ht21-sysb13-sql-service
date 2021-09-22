@@ -6,12 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
 
 public class AdminViewController {
 
-
+    @FXML
+    TableView showOnCourseView;
     @FXML
     TableView courseTableView;
     @FXML
@@ -86,6 +88,47 @@ public class AdminViewController {
             System.out.println(e.getErrorCode());
         }
     }
+
+    public void setGrade(ActionEvent event){
+        try {
+            String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+            String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+            //System.out.println(courseCode);
+            //System.out.println(studentID);
+            String grade = gradeTextField.getText().toUpperCase();
+            if(dataAccessLayer.isStudentOnCourse(studentID,courseCode) == true){
+                dataAccessLayer.addToHasStudied(studentID,courseCode,grade);
+                dataAccessLayer.removeFromStudies(studentID,courseCode);
+                System.out.println("Grade " + grade + " was added for" + studentID + " on course: "+ courseCode );
+            }else {
+                System.out.println("Student doesn't study this course, can't add a grade");
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
+        }
+    }
+
+    public void onShowStudentsOnCourse(ActionEvent event){
+        try {
+            String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+            ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
+
+            AppFunctions.updateSearchableTableView(showOnCourseView,searchStudentTextField,resultSet);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
+        }
+
+
+
+
+
+    }
+
+
 
 
 
