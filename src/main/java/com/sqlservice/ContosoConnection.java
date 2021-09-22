@@ -6,12 +6,13 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class ContosoConnection {
+    //öppnar och stänger connections
+
     public static final String URL = "jdbc:sqlserver://localhost:1433;" +
             "database=ProgrammingAssignment;" +
             "user=grupp7;" +
             "password=G00dPassword;";
     //URL för databasen och servern
-
 
     /**
      * Get a connection to database
