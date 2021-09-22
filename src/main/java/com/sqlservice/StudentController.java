@@ -28,6 +28,8 @@ public class StudentController {
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
     @FXML TextArea studentFeedbackArea;
+    @FXML MenuItem loadCourseView;
+    @FXML MenuItem loadAdminView;
 
 
 
@@ -111,12 +113,12 @@ public class StudentController {
     //metod att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
-        AppFunctions.changeView(root, courseViewButton, parentContainer, anchorRoot);
+        AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
-        AppFunctions.changeView(root, adminViewButton, parentContainer, anchorRoot);
+        AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
 

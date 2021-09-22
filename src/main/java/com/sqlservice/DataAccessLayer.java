@@ -78,4 +78,74 @@ public class DataAccessLayer {
         ContosoConnection.connectionClose(preparedStatement);
         return i;
     }
+
+    public int addToStudies(String studentID, String courseCode) throws SQLException{
+
+        String query = "INSERT INTO Studies VALUES(?,?)";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+    }
+    public boolean isStudentOnCourse(String studentID, String courseCode) throws SQLException{
+        String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int count =0;
+        while (resultSet.next()){
+            count++;
+        }
+        ContosoConnection.connectionClose(resultSet);
+        if(count == 1){
+            return true;
+        }
+        return false;
+    }
+
+    public int removeFromStudies(String studentID, String courseCode) throws SQLException{
+
+        String query = "DELETE FROM Studies WHERE studentID = ? AND courseCode = ?;";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+    }
+
+    public int addToHasStudied(String studentID, String courseCode, String grade) throws SQLException{
+        String query = "INSERT INTO HasStudied VALUES(?,?,?);";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+        preparedStatement.setString(3,grade);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+
+    }
+
+    public ResultSet getStudentsOnCourse(String courseCode) throws SQLException{
+        String query = "SELECT * FROM Student " +
+                "JOIN Studies ON Student.studentID = Studies.studentID " +
+                "WHERE Studies.courseCode = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,courseCode);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
 }
