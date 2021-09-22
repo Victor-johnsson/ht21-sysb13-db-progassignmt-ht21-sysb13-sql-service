@@ -42,58 +42,68 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.HelloController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <TextField fx:id="studentNameTextField" layoutX="42.0" layoutY="39.0" promptText="Name" />
-            <TextField fx:id="studentSSNTextField" layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
-            <TextField fx:id="studentAddressTextField" layoutX="42.0" layoutY="120.0" promptText="Address" />
-            <TableView fx:id="studentTableView" layoutX="307.0" layoutY="29.0" prefHeight="207.0" prefWidth="280.0" />
-            <Button fx:id="deleteStudentButton" layoutX="359.0" layoutY="267.0" mnemonicParsing="false" onAction="#setDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
-            <TextField fx:id="searchStudentTextField" layoutX="373.0" layoutY="236.0" promptText="Searchfield" />
-            <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
-            <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
-      </children>
-    </AnchorPane>
-  </children>
-</VBox>
+
+<AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.HelloController">
+   <children>
+      <AnchorPane fx:id="anchorRoot">
+         <children>
+            <VBox prefHeight="400.0" prefWidth="640.0">
+              <children>
+                <MenuBar VBox.vgrow="NEVER">
+                  <menus>
+                    <Menu mnemonicParsing="false" text="File">
+                      <items>
+                        <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open…" />
+                        <Menu mnemonicParsing="false" text="Open Recent" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                        <MenuItem mnemonicParsing="false" text="Save As…" />
+                        <MenuItem mnemonicParsing="false" text="Revert" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Preferences…" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Quit" />
+                      </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Edit">
+                      <items>
+                        <MenuItem mnemonicParsing="false" text="Undo" />
+                        <MenuItem mnemonicParsing="false" text="Redo" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Cut" />
+                        <MenuItem mnemonicParsing="false" text="Copy" />
+                        <MenuItem mnemonicParsing="false" text="Paste" />
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Select All" />
+                        <MenuItem mnemonicParsing="false" text="Unselect All" />
+                      </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Help">
+                      <items>
+                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                      </items>
+                    </Menu>
+                  </menus>
+                </MenuBar>
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+                  <children>
+                        <TextField fx:id="studentNameTextField" layoutX="42.0" layoutY="39.0" promptText="Name" />
+                        <TextField fx:id="studentSSNTextField" layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
+                        <TextField fx:id="studentAddressTextField" layoutX="42.0" layoutY="120.0" promptText="Address" />
+                        <TableView fx:id="studentTableView" layoutX="307.0" layoutY="29.0" prefHeight="207.0" prefWidth="280.0" />
+                        <Button fx:id="deleteStudentButton" layoutX="359.0" layoutY="267.0" mnemonicParsing="false" onAction="#setDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
+                        <TextField fx:id="searchStudentTextField" layoutX="373.0" layoutY="236.0" promptText="Searchfield" />
+                        <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
+                        <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
+                        <Button fx:id="courseViewButton" layoutX="146.0" layoutY="298.0" mnemonicParsing="false" onAction="#loadCourseScene" text="CourseView" />
+                  </children>
+                </AnchorPane>
+              </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

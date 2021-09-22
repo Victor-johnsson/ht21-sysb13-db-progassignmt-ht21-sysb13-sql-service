@@ -1,18 +1,22 @@
 package com.sqlservice;
 
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.util.Callback;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Locale;
 
@@ -52,11 +56,12 @@ public class HelloController {
 
         //ob-list som vi fyller med det som
         //metoden fillTableViewByName returnerar.
-        AppFunktioner.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
+        tableView.getColumns().clear();
+        AppFunctions.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
 
 
         //ObservableList<ObservableList> dataList = AppFunktioner.fillList(resultSet);
-        FilteredList <ObservableList> filteredData = new FilteredList<>(AppFunktioner.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
+        FilteredList <ObservableList> filteredData = new FilteredList<>(AppFunctions.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
         textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
@@ -80,13 +85,6 @@ public class HelloController {
 
 
     }
-
-
-
-
-
-
-
 
     public void onAddStudentButton(ActionEvent event){
         try{
@@ -116,38 +114,48 @@ public class HelloController {
 
     public void setDeleteStudentButton(ActionEvent event){
         try{
-
-            ObservableList<ObservableList> row  = studentTableView.getSelectionModel().getSelectedItems().sorted().getSource();
-            ObservableList<ObservableList> ol = row.get(0);
-            System.out.println(ol);
-            Object ob = ol.get(0);
-            String studentID = ob.toString();
-            System.out.println(studentID);
-
-
+            String studentID = AppFunctions.getValueOfCell(studentTableView,0);
             try{
                 dataAccessLayer.deleteStudent(studentID);
-                studentTableView.getColumns().clear();
                 searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-
             }catch (SQLException e){
                 e.printStackTrace();
                 System.out.println(e.getErrorCode());
             }
 
-
-
-
-
         }catch (Exception e){
             System.out.println(e);
         }
     }
-    //TablePosition pos = studentTableView.getSelectionModel().getSelectedCells().get(0);
-    //int row = pos.getRow();
-    //Item item = studentTableView.getItems().get(row);
-    //TableColumn col = pos.getTableColumn();
-    //String data = (String) col.getCellObservableValue(item).getValue();
+
+
+
+
+    @FXML Button courseViewButton;
+    @FXML private AnchorPane anchorRoot;
+    @FXML private AnchorPane parentContainer;
+
+    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
+        Scene scene = courseViewButton.getScene();
+
+        root.translateYProperty().set(scene.getHeight());
+
+        parentContainer.getChildren().add(root);
+
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
+        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
+        timeline.getKeyFrames().add(kf);
+
+        timeline.setOnFinished(event1 -> {
+            parentContainer.getChildren().remove(anchorRoot);
+        });
+
+
+        timeline.play();
+    }
+    //KLART!
 
 
 

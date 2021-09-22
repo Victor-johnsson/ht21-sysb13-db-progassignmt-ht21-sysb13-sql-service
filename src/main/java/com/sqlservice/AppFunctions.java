@@ -4,14 +4,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
-public class AppFunktioner {
+public class AppFunctions {
 
     public static ObservableList<ObservableList> fillList(ResultSet resultSet) throws SQLException {
 
@@ -64,18 +67,53 @@ public class AppFunktioner {
             System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
         }
         /**
-         * ObservableValue och ObservableTables etc är wrappers vilka låter obervera värdet/tablet och kunna göra ändringar till det med tex listeners!
+         * ObservableValue och ObservableList etc är wrappers vilka låter observera värdet/tablet och kunna göra ändringar till det med tex listeners!
          * Methoden ovan sätter lägger till columns i ett TableView och döper dessa till deras namn enlig resultsetet!**/
 
     }
 
-    public String getID(TableView tableView, int columnIndex){
-        ObservableList<ObservableList> row  = tableView.getSelectionModel().getSelectedItems();
-        ObservableList<ObservableList> ol = row.get(columnIndex);
-        Object ob = ol.get(columnIndex);
-        String id = ob.toString();
+    public static String getValueOfCell(TableView tableView, int columnIndex){
+        ObservableList<ObservableList> row  = tableView.getSelectionModel().getSelectedItems(); //Hämtar raden vi vill få columnen från!
+        ObservableList<ObservableList> object = row.get(columnIndex);
+        Object ob = object.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
+        String id = ob.toString(); //gör objektet till en sträng för att skicka till databasen.
         System.out.println(id);
+
         return id;
+    }
+
+    public static void searchTableWithTextField(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
+        //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
+        //table vi vill kolla på.
+
+        //ob-list som vi fyller med det som
+        //metoden fillTableViewByName returnerar.
+        tableView.getColumns().clear();
+        AppFunctions.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
+
+
+        //ObservableList<ObservableList> dataList = AppFunktioner.fillList(resultSet);
+        FilteredList<ObservableList> filteredData = new FilteredList<>(AppFunctions.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
+        //b -> true gör att den kan lyssna när vi skriver i sökfältet.
+
+        textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
+            //oldValue ändras aldrig, men det gör newValue.
+            filteredData.setPredicate( row -> {
+                if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
+                if(row.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
+                    return true;
+                }
+                else return false; //fail safe.
+
+            });
+        });
+
+        tableView.setItems(filteredData);
+        ContosoConnection.connectionClose(resultSet);
     }
 
 }

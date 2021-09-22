@@ -43,7 +43,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.CourseController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -88,11 +88,11 @@
       <children>
             <TextField layoutX="31.0" layoutY="74.0" promptText="CourseName" />
             <TextField layoutX="31.0" layoutY="126.0" promptText="Credits (numbers)" />
-            <TableView layoutX="376.0" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="courseTableView" layoutX="376.0" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" />
             <Button layoutX="31.0" layoutY="163.0" mnemonicParsing="false" text="Create Course" />
             <Button layoutX="385.0" layoutY="256.0" mnemonicParsing="false" text="Delete Course" />
             <TextArea layoutX="134.0" layoutY="241.0" prefHeight="100.0" prefWidth="178.0" promptText="textArea För info om kurs" />
-            <TextField layoutX="385.0" layoutY="229.0" />
+            <TextField fx:id="searchCourseTextField" layoutX="385.0" layoutY="229.0" />
       </children>
     </AnchorPane>
   </children>
