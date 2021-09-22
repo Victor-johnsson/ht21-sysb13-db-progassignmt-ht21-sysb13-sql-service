@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Locale;
 
-public class HelloController {
+public class StudentController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
     @FXML TableView studentTableView;
@@ -38,53 +38,15 @@ public class HelloController {
         //något annat händer.
         // ERRORHANTERING!
         try {
-            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
-
-
-
-
     }
 
-    public void searchTableWithTextField(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
-        //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
-        //table vi vill kolla på.
 
-        //ob-list som vi fyller med det som
-        //metoden fillTableViewByName returnerar.
-        tableView.getColumns().clear();
-        AppFunctions.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
-
-
-        //ObservableList<ObservableList> dataList = AppFunktioner.fillList(resultSet);
-        FilteredList <ObservableList> filteredData = new FilteredList<>(AppFunctions.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
-        //b -> true gör att den kan lyssna när vi skriver i sökfältet.
-
-        textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
-            //oldValue ändras aldrig, men det gör newValue.
-            filteredData.setPredicate( row -> {
-                if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
-                if(row.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
-                    return true;
-                }
-                else return false; //fail safe.
-
-            });
-        });
-
-        tableView.setItems(filteredData);
-        ContosoConnection.connectionClose(resultSet);
-
-
-    }
 
     public void onAddStudentButton(ActionEvent event){
         try{
@@ -100,7 +62,7 @@ public class HelloController {
                 System.out.println("one row affected");
             }
 
-            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
         }catch (SQLException e){
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -117,7 +79,7 @@ public class HelloController {
             String studentID = AppFunctions.getValueOfCell(studentTableView,0);
             try{
                 dataAccessLayer.deleteStudent(studentID);
-                searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+                AppFunctions.searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             }catch (SQLException e){
                 e.printStackTrace();
                 System.out.println(e.getErrorCode());

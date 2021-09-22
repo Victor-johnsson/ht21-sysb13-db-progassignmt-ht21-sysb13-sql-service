@@ -43,7 +43,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.HelloController">
+<AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.StudentController">
    <children>
       <AnchorPane fx:id="anchorRoot">
          <children>
