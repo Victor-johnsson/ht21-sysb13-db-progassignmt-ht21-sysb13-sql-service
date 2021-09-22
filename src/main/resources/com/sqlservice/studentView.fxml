@@ -98,6 +98,7 @@
                         <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
                         <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
                         <Button fx:id="courseViewButton" layoutX="146.0" layoutY="298.0" mnemonicParsing="false" onAction="#loadCourseScene" text="CourseView" />
+                        <Button fx:id="adminViewButton" layoutX="253.0" layoutY="295.0" mnemonicParsing="false" onAction="#loadAdminScene" text="AdminView" />
                   </children>
                 </AnchorPane>
               </children>
