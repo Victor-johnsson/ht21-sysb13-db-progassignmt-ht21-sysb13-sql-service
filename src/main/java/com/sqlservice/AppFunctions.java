@@ -12,7 +12,9 @@ import javafx.util.Callback;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AppFunctions {
     //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
@@ -115,6 +117,24 @@ public class AppFunctions {
 
         tableView.setItems(filteredData);
         ContosoConnection.connectionClose(resultSet);
+    }
+
+    public static String randomCode(String dbTableName, String idColumnName, String startingLetter) throws SQLException{
+        DataAccessLayer dataAccessLayer = new DataAccessLayer();
+        ResultSet resultSet = dataAccessLayer.getAllFromTable(dbTableName); //Antingen från Student eller Course
+        while (true) {
+            ArrayList<String> arrayList = new ArrayList<>();
+            while (resultSet.next()){
+                arrayList.add(resultSet.getString(idColumnName));
+            }
+            ContosoConnection.connectionClose(resultSet);
+            int randomNum = ThreadLocalRandom.current().nextInt(00000, 99999);
+            String randomCode = startingLetter + randomNum;
+            if (!(arrayList.contains(randomCode))) {
+
+                return randomCode;
+            }
+        }
     }
 
 }

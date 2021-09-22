@@ -96,7 +96,6 @@
                         <Button fx:id="deleteStudentButton" layoutX="359.0" layoutY="267.0" mnemonicParsing="false" onAction="#onDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
                         <TextField fx:id="searchStudentTextField" layoutX="373.0" layoutY="236.0" promptText="Searchfield" />
                         <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
-                        <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
                         <Button fx:id="courseViewButton" layoutX="146.0" layoutY="298.0" mnemonicParsing="false" onAction="#loadCourseScene" text="CourseView" />
                         <Button fx:id="adminViewButton" layoutX="253.0" layoutY="295.0" mnemonicParsing="false" onAction="#loadAdminScene" text="AdminView" />
                   </children>

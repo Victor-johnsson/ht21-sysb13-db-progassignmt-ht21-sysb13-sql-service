@@ -37,6 +37,7 @@ public class StudentController {
         try {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
+
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -47,10 +48,12 @@ public class StudentController {
 
     public void onAddStudentButton(ActionEvent event){
         try{
-            String studentID = studentIDTextField.getText();//kanske skapa en inbyggd räknare
+            String studentID = AppFunctions.randomCode("Student", "studentID","S");//kanske skapa en inbyggd räknare
             String studentName =  studentNameTextField.getText();
             String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
             String studentAddress = studentAddressTextField.getText();
+
+
 
             int i = dataAccessLayer.createStudent(studentID,studentSSN,studentName,studentAddress);
             if(i==0){
