@@ -1,14 +1,23 @@
 package com.sqlservice;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.Duration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,6 +143,26 @@ public class AppFunctions {
                 return randomCode;
             }
         }
+    }
+
+    public static void changeView(Parent root, Button adminViewButton, AnchorPane parentContainer, AnchorPane anchorRoot) {
+        Scene scene = adminViewButton.getScene();
+
+        root.translateYProperty().set(scene.getHeight());
+
+        parentContainer.getChildren().add(root);
+
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
+        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
+        timeline.getKeyFrames().add(kf);
+
+        timeline.setOnFinished(event1 -> {
+            parentContainer.getChildren().remove(anchorRoot);
+        });
+
+
+        timeline.play();
     }
 
 }

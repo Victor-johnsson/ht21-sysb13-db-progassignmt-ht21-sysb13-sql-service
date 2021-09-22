@@ -111,46 +111,16 @@ public class StudentController {
     //metod att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
-        Scene scene = courseViewButton.getScene();
-
-        root.translateYProperty().set(scene.getHeight());
-
-        parentContainer.getChildren().add(root);
-
-        Timeline timeline = new Timeline();
-        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
-        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
-        timeline.getKeyFrames().add(kf);
-
-        timeline.setOnFinished(event1 -> {
-            parentContainer.getChildren().remove(anchorRoot);
-        });
-
-
-        timeline.play();
+        AppFunctions.changeView(root, courseViewButton, parentContainer, anchorRoot);
     }
 
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
-        Scene scene = adminViewButton.getScene();
-
-        root.translateYProperty().set(scene.getHeight());
-
-        parentContainer.getChildren().add(root);
-
-        Timeline timeline = new Timeline();
-        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
-        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
-        timeline.getKeyFrames().add(kf);
-
-        timeline.setOnFinished(event1 -> {
-            parentContainer.getChildren().remove(anchorRoot);
-        });
-
-
-        timeline.play();
+        AppFunctions.changeView(root, adminViewButton, parentContainer, anchorRoot);
     }
-    //KLART!
+
+
+
 
 
 
