@@ -76,13 +76,12 @@ public class AppFunctions {
     }
 
     public static String getValueOfCell(TableView tableView, int columnIndex){
-        ObservableList<ObservableList> row  = tableView.getSelectionModel().getSelectedItems(); //Hämtar raden vi vill få columnen från!
-        ObservableList<ObservableList> object = row.get(columnIndex);
-        Object ob = object.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
-        String id = ob.toString(); //gör objektet till en sträng för att skicka till databasen.
-        System.out.println(id);
-
-        return id;
+            ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems(); //Hämtar raden vi vill få columnen från!
+            ObservableList<ObservableList> object = row.get(columnIndex);
+            Object ob = object.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
+            String value = ob.toString(); //gör objektet till en sträng för att skicka till databasen.
+            System.out.println(value);
+        return value;
     }
 
     public static void updateSearchableTableView(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,

@@ -99,11 +99,11 @@
                         <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
                         <Button fx:id="courseViewButton" layoutX="146.0" layoutY="298.0" mnemonicParsing="false" onAction="#loadCourseScene" text="CourseView" />
                         <Button fx:id="adminViewButton" layoutX="253.0" layoutY="295.0" mnemonicParsing="false" onAction="#loadAdminScene" text="AdminView" />
+                        <TextArea fx:id="studentFeedbackArea" layoutX="596.0" layoutY="267.0" prefHeight="185.0" prefWidth="160.0" promptText="Feedback" />
                   </children>
                 </AnchorPane>
               </children>
             </VBox>
-            <TextArea layoutX="630.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
          </children>
       </AnchorPane>
    </children>
