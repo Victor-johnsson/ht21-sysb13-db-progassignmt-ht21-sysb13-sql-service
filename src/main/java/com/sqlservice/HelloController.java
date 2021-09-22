@@ -34,8 +34,7 @@ public class HelloController {
         //något annat händer.
         // ERRORHANTERING!
         try {
-            //searchTableWithTextField(tableView,filteredTextField,"Course");
-            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Course"));
+            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,9 +52,11 @@ public class HelloController {
 
         //ob-list som vi fyller med det som
         //metoden fillTableViewByName returnerar.
+        AppFunktioner.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
 
-        ObservableList<ObservableList> dataList = fillTableViewByResultSet(tableView, resultSet);
-        FilteredList <ObservableList> filteredData = new FilteredList<ObservableList>(dataList,b-> true); //Wrappar dataList i listan filteredData.
+
+        //ObservableList<ObservableList> dataList = AppFunktioner.fillList(resultSet);
+        FilteredList <ObservableList> filteredData = new FilteredList<>(AppFunktioner.fillList(resultSet), b -> true); //Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
         textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
@@ -74,67 +75,17 @@ public class HelloController {
             });
         });
 
-        SortedList<Object> sortedData = new SortedList<>(filteredData); //gör listan till en sorterad lista
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData); //kommentar
-
-
-    }
-
-
-    public ObservableList<ObservableList> fillTableViewByResultSet(TableView tableView, ResultSet resultSet) throws SQLException{
-
-        ObservableList<ObservableList> dataList = FXCollections.observableArrayList();
-        /**
-         * Inuti den observerbara listan, har vi en lista av observerbara listor, den tar in tableName (tex Course) och tableView
-         * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen.
-         * skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
-         * Vill man istället ha ett resultSet där man joinar två olika tables?
-         * getAllfromTableName behövs även ändras då. **/
-
-
-        for(int i=0; i<resultSet.getMetaData().getColumnCount(); i++) {
-            /**Den lägger till alla kolumner från resultset.
-             * courseCode, credits, name = den itererar över de. Så länge i < så många kolumner som finns i resultset, så kör den
-             * loopen. Första gången vi kör är i = 0.
-             * sätter att j = i **/
-         final int j = i;
-
-            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-
-                /**Nytt table column. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
-                 * första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
-
-            col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { //sätter vilket värde det ska vara i den kolumnen.
-                @Override
-                public ObservableValue call(CellDataFeatures<ObservableList, String> param) {
-                    return new SimpleStringProperty(param.getValue().get(j).toString());
-                }
-            });
-            tableView.getColumns().addAll(col);        //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
-            System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
-        }
-        /**
-         * ObservableValue och ObservableTables etc är wrappers vilka låter obervera värdet/tablet och kunna göra ändringar till det med tex listeners!
-         * Methoden ovan sätter lägger till columns i ett TableView och döper dessa till deras namn enlig resultsetet!**/
-
-
-        while (resultSet.next()) { //itererar över resultSet. För första raden skapar vi en observable list (kallar för row).
-            ObservableList<String> row = FXCollections.observableArrayList(); //listan som är raderna.
-            //för varje kolumn i den raden, lägger vi till värdet i den observablelist.
-            //Den lägger till alla värden från resultSet till observableList.
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                row.add(resultSet.getString(i));
-            }
-            System.out.println("Row [1] added" + row);
-            dataList.add(row); //lägger till row(är en observableList) i dataList.
-        }
-
+        tableView.setItems(filteredData);
         ContosoConnection.connectionClose(resultSet);
 
 
-        return dataList;
     }
+
+
+
+
+
+
 
 
     public void onAddStudentButton(ActionEvent event){
@@ -150,6 +101,7 @@ public class HelloController {
             }else if(i==1){
                 System.out.println("one row affected");
             }
+
             searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
         }catch (SQLException e){
             System.out.println(e.getErrorCode());
@@ -164,28 +116,26 @@ public class HelloController {
 
     public void setDeleteStudentButton(ActionEvent event){
         try{
-            //String studentID = studentTableView.getSelectionModel().getSelectedItems().get(0).toString();
-            String student = studentTableView.getSelectionModel().getSelectedCells().toString();
-            System.out.println(student);
-            //System.out.println(student);
 
-            /*
-            TablePosition pos = studentTableView.getSelectionModel().getSelectedCells().get(0);
-            int row = pos.getRow();
-            Object item = studentTableView.getItems().get(row);
-            TableColumn col = pos.getTableColumn();
-            String data = (String) col.getCellObservableValue(item).getValue();
+            ObservableList<ObservableList> row  = studentTableView.getSelectionModel().getSelectedItems().sorted().getSource();
+            ObservableList<ObservableList> ol = row.get(0);
+            System.out.println(ol);
+            Object ob = ol.get(0);
+            String studentID = ob.toString();
+            System.out.println(studentID);
 
-            /*
 
-            int i =dataAccessLayer.deleteStudent(studentID);
-            if(i==0){
-                System.out.println("no rows affected");
-            }else if(i==1){
-                System.out.println("one row affected");
+            try{
+                dataAccessLayer.deleteStudent(studentID);
+                studentTableView.getColumns().clear();
+                searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+
+            }catch (SQLException e){
+                e.printStackTrace();
+                System.out.println(e.getErrorCode());
             }
-             */
-            searchTableWithTextField(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+
+
 
 
 

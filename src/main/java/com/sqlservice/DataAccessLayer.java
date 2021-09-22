@@ -51,7 +51,7 @@ public class DataAccessLayer {
 
     public ResultSet getAllFromTable(String tableName) throws SQLException{
         Connection connection = ContosoConnection.getConnection();
-        String table = "SELECT * FROM " + tableName + ";";
+        String table = "SELECT studentID AS ID,studentName AS Name,studentAddress AS Address,studentSSN AS SSN FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
         //statement.setString(1, tableName); //test med '?'
 

@@ -88,9 +88,9 @@
             <TextField fx:id="studentNameTextField" layoutX="42.0" layoutY="39.0" promptText="Name" />
             <TextField fx:id="studentSSNTextField" layoutX="42.0" layoutY="83.0" promptText="Social Security Number" />
             <TextField fx:id="studentAddressTextField" layoutX="42.0" layoutY="120.0" promptText="Address" />
-            <TableView fx:id="studentTableView" layoutX="368.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="deleteStudentButton" layoutX="380.0" layoutY="270.0" mnemonicParsing="false" onAction="#setDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
-            <TextField fx:id="searchStudentTextField" layoutX="405.0" layoutY="233.0" promptText="Searchfield" />
+            <TableView fx:id="studentTableView" layoutX="307.0" layoutY="29.0" prefHeight="207.0" prefWidth="280.0" />
+            <Button fx:id="deleteStudentButton" layoutX="359.0" layoutY="267.0" mnemonicParsing="false" onAction="#setDeleteStudentButton" prefHeight="31.0" prefWidth="177.0" text="Remove Student" />
+            <TextField fx:id="searchStudentTextField" layoutX="373.0" layoutY="236.0" promptText="Searchfield" />
             <Button fx:id="addStudentButton" layoutX="42.0" layoutY="201.0" mnemonicParsing="false" onAction="#onAddStudentButton" text="Add Student" />
             <TextField fx:id="studentIDTextField" layoutX="42.0" layoutY="157.0" promptText="StudentID" />
       </children>
