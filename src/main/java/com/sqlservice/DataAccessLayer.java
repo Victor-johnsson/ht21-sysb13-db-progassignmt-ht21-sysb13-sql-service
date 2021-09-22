@@ -41,22 +41,22 @@ public class DataAccessLayer {
         return i;
     }
 
-    public int deleteStudent(String studentID) throws SQLException{ //studentID kommer från tableView Student
-        String query = "DELETE FROM Student WHERE studentID = ?";
+    public int deleteStudent(String studentID) throws SQLException{ //studentID kommer från tableView Student.
+        String query = "DELETE FROM Student WHERE studentID = ?"; //Vi vet inte studentID:t.
         Connection connection = ContosoConnection.getConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(1,studentID); //parameterindex 1 betyder att de första "?" är 1 (Alltså studentID).
 
         int i = preparedStatement.executeUpdate();
-        ContosoConnection.connectionClose(preparedStatement);
-        return i;
+        ContosoConnection.connectionClose(preparedStatement); //Den stänger connection till databasen.
+        return i; //returnerar x rader som har blivit uppdaterade.
     }
 
     public int createCourse(String courseCode, String courseName, double courseCredit) throws SQLException{
         Connection connection = ContosoConnection.getConnection();
 
-        String query  = "INSERT INTO Course VALUES (?,?,?)";
+        String query  = "INSERT INTO Course VALUES (?,?,?)"; //skapar värde till course table på index visst index.
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
