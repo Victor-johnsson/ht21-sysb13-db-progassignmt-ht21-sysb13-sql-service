@@ -121,7 +121,7 @@ public class AppFunctions {
 
     public static String randomCode(String dbTableName, String idColumnName, String startingLetter) throws SQLException{
         DataAccessLayer dataAccessLayer = new DataAccessLayer();
-        ResultSet resultSet = dataAccessLayer.getAllFromTable(dbTableName);
+        ResultSet resultSet = dataAccessLayer.getAllFromTable(dbTableName); //Antingen från Student eller Course
         while (true) {
             ArrayList<String> arrayList = new ArrayList<>();
             while (resultSet.next()){
