@@ -78,4 +78,15 @@ public class DataAccessLayer {
         ContosoConnection.connectionClose(preparedStatement);
         return i;
     }
+    public int uniqueSSNcheck(String studentSSN) throws SQLException{
+        String query = "SELECT * FROM Student WHERE studentSSN = ? ";
+        Connection connection = ContosoConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentSSN);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+    }
 }

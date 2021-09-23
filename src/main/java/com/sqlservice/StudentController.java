@@ -51,8 +51,10 @@ public class StudentController {
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
-            }else if (!(studentSSNTextField.getText().length() == 10 || studentSSNTextField.getText().matches(regex))){
+            }else if (studentSSNTextField.getText().length() != 10 || !studentSSNTextField.getText().matches(regex)) {
                 studentFeedbackArea.setText("SSN must be exactly 10 digits!");
+            }else if (DataAccessLayer.uniqueSSNcheck(studentSSNTextField.getText())>0){
+                    studentFeedbackArea.setText("That SSN already exists. SSN needs to be unique");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
@@ -82,15 +84,17 @@ public class StudentController {
 
     public void onDeleteStudentButton(ActionEvent event){
         try{
-
-            String studentID = AppFunctions.getValueOfCell(studentTableView,0);
-            int i  = dataAccessLayer.deleteStudent(studentID);
-            if(i==0){
-                System.out.println("No student was removed");
-            }else if(i==1){
-                System.out.println("Student removed");
+            if (studentTableView.getSelectionModel().getSelectedItems().isEmpty()){
+                studentFeedbackArea.setText("Please select a student to delete");
+            }else {
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                int i = dataAccessLayer.deleteStudent(studentID);
+                if (i == 0) {
+                    studentFeedbackArea.setText("No student was removed");
+                } else if (i == 1) {
+                    studentFeedbackArea.setText("Student removed");
+                }
             }
-
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
 
         }catch (SQLException e){

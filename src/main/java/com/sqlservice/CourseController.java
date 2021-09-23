@@ -30,7 +30,6 @@ public class CourseController {
             e.printStackTrace();
         }
     }
-
     public void onAddCourseButton(ActionEvent event){
         try{
             String regex = "[0-9]+\\.?[0-9]+";
