@@ -108,6 +108,9 @@ public class StudentController {
 
 
 
+
+
+
     @FXML Button courseViewButton;
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;

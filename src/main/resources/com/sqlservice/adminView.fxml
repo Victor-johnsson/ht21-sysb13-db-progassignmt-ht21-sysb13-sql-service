@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
@@ -8,10 +9,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.AdminViewController">
    <children>
-      <AnchorPane fx:id="anchorRoot" prefHeight="533.0" prefWidth="862.0">
+      <AnchorPane fx:id="anchorRoot" prefHeight="627.0" prefWidth="950.0">
          <children>
             <TableView fx:id="courseTableView" layoutX="33.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
             <TableView fx:id="studentTableView" layoutX="548.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
@@ -34,6 +34,8 @@
                 <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Student" />
               </items>
             </MenuButton>
+            <TextField layoutX="68.0" layoutY="521.0" />
+            <ChoiceBox fx:id="gradesComboBox" layoutX="318.0" layoutY="167.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
    </children>

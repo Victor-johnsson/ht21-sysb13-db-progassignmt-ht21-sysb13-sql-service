@@ -55,7 +55,7 @@ public class AppFunctions {
          * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen.
          * skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
          * Vill man istället ha ett resultSet där man joinar två olika tables?
-         * getAllfromTableName behövs även ändras då. **/
+         * getAllFromTableName behövs även ändras då. **/
 
 
         for(int i=0; i<resultSet.getMetaData().getColumnCount(); i++) {
@@ -167,5 +167,6 @@ public class AppFunctions {
 
         timeline.play();
     }
+
 
 }

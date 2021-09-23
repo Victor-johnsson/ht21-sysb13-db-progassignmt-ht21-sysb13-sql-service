@@ -1,12 +1,12 @@
 package com.sqlservice;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 
 public class AdminViewController {
+
+
 
     @FXML
     TableView showOnCourseView;
@@ -45,12 +47,19 @@ public class AdminViewController {
     @FXML
     Button showCompletedCourses;
 
+    @FXML
+    ChoiceBox<String> gradesComboBox;
+
+
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
+
+
 
     public void initialize(){
         try{
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            onClickingCourse();
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -146,6 +155,27 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
+
+    @FXML TextField searchCourseViewTextField;
+    public void onClickingCourse(){
+        courseTableView.setOnMouseClicked(e ->{
+            String courseCode = AppFunctions.getValueOfCell(courseTableView,0);
+            try{
+                AppFunctions.updateSearchableTableView(showOnCourseView,searchCourseViewTextField,dataAccessLayer.getStudentsOnCourse(courseCode));
+                while (dataAccessLayer.getStudentsOnCourse(courseCode).next()){
+                    System.out.println(dataAccessLayer.getStudentsOnCourse(courseCode).getString(0));
+                }
+
+            } catch (NullPointerException e1) {
+                //gör inget om man klickar i rutan fast inte på en person!
+            }catch (SQLException e2){
+                e2.printStackTrace();
+            }
+        });
+    }
+
+
+
 
 
 
