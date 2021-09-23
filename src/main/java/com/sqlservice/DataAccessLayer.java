@@ -100,7 +100,7 @@ public class DataAccessLayer {
         preparedStatement.setString(2,courseCode);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        int count =0;
+        int count = 0;
         while (resultSet.next()){
             count++;
         }

@@ -49,12 +49,12 @@ public class CourseController {
             }else if (Double.parseDouble(courseCreditsTextField.getText())> 30){
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
             }else { //Om checkarna godtas kör metoden nedan:
-                String courseID = AppFunctions.randomCode("Course","courseCode","C");
+                String courseCode = AppFunctions.randomCode("Course","courseCode","C");
                 String courseName =  courseNameTextField.getText();
                 double courseCredits = Double.parseDouble(courseCreditsTextField.getText());
-                int i = dataAccessLayer.createCourse(courseID, courseName, courseCredits);//skickar info från course scenen till DAL
+                int i = dataAccessLayer.createCourse(courseCode, courseName, courseCredits);//skickar info från course scenen till DAL
                 if (i == 0) {
-                    courseFeedbackArea.setText("No course was created");
+                    courseFeedbackArea.setText("No course was created!");
                 } else if (i == 1) {
                     courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was created" ); //Hämtar vilken kurs som skapats
                 }
@@ -75,13 +75,13 @@ public class CourseController {
             //"Please select a course"
             //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
             if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()){
-                courseFeedbackArea.setText("Please select a course to delete");
+                courseFeedbackArea.setText("Please select a course to remove");
             }else {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 String courseName = AppFunctions.getValueOfCell(courseTableView,1);
                 int i = dataAccessLayer.deleteCourse(courseCode);
                 if (i == 0) {
-                    courseFeedbackArea.setText("No course was removed");
+                    courseFeedbackArea.setText("No course was removed!");
                 } else if (i == 1) {
                     courseFeedbackArea.setText("Course removed!");
                 }

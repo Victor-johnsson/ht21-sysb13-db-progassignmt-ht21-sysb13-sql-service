@@ -78,7 +78,8 @@ public class StudentController {
             e.printStackTrace();
             int errorCode = e.getErrorCode();
             if(errorCode == 2627){
-                System.out.println("StudentID already exists! ");//Måste brytas ut! 2627 är för alla typer av constraint violations
+                //behöver 2 2627 error hanteringar, en för UNIQUE och en för PRIMARY KEY
+                studentFeedbackArea.setText("Student with this SSN already exists! Enter a different SSN" );
             }
         }
 
