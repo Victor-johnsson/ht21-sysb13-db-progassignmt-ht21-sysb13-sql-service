@@ -45,7 +45,6 @@ public class AdminViewController {
     Button showCoursesStudied;
     @FXML
     Button showCompletedCourses;
-
     @FXML
     ChoiceBox<String> gradesComboBox;
 
@@ -92,15 +91,19 @@ public class AdminViewController {
 
     public void removeStudentFromCourse(ActionEvent event) {
         try {
-
-            String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
-            String courseID = AppFunctions.getValueOfCell(courseTableView, 0);
-            int i = dataAccessLayer.removeFromStudies(studentID, courseID);
-            if (i == 0) {
-                System.out.println("No student was removed from course : " + courseID);
-            } else if (i == 1) {
-                System.out.println("The student " + studentID + "has been removed from the course : " + courseID);
+            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                int i = dataAccessLayer.removeFromStudies(studentID, courseCode);
+                if (i == 0) {
+                    System.out.println("No student was removed from course : " + courseCode);
+                } else if (i == 1) {
+                    System.out.println("The student " + studentID + "has been removed from the course : " + courseCode);
+                }
+            }else{
+                System.out.println("Select a course and a student!");
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,8 +138,9 @@ public class AdminViewController {
 
     public void onShowStudentsOnCourse(ActionEvent event){
         try {
-            String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-            ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
+            if (courseTableView.getSelectionModel().isEmpty()) {
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
 
                 AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
             }

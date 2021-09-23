@@ -65,8 +65,7 @@ public class CourseController {
             e.printStackTrace();
             int errorCode = e.getErrorCode();
             if(errorCode == 2627){
-                courseFeedbackArea.setText("CourseCode already exists!");//Måste brytas ut! 2627 är för alla typer av constraint violations
-                //Felmeddelandet kan inte lyda som det gör... För det handlar om man får samma siffror i rnd och inte att det redan finns samma kurskod(för användaren)
+                courseFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
             }
         }
     }
@@ -83,7 +82,7 @@ public class CourseController {
                 if (i == 0) {
                     courseFeedbackArea.setText("No course was removed!");
                 } else if (i == 1) {
-                    courseFeedbackArea.setText("Course removed!");
+                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
                 }
                 AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
             }

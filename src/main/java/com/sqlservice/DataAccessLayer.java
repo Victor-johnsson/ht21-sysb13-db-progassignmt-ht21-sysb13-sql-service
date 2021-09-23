@@ -92,6 +92,7 @@ public class DataAccessLayer {
         ContosoConnection.connectionClose(preparedStatement);
         return i;
     }
+
     public boolean isStudentOnCourse(String studentID, String courseCode) throws SQLException{
         String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
         Connection connection = ContosoConnection.getConnection();

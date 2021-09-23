@@ -44,7 +44,6 @@ public class StudentController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     
@@ -55,8 +54,8 @@ public class StudentController {
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
-            }else if (!(studentSSNTextField.getText().length() == 10 || studentSSNTextField.getText().matches(regex))){
-                studentFeedbackArea.setText("SSN must be exactly 10 digits!");
+            }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regex)){
+                studentFeedbackArea.setText("SSN must be exactly 12 digits!");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
@@ -69,7 +68,7 @@ public class StudentController {
                 if (i == 0) {
                     studentFeedbackArea.setText("No student was created");
                 } else if (i == 1) {
-                    studentFeedbackArea.setText("One student was created");
+                    studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created");
                 }
             }
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
@@ -82,20 +81,22 @@ public class StudentController {
                 studentFeedbackArea.setText("Student with this SSN already exists! Enter a different SSN" );
             }
         }
-
     }
 
     public void onDeleteStudentButton(ActionEvent event){
         try{
-
-            String studentID = AppFunctions.getValueOfCell(studentTableView,0);
-            int i  = dataAccessLayer.deleteStudent(studentID);
-            if(i==0){
-                System.out.println("No student was removed");
-            }else if(i==1){
-                System.out.println("Student removed");
+            if (studentTableView.getSelectionModel().isEmpty()){
+                studentFeedbackArea.setText("Please select a student to remove");
+            }else {
+                String studentName = AppFunctions.getValueOfCell(studentTableView, 2);
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                int i = dataAccessLayer.deleteStudent(studentID);
+                if (i == 0) {
+                    studentFeedbackArea.setText("No student was removed!");
+                } else if (i == 1) {
+                    studentFeedbackArea.setText("Student " + studentName + "with student ID: " + studentID + " was removed!");
+                }
             }
-
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
 
         }catch (SQLException e){
@@ -120,10 +121,4 @@ public class StudentController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
-
-
-
-
-
-
 }

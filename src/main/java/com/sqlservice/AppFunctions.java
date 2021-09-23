@@ -45,7 +45,6 @@ public class AppFunctions {
             dataSet.add(row); //lägger till row(är en observableList) i dataList.
         }
         return dataSet;
-
     }
 
     public static void setTableColumnNames(TableView tableView, ResultSet resultSet) throws SQLException{
