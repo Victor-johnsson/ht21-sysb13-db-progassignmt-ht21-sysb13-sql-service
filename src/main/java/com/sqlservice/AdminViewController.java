@@ -44,7 +44,8 @@ public class AdminViewController {
             System.out.println(e.getErrorCode());
         }
     }
-
+    //Metod för att lägga till en student på en kurs.
+    //OBS: det går inte att lägga till en student om det överskrider 45 credits totalt.
     public void addStudentOnCourse(ActionEvent event) {
         try {
             //kolla att course och student view har valts
@@ -74,6 +75,7 @@ public class AdminViewController {
         }
     }
 
+    //Ta bort en student från en specifik kurs.
     public void removeStudentFromCourse(ActionEvent event) {
         try {
             if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){

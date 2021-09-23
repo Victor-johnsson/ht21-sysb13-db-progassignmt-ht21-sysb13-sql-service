@@ -25,8 +25,8 @@ public class CourseController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-    public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
-        //något annat händer.
+    //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
+    public void initialize(){
         // ERRORHANTERING!
         try {
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
@@ -36,6 +36,7 @@ public class CourseController {
         }
     }
 
+    //En metod som styr knappen för att lägga till en kurs.
     public void onAddCourseButton(ActionEvent event){
 
         try{
@@ -69,6 +70,7 @@ public class CourseController {
             }
         }
     }
+    //En metod som styr knappen för att ta bort en kurs.
     public void onDeleteCourseButton(ActionEvent event){
         try{
             //"Please select a course"
@@ -96,6 +98,7 @@ public class CourseController {
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
 
+    //Metod för att byta view.
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);

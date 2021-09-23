@@ -52,7 +52,7 @@ public class AppFunctions {
         /**
          * Inuti den observerbara listan, har vi en lista av observerbara listor, den tar in tableName (tex Course) och tableView
          * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen.
-         * skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
+         * Skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
          * Vill man istället ha ett resultSet där man joinar två olika tables?
          * getAllFromTableName behövs även ändras då. **/
 

@@ -33,9 +33,8 @@ public class StudentController {
     @FXML MenuItem loadAdminView;
 
 
-
-    public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
-        //något annat händer.
+    //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
+    public void initialize(){
         // ERRORHANTERING!
         try {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
@@ -46,7 +45,8 @@ public class StudentController {
             e.printStackTrace();
         }
     }
-    
+
+    //En metod som styr knappen för att lägga till en student.
     public void onAddStudentButton(ActionEvent event){
         try{
             String regex = "[0-9]+";
@@ -82,7 +82,7 @@ public class StudentController {
             }
         }
     }
-
+    //En metod som styr knappen för att ta bort en student.
     public void onDeleteStudentButton(ActionEvent event){
         try{
             if (studentTableView.getSelectionModel().isEmpty()){
@@ -111,12 +111,13 @@ public class StudentController {
 
 
 
-    //metod att byta view
+    //Metod för att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
+    //Metod som??
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);

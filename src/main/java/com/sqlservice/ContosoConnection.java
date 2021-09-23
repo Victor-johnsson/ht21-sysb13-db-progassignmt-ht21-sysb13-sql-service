@@ -18,9 +18,11 @@ public class ContosoConnection {
      * Get a connection to database
      * @return Connection object
      */
-    public static Connection getConnection() throws SQLException{ //En funktion som returnerar en connection till URL.
-        //throws = om det blir problem när vi ska göra connection(uppdatera en person), då kommer denna funktion
-        //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
+    
+    //En funktion som returnerar en connection till URL.
+    //throws = om det blir problem när vi ska göra connection(uppdatera en person), då kommer denna funktion
+    //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
+    public static Connection getConnection() throws SQLException{ 
 
 
         DriverManager.registerDriver(new Driver() {
@@ -64,6 +66,7 @@ public class ContosoConnection {
 
     }
 
+    //Metod som...
     public static void connectionClose(ResultSet rs) throws SQLException{ //stänger Connection för den ResultSet man stoppar in när man anropar.
         Statement statement = rs.getStatement();
         Connection connection = statement.getConnection();
@@ -75,6 +78,7 @@ public class ContosoConnection {
         //När man öppnar sker det i motsatt ordning.
     }
 
+    //Metod som...
     public static void connectionClose(Statement statement) throws SQLException{
         Connection connection = statement.getConnection();
         statement.close();
