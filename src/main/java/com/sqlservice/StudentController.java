@@ -5,6 +5,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,8 @@ public class StudentController {
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
     @FXML TextArea studentFeedbackArea;
+    @FXML MenuItem loadCourseView;
+    @FXML MenuItem loadAdminView;
 
 
 
@@ -37,6 +40,7 @@ public class StudentController {
         try {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,6 +52,7 @@ public class StudentController {
         try{
             String regex = "[0-9]+";
             if (studentNameTextField.getText().isBlank()){
+
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
@@ -106,6 +111,10 @@ public class StudentController {
 
 
 
+
+
+
+
     @FXML Button courseViewButton;
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
@@ -115,46 +124,16 @@ public class StudentController {
     //metod att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
-        Scene scene = courseViewButton.getScene();
-
-        root.translateYProperty().set(scene.getHeight());
-
-        parentContainer.getChildren().add(root);
-
-        Timeline timeline = new Timeline();
-        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
-        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
-        timeline.getKeyFrames().add(kf);
-
-        timeline.setOnFinished(event1 -> {
-            parentContainer.getChildren().remove(anchorRoot);
-        });
-
-
-        timeline.play();
+        AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
-        Scene scene = adminViewButton.getScene();
-
-        root.translateYProperty().set(scene.getHeight());
-
-        parentContainer.getChildren().add(root);
-
-        Timeline timeline = new Timeline();
-        KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
-        KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
-        timeline.getKeyFrames().add(kf);
-
-        timeline.setOnFinished(event1 -> {
-            parentContainer.getChildren().remove(anchorRoot);
-        });
-
-
-        timeline.play();
+        AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
-    //KLART!
+
+
+
 
 
 

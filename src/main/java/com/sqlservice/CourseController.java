@@ -2,10 +2,15 @@ package com.sqlservice;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class CourseController {
@@ -83,5 +88,19 @@ public class CourseController {
             System.out.println(e.getErrorCode());
             e.printStackTrace();
         }
+    }
+
+
+    @FXML private AnchorPane anchorRoot;
+    @FXML private AnchorPane parentContainer;
+
+    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
+        AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
+    }
+
+    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
+        AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }
 }
