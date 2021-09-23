@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 public class AdminViewController {
 
-
     @FXML TableView courseTableView;
     @FXML TableView studentTableView;
     @FXML TextField searchCourseTextField;
@@ -32,14 +31,12 @@ public class AdminViewController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-
-
-    public void initialize(){
-        try{
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+    public void initialize() {
+        try {
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
             //onClickingCourse();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -49,7 +46,7 @@ public class AdminViewController {
     public void addStudentOnCourse(ActionEvent event) {
         try {
             //kolla att course och student view har valts
-            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+            if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 if(dataAccessLayer.potentialCredits(courseCode,studentID)<=45){
@@ -78,7 +75,7 @@ public class AdminViewController {
     //Ta bort en student från en specifik kurs.
     public void removeStudentFromCourse(ActionEvent event) {
         try {
-            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+            if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 int i = dataAccessLayer.removeFromStudies(studentID, courseCode);
@@ -91,7 +88,6 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
 
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -101,41 +97,39 @@ public class AdminViewController {
     //Tar bort studenten från "Studies" och flyttar till "HasStudied" och sätter ett betyg
     public void setGrade(ActionEvent event) {
         try {
-            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+            if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 String grade = gradeTextField.getText().toUpperCase();
-                if(dataAccessLayer.isStudentOnCourse(studentID,courseCode)){
-                    dataAccessLayer.addToHasStudied(studentID,courseCode,grade);
-                    dataAccessLayer.removeFromStudies(studentID,courseCode);
-                    System.out.println("Grade " + grade + " was added for " + studentID + " on course "+ courseCode );
-                }else {
-                    System.out.println("Student doesn't study this course, can't add a grade");
+                if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
+                    dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
+                    dataAccessLayer.removeFromStudies(studentID, courseCode);
+                    feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
+                } else {
+                    feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
                 }
-            }else{
-                System.out.println("Select a course and a student!");
+            } else {
+                feedbackTextArea.setText("Select a course and a student!");
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
     }
 
-
-
-    public void onShowStudentsOnCourse(ActionEvent event){
+    //Visar studenter aktiva på en kurs
+    public void onShowStudentsOnCourse(ActionEvent event) {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty())) {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
 
                 AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+            } else {
+                feedbackTextArea.setText("Please select a course!");
             }
-            else {
-                System.out.println("please select a course");
-            }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -152,11 +146,10 @@ public class AdminViewController {
                 feedbackTextArea.setText("Percentage of students who got an A on " + courseName + ": " + percentage + "%");
 
                 AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+            } else {
+                feedbackTextArea.setText("Please select a course!");
             }
-            else {
-                System.out.println("please select a course");
-            }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -210,7 +203,6 @@ public class AdminViewController {
 
     @FXML AnchorPane parentContainer;
     @FXML AnchorPane anchorRoot;
-
 
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
