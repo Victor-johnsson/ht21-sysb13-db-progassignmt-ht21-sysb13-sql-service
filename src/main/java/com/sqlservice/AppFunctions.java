@@ -41,11 +41,10 @@ public class AppFunctions {
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 row.add(resultSet.getString(i));
             }
-            System.out.println("Lade till rad: " + row);
+            //System.out.println("Lade till rad: " + row);
             dataSet.add(row); //lägger till row(är en observableList) i dataList.
         }
         return dataSet;
-
     }
 
     public static void setTableColumnNames(TableView tableView, ResultSet resultSet) throws SQLException{
@@ -53,7 +52,7 @@ public class AppFunctions {
         /**
          * Inuti den observerbara listan, har vi en lista av observerbara listor, den tar in tableName (tex Course) och tableView
          * som är vilket tableView vi ska fylla(länkat till FXML-dokumentet). Vi har en metod som anropar denna metoden i denna klassen.
-         * skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
+         * Skapar en observableList och för att kunna få in listan i ett tableview i JavaFX.
          * Vill man istället ha ett resultSet där man joinar två olika tables?
          * getAllFromTableName behövs även ändras då. **/
 
@@ -78,7 +77,7 @@ public class AppFunctions {
             });
 
             tableView.getColumns().addAll(col);        //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
-            System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
+            //System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
         }
         /**
          * ObservableValue och ObservableList etc är wrappers vilka låter observera värdet/tablet och kunna göra ändringar till det med tex listeners!
@@ -89,7 +88,7 @@ public class AppFunctions {
     public static String getValueOfCell(TableView tableView, int columnIndex){
 
             ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar raden vi vill få columnen från!
-            ObservableList<ObservableList> objectList = row.get(columnIndex);
+            ObservableList<ObservableList> objectList = row.get(0); //Alltid vara 0. För det är alltid rad 0 den hämtar.
             Object object = objectList.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
             String cellValue = object.toString(); //gör objektet till en sträng för att skicka till databasen.
         return cellValue;
@@ -166,6 +165,14 @@ public class AppFunctions {
 
 
         timeline.play();
+    }
+
+    public static boolean checkSelectionModel(TableView tableView, TableView tableView2){
+        if(tableView.getSelectionModel().isEmpty() || tableView2.getSelectionModel().isEmpty()){
+            return true;
+        }
+
+        return false;
     }
 
 

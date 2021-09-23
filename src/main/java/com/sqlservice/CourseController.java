@@ -25,8 +25,8 @@ public class CourseController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-    public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
-        //något annat händer.
+    //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
+    public void initialize(){
         // ERRORHANTERING!
         try {
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
@@ -35,7 +35,10 @@ public class CourseController {
             e.printStackTrace();
         }
     }
+
+    //En metod som styr knappen för att lägga till en kurs.
     public void onAddCourseButton(ActionEvent event){
+
         try{
             String regex = "[0-9]+\\.?[0-9]+";
             if (courseNameTextField.getText().isBlank()){
@@ -47,14 +50,14 @@ public class CourseController {
             }else if (Double.parseDouble(courseCreditsTextField.getText())> 30){
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
             }else { //Om checkarna godtas kör metoden nedan:
-                String courseID = AppFunctions.randomCode("Course","courseCode","C");
+                String courseCode = AppFunctions.randomCode("Course","courseCode","C");
                 String courseName =  courseNameTextField.getText();
                 double courseCredits = Double.parseDouble(courseCreditsTextField.getText());
-                int i = dataAccessLayer.createCourse(courseID, courseName, courseCredits);//skickar info från course scenen till DAL
+                int i = dataAccessLayer.createCourse(courseCode, courseName, courseCredits);//skickar info från course scenen till DAL
                 if (i == 0) {
-                    courseFeedbackArea.setText("No course was created");
+                    courseFeedbackArea.setText("No course was created!");
                 } else if (i == 1) {
-                    courseFeedbackArea.setText("One course was created");
+                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was created" ); //Hämtar vilken kurs som skapats
                 }
             }
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
@@ -63,24 +66,25 @@ public class CourseController {
             e.printStackTrace();
             int errorCode = e.getErrorCode();
             if(errorCode == 2627){
-                courseFeedbackArea.setText("CourseCode already exists!");//Måste brytas ut! 2627 är för alla typer av constraint violations
-                //Felmeddelandet kan inte lyda som det gör... För det handlar om man får samma siffror i rnd och inte att det redan finns samma kurskod(för användaren)
+                courseFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
             }
         }
     }
+    //En metod som styr knappen för att ta bort en kurs.
     public void onDeleteCourseButton(ActionEvent event){
         try{
             //"Please select a course"
             //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
             if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()){
-                courseFeedbackArea.setText("Please select a course to delete");
+                courseFeedbackArea.setText("Please select a course to remove");
             }else {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String courseName = AppFunctions.getValueOfCell(courseTableView,1);
                 int i = dataAccessLayer.deleteCourse(courseCode);
                 if (i == 0) {
-                    courseFeedbackArea.setText("No course was removed");
+                    courseFeedbackArea.setText("No course was removed!");
                 } else if (i == 1) {
-                    courseFeedbackArea.setText("Course removed!");
+                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
                 }
                 AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
             }
@@ -94,6 +98,7 @@ public class CourseController {
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
 
+    //Metod för att byta view.
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);

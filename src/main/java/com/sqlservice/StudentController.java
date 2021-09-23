@@ -33,9 +33,8 @@ public class StudentController {
     @FXML MenuItem loadAdminView;
 
 
-
-    public void initialize(){ //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan
-        //något annat händer.
+    //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
+    public void initialize(){
         // ERRORHANTERING!
         try {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
@@ -44,20 +43,19 @@ public class StudentController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
-    
+
+    //En metod som styr knappen för att lägga till en student.
     public void onAddStudentButton(ActionEvent event){
         try{
             String regex = "[0-9]+";
             if (studentNameTextField.getText().isBlank()){
-
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
-            }else if (studentSSNTextField.getText().length() != 10 || !studentSSNTextField.getText().matches(regex)) {
-                studentFeedbackArea.setText("SSN must be exactly 10 digits!");
+            }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regex)){
+                studentFeedbackArea.setText("SSN must be exactly 12 digits!");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
@@ -70,7 +68,7 @@ public class StudentController {
                 if (i == 0) {
                     studentFeedbackArea.setText("No student was created");
                 } else if (i == 1) {
-                    studentFeedbackArea.setText("One student was created");
+                    studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created");
                 }
             }
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
@@ -79,23 +77,24 @@ public class StudentController {
             e.printStackTrace();
             int errorCode = e.getErrorCode();
             if(errorCode == 2627){
-                System.out.println("StudentID already exists! ");//Måste brytas ut! 2627 är för alla typer av constraint violations
+                //behöver 2 2627 error hanteringar, en för UNIQUE och en för PRIMARY KEY
+                studentFeedbackArea.setText("Student with this SSN already exists! Enter a different SSN" );
             }
         }
-
     }
-
+    //En metod som styr knappen för att ta bort en student.
     public void onDeleteStudentButton(ActionEvent event){
         try{
-            if (studentTableView.getSelectionModel().getSelectedItems().isEmpty()){
-                studentFeedbackArea.setText("Please select a student to delete");
+            if (studentTableView.getSelectionModel().isEmpty()){
+                studentFeedbackArea.setText("Please select a student to remove");
             }else {
+                String studentName = AppFunctions.getValueOfCell(studentTableView, 2);
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 int i = dataAccessLayer.deleteStudent(studentID);
                 if (i == 0) {
-                    studentFeedbackArea.setText("No student was removed");
+                    studentFeedbackArea.setText("No student was removed!");
                 } else if (i == 1) {
-                    studentFeedbackArea.setText("Student removed");
+                    studentFeedbackArea.setText("Student " + studentName + "with student ID: " + studentID + " was removed!");
                 }
             }
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
@@ -107,32 +106,20 @@ public class StudentController {
     }
 
 
-
-
-
-
-
-
-    @FXML Button courseViewButton;
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
-    @FXML Button adminViewButton;
 
 
-    //metod att byta view
+
+    //Metod för att byta view
     @FXML private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
+    //Metod som??
     @FXML private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
-
-
-
-
-
-
 }
