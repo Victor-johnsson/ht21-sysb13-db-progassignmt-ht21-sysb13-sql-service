@@ -96,7 +96,8 @@ public class AdminViewController {
         }
     }
 
-    public void setGrade(ActionEvent event){
+    //Tar bort studenten från "Studies" och flyttar till "HasStudied" och sätter ett betyg
+    public void setGrade(ActionEvent event) {
         try {
             if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -159,6 +160,39 @@ public class AdminViewController {
         }
     }
 
+    //Metod som visar resultat på kurser en specifik student har studerat.
+    public void onShowStudiedCourses(ActionEvent event){
+        try {
+            if (!(studentTableView.getSelectionModel().isEmpty())) {
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                ResultSet resultSet = dataAccessLayer.getActiveCoursesForStudent(studentID);
+
+                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSet);
+            } else {
+                feedbackTextArea.setText("Please select a student!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
+        }
+    }
+
+    //Visar resultat på en specifik students genomförda kurser.
+    public void onShowCompletedCourses(ActionEvent event){
+        try {
+            if (!(studentTableView.getSelectionModel().isEmpty())) {
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                ResultSet resultSet = dataAccessLayer.getCompletedCoursesForStudent(studentID);
+
+                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSet);
+            } else {
+                feedbackTextArea.setText("Please select a student!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
+        }
+    }
 
     //Återställer till originalvy för Course tableView och Student tableView.
     public void onResetButton(ActionEvent event){
