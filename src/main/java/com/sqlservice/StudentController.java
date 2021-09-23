@@ -58,8 +58,6 @@ public class StudentController {
                 studentFeedbackArea.setText("Please enter a SSN");
             }else if (studentSSNTextField.getText().length() != 10 || !studentSSNTextField.getText().matches(regex)) {
                 studentFeedbackArea.setText("SSN must be exactly 10 digits!");
-            }else if (DataAccessLayer.uniqueSSNcheck(studentSSNTextField.getText())>0){
-                    studentFeedbackArea.setText("That SSN already exists. SSN needs to be unique");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
