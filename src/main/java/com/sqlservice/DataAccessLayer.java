@@ -82,6 +82,7 @@ public class DataAccessLayer {
     public int addToStudies(String studentID, String courseCode) throws SQLException{
 
         String query = "INSERT INTO Studies VALUES(?,?)";
+
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
@@ -92,7 +93,7 @@ public class DataAccessLayer {
         return i;
     }
     public boolean isStudentOnCourse(String studentID, String courseCode) throws SQLException{
-        String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;";
+        String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
@@ -138,7 +139,8 @@ public class DataAccessLayer {
     }
 
     public ResultSet getStudentsOnCourse(String courseCode) throws SQLException{
-        String query = "SELECT * FROM Student " +
+        String query =
+                "SELECT Student.studentID, Student.studentName FROM Student " +
                 "JOIN Studies ON Student.studentID = Studies.studentID " +
                 "WHERE Studies.courseCode = ?;";
 
@@ -147,5 +149,80 @@ public class DataAccessLayer {
         preparedStatement.setString(1,courseCode);
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
+    }
+
+    public ResultSet getStudentsWhoHaveStudied(String courseCode) throws SQLException{
+        String query =
+                        "SELECT Student.studentID, Student.studentName, HasStudied.grade FROM Student " +
+                        "JOIN HasStudied ON Student.studentID = HasStudied.studentID " +
+                        "WHERE HasStudied.courseCode = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,courseCode);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
+
+    public int totalGrades(String courseCode) throws SQLException {
+        String query = "SELECT COUNT(*)" + //returnerar alltid ett resultset
+                "FROM HasStudied " +
+                "GROUP BY HasStudied.courseCode " +
+                "HAVING HasStudied.courseCode = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, courseCode);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int i = 0;
+        while (resultSet.next()){
+            i =Integer.valueOf(resultSet.getString(1));
+            System.out.println(i);
+        }
+        ContosoConnection.connectionClose(resultSet);
+        return i;
+    }
+
+    public int specificGrades(String courseCode, String grade) throws SQLException {
+        String query = "SELECT COUNT(*)" + //returnerar alltid ett resultset
+                "FROM HasStudied " +
+                "GROUP BY HasStudied.courseCode, HasStudied.grade " +
+                "HAVING HasStudied.courseCode = ? " +
+                "AND grade = ?";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, courseCode);
+        preparedStatement.setString(2, grade);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int i = 0;
+        while (resultSet.next()){
+            i =Integer.valueOf(resultSet.getString(1));
+            System.out.println(i);
+        }
+        ContosoConnection.connectionClose(resultSet);
+        return i;
+    }
+
+    public double percentageOfA(String courseCode, String grade) throws SQLException{
+        String query = "SELECT courseCode,grade, count(*) * 100.0 / (SELECT count(*) FROM HasStudied WHERE courseCode = ?) " +
+                " FROM HasStudied " +
+                " GROUP BY grade, courseCode " +
+                " HAVING courseCode=? AND grade = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,courseCode);
+        preparedStatement.setString(2,courseCode);
+        preparedStatement.setString(3,grade);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        double d = 0;
+        while (resultSet.next()){
+            d = Double.valueOf(resultSet.getString(3));
+        }
+
+        return d;
     }
 }

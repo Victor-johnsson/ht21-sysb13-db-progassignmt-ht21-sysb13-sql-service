@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
@@ -25,17 +25,15 @@
             <TextArea layoutX="312.0" layoutY="278.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
             <Button fx:id="showCompletedCourses" layoutX="601.0" layoutY="298.0" mnemonicParsing="false" text="Completed Courses" />
             <Button fx:id="resetButton" layoutX="359.0" layoutY="488.0" mnemonicParsing="false" text="ResetButton" />
-            <Button fx:id="showCourseStatistics" layoutX="53.0" layoutY="298.0" mnemonicParsing="false" text="Show Course Statistics" />
+            <Button fx:id="showCourseStatistics" layoutX="53.0" layoutY="298.0" mnemonicParsing="false" onAction="#onCourseStatistics" text="Show Course Statistics" />
             <Button fx:id="addStudentOnCourseButton" layoutX="318.0" layoutY="41.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
-            <TableView fx:id="showOnCourseView" layoutX="34.0" layoutY="323.0" prefHeight="200.0" prefWidth="200.0" />
             <MenuButton layoutX="4.0" layoutY="2.0" mnemonicParsing="false" text="MenuButton">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#loadCourseScene" text="Courses" />
                 <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Student" />
               </items>
             </MenuButton>
-            <TextField layoutX="68.0" layoutY="521.0" />
-            <ChoiceBox fx:id="gradesComboBox" layoutX="318.0" layoutY="167.0" prefWidth="150.0" />
+            <ComboBox layoutX="318.0" layoutY="167.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
    </children>

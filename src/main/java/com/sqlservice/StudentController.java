@@ -52,7 +52,6 @@ public class StudentController {
         try{
             String regex = "[0-9]+";
             if (studentNameTextField.getText().isBlank()){
-
                 studentFeedbackArea.setText("Please enter a name");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
@@ -105,16 +104,9 @@ public class StudentController {
     }
 
 
-
-
-
-
-
-
-    @FXML Button courseViewButton;
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
-    @FXML Button adminViewButton;
+
 
 
     //metod att byta view

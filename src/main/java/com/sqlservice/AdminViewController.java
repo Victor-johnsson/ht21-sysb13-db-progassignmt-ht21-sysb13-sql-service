@@ -18,8 +18,7 @@ public class AdminViewController {
 
 
 
-    @FXML
-    TableView showOnCourseView;
+
     @FXML
     TableView courseTableView;
     @FXML
@@ -59,7 +58,7 @@ public class AdminViewController {
         try{
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-            onClickingCourse();
+            //onClickingCourse();
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -68,19 +67,26 @@ public class AdminViewController {
 
     public void addStudentOnCourse(ActionEvent event) {
         try {
+            //kolla att course och student view har valts
+            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                String courseID = AppFunctions.getValueOfCell(courseTableView, 0);
 
-            String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
-            String courseID = AppFunctions.getValueOfCell(courseTableView, 0);
-            int i = dataAccessLayer.addToStudies(studentID, courseID);
-            if (i == 0) {
-                System.out.println("No student was added to the course: " + courseID);
-            } else if (i == 1) {
-                System.out.println("The student " + studentID + " has been added to the course: " + courseID);
+                int i = dataAccessLayer.addToStudies(studentID, courseID);
+                if (i == 0) {
+                    System.out.println("something happened");
+
+                } else if (i == 1) {
+                    System.out.println("The student " + studentID + " has been added to the course: " + courseID);
+                }
+
+            }else {
+                System.out.println("Select a course and a student!");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
+            //ERROR HANTERING BLABLABLA
         }
     }
 
@@ -104,17 +110,19 @@ public class AdminViewController {
 
     public void setGrade(ActionEvent event){
         try {
-            String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
-            String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-            //System.out.println(courseCode);
-            //System.out.println(studentID);
-            String grade = gradeTextField.getText().toUpperCase();
-            if(dataAccessLayer.isStudentOnCourse(studentID,courseCode) == true){
-                dataAccessLayer.addToHasStudied(studentID,courseCode,grade);
-                dataAccessLayer.removeFromStudies(studentID,courseCode);
-                System.out.println("Grade " + grade + " was added for" + studentID + " on course: "+ courseCode );
-            }else {
-                System.out.println("Student doesn't study this course, can't add a grade");
+            if(!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())){
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String grade = gradeTextField.getText().toUpperCase();
+                if(dataAccessLayer.isStudentOnCourse(studentID,courseCode)){
+                    dataAccessLayer.addToHasStudied(studentID,courseCode,grade);
+                    dataAccessLayer.removeFromStudies(studentID,courseCode);
+                    System.out.println("Grade " + grade + " was added for " + studentID + " on course "+ courseCode );
+                }else {
+                    System.out.println("Student doesn't study this course, can't add a grade");
+                }
+            }else{
+                System.out.println("Select a course and a student!");
             }
 
         } catch (SQLException e){
@@ -123,23 +131,42 @@ public class AdminViewController {
         }
     }
 
+
+
     public void onShowStudentsOnCourse(ActionEvent event){
         try {
             String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
             ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
 
-            AppFunctions.updateSearchableTableView(showOnCourseView,searchStudentTextField,resultSet);
-
+                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+            }
+            else {
+                System.out.println("please select a course");
+            }
         }catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
-
-
-
-
-
     }
+
+    public void onCourseStatistics(ActionEvent event){
+        try{
+            if (courseTableView.getSelectionModel().isEmpty()) {
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                ResultSet resultSet = dataAccessLayer.getStudentsWhoHaveStudied(courseCode);
+
+                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+            }
+            else {
+                System.out.println("please select a course");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println(e.getErrorCode());
+        }
+    }
+
+
 
     @FXML
     AnchorPane parentContainer;
@@ -155,7 +182,7 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
-
+/*
     @FXML TextField searchCourseViewTextField;
     public void onClickingCourse(){
         courseTableView.setOnMouseClicked(e ->{
@@ -175,6 +202,8 @@ public class AdminViewController {
     }
 
 
+
+ */
 
 
 

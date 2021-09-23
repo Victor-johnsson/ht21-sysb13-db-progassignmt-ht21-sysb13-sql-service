@@ -37,6 +37,7 @@ public class CourseController {
     }
 
     public void onAddCourseButton(ActionEvent event){
+
         try{
             String regex = "[0-9]+\\.?[0-9]+";
             if (courseNameTextField.getText().isBlank()){
@@ -55,7 +56,7 @@ public class CourseController {
                 if (i == 0) {
                     courseFeedbackArea.setText("No course was created");
                 } else if (i == 1) {
-                    courseFeedbackArea.setText("One course was created");
+                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was created" ); //Hämtar vilken kurs som skapats
                 }
             }
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
@@ -77,6 +78,7 @@ public class CourseController {
                 courseFeedbackArea.setText("Please select a course to delete");
             }else {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String courseName = AppFunctions.getValueOfCell(courseTableView,1);
                 int i = dataAccessLayer.deleteCourse(courseCode);
                 if (i == 0) {
                     courseFeedbackArea.setText("No course was removed");
