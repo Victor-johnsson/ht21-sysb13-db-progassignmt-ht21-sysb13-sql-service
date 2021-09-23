@@ -41,7 +41,7 @@ public class AppFunctions {
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 row.add(resultSet.getString(i));
             }
-            System.out.println("Lade till rad: " + row);
+            //System.out.println("Lade till rad: " + row);
             dataSet.add(row); //lägger till row(är en observableList) i dataList.
         }
         return dataSet;
@@ -77,7 +77,7 @@ public class AppFunctions {
             });
 
             tableView.getColumns().addAll(col);        //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
-            System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
+            //System.out.println("Column ["+i+"] name: " + resultSet.getMetaData().getColumnName(i+1)); //printar ut.
         }
         /**
          * ObservableValue och ObservableList etc är wrappers vilka låter observera värdet/tablet och kunna göra ändringar till det med tex listeners!

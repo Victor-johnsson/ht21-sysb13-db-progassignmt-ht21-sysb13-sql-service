@@ -1,6 +1,7 @@
 package com.sqlservice;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 
 public class DataAccessLayer {
     //En metod som returnerar resultSet. Även throws SQLException. Startat en ny connection till vår databas.
@@ -152,6 +153,36 @@ public class DataAccessLayer {
         return resultSet;
     }
 
+// Hittar aktiva kurser för en given student
+    public ResultSet getActiveCoursesForStudent(String studentID) throws SQLException{
+        String query =
+                "SELECT Course.courseCode, Course.courseName FROM Course " +
+                        "JOIN Studies ON Course.courseCode = Studies.courseCode " +
+                        "WHERE Studies.studentID = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        return resultSet;
+    }
+
+    // Ger alla kurser en specifik student studerat (med betyg)
+    public ResultSet getCompletedCoursesForStudent(String studentID) throws SQLException{
+        String query =
+                "SELECT Course.courseCode, Course.courseName, HasStudied.grade FROM Course " +
+                        "JOIN HasStudied ON Course.courseCode = HasStudied.courseCode " +
+                        "WHERE HasStudied.studentID = ?;";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        return resultSet;
+    }
+
     public ResultSet getStudentsWhoHaveStudied(String courseCode) throws SQLException{
         String query =
                         "SELECT Student.studentID, Student.studentName, HasStudied.grade FROM Student " +
@@ -165,47 +196,10 @@ public class DataAccessLayer {
         return resultSet;
     }
 
-    public int totalGrades(String courseCode) throws SQLException {
-        String query = "SELECT COUNT(*)" + //returnerar alltid ett resultset
-                "FROM HasStudied " +
-                "GROUP BY HasStudied.courseCode " +
-                "HAVING HasStudied.courseCode = ?;";
+    //Räknar ut antal % som fått ett visst betyg.
+    public String percentageOfGrade(String courseCode, String grade) throws SQLException{
+        DecimalFormat df = new DecimalFormat("#.#"); //Formatering med 1 decimal.
 
-        Connection connection = ContosoConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, courseCode);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int i = 0;
-        while (resultSet.next()){
-            i =Integer.valueOf(resultSet.getString(1));
-            System.out.println(i);
-        }
-        ContosoConnection.connectionClose(resultSet);
-        return i;
-    }
-
-    public int specificGrades(String courseCode, String grade) throws SQLException {
-        String query = "SELECT COUNT(*)" + //returnerar alltid ett resultset
-                "FROM HasStudied " +
-                "GROUP BY HasStudied.courseCode, HasStudied.grade " +
-                "HAVING HasStudied.courseCode = ? " +
-                "AND grade = ?";
-
-        Connection connection = ContosoConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, courseCode);
-        preparedStatement.setString(2, grade);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int i = 0;
-        while (resultSet.next()){
-            i =Integer.valueOf(resultSet.getString(1));
-            System.out.println(i);
-        }
-        ContosoConnection.connectionClose(resultSet);
-        return i;
-    }
-
-    public double percentageOfA(String courseCode, String grade) throws SQLException{
         String query = "SELECT courseCode,grade, count(*) * 100.0 / (SELECT count(*) FROM HasStudied WHERE courseCode = ?) " +
                 " FROM HasStudied " +
                 " GROUP BY grade, courseCode " +
@@ -223,7 +217,30 @@ public class DataAccessLayer {
         while (resultSet.next()){
             d = Double.valueOf(resultSet.getString(3));
         }
+        ContosoConnection.connectionClose(resultSet);
 
+        return df.format(d); //Det är värdet vi får ut, formaterat med 1 decimal.
+    }
+
+    //Metod som returnerar antal credits för en specifik student inklusive den kurs som man försöker lägga till.Antalet maxcredits är 40.
+    public double potentialCredits(String courseCode, String studentID) throws SQLException{
+        String query = "SELECT SUM(courseCredits) + (SELECT courseCredits FROM course WHERE courseCode = ?) " +
+                " FROM Studies " +
+                " JOIN Course on Studies.courseCode = Course.courseCode " +
+                " WHERE StudentID = ?";
+
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement= connection.prepareStatement(query);
+        preparedStatement.setString(1,courseCode);
+        preparedStatement.setString(2,studentID);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        double d = 0;
+        while (resultSet.next()){ //En rad eller noll rader.
+            d = Double.valueOf(resultSet.getString(1)); // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
+        }
+        ContosoConnection.connectionClose(resultSet);
         return d;
+
     }
 }
