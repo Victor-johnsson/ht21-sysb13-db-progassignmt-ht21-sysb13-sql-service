@@ -34,7 +34,9 @@ public class AdminViewController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
-    
+
+
+
     public void initialize() {
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
@@ -42,7 +44,8 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
             gradesComboBox.getItems().addAll(gradeOptions);
-            //onClickingCourse();
+            studentTableView.setPlaceholder(new Label("Couldn't find any students"));
+            courseTableView.setPlaceholder(new Label("Couldn't find any courses"));
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -56,7 +59,9 @@ public class AdminViewController {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                if(dataAccessLayer.potentialCredits(courseCode,studentID)<=45){
+
+                double potentialCredits =  dataAccessLayer.potentialCredits(courseCode,studentID);
+                if(potentialCredits<=45){
                     int i = dataAccessLayer.addToStudies(studentID, courseCode);
                     if (i == 0) {
                         feedbackTextArea.setText("something happened");
@@ -73,11 +78,13 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
 
             if(e.getErrorCode() == 2627){
-
+                feedbackTextArea.setText("Student is already on this course");
+            }else{
+                e.printStackTrace();
+                System.out.println(e.getErrorCode());
+                feedbackTextArea.setText("Something strange happened! Contact support!");
 
             }
             //ERROR HANTERING BLABLABLA
@@ -101,7 +108,9 @@ public class AdminViewController {
             }
 
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
+            e.getSQLState();
             System.out.println(e.getErrorCode());
         }
     }
@@ -113,35 +122,30 @@ public class AdminViewController {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 String grade = gradesComboBox.getValue();
-                if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
-                    dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
-                    dataAccessLayer.removeFromStudies(studentID, courseCode);
-                    feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
+                if(grade==null){
+                    feedbackTextArea.setText("Choose a grade");
+                }else{
+                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
+                        if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){
+                            dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
 
-
-                } else {
-                    feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
+                        }else {
+                            dataAccessLayer.updateGrade(studentID, courseCode, grade);
+                        }
+                        dataAccessLayer.removeFromStudies(studentID, courseCode);
+                        feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
+                    } else {
+                        feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
+                    }
                 }
+
             } else {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
+
             e.printStackTrace();
-            if (e.getErrorCode() == 2627) { //primary key violation
-                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
-                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                String grade = gradesComboBox.getValue();
-                try {
-                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
-                        dataAccessLayer.updateGrade(studentID, courseCode, grade);
-                        dataAccessLayer.removeFromStudies(studentID, courseCode);
-                        feedbackTextArea.setText("Grade " + grade + " was updated for " + studentID + " on course " + courseCode);
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                System.out.println(e.getErrorCode());
-            }
         }
     }
 
@@ -153,10 +157,12 @@ public class AdminViewController {
                 ResultSet resultSet = dataAccessLayer.getStudentsOnCourse(courseCode);
 
                 AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+                System.out.println(courseTableView.getItems().isEmpty());
             } else {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -177,6 +183,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -194,6 +201,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -211,6 +219,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -221,16 +230,18 @@ public class AdminViewController {
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         }catch (SQLException e){
+            feedbackTextArea.setText("Something strange happened, which caused us not finding courses with highest throughput! Contact support!");
             e.printStackTrace();
         }
     }
 
-
     //Återställer till originalvy för Course tableView och Student tableView.
     public void onResetButton(ActionEvent event){
         try {
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
+            ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
 
         }catch (SQLException e){
             e.printStackTrace();
