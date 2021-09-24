@@ -32,7 +32,7 @@ public class StudentController {
         try {
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
-
+            studentTableView.setPlaceholder(new Label("No student found"));
 
         } catch (SQLException e) {
             e.printStackTrace();
