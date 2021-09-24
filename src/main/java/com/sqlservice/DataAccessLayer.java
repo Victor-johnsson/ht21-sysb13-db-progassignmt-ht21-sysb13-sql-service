@@ -121,6 +121,28 @@ public class DataAccessLayer {
         return false;
     }
 
+    //Kontrollerar om en student har fått ett betyg tidigare i kursen.
+    public boolean hasPreviousGrade(String studentID, String courseCode) throws SQLException{
+        String query = "SELECT * FROM HasStudied WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,studentID);
+        preparedStatement.setString(2,courseCode);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int count = 0;
+        while (resultSet.next()){
+            count++;
+        }
+        ContosoConnection.connectionClose(resultSet);
+        if(count == 1){
+            return true;
+        }
+        return false;
+    }
+
+
+
     //Metod som tar bort en student från en aktiv kurs.
     public int removeFromStudies(String studentID, String courseCode) throws SQLException{
 
