@@ -77,6 +77,11 @@ public class AdminViewController {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
+
+            if(e.getErrorCode() == 2627){
+
+
+            }
             //ERROR HANTERING BLABLABLA
         }
     }
