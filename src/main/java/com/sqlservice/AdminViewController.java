@@ -116,14 +116,14 @@ public class AdminViewController {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 String grade = gradesComboBox.getValue();
-                if(grade==null){
+                if(grade==null){ //Om man inte valt ett A-F, utan står bara grade
                     feedbackTextArea.setText("Choose a grade");
                 }else{
-                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
-                        if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){
-                            dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
+                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) { //Kollar om studenten finns på kursen
+                        if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){ //Om personen inte har ett tidigare grade,
+                            dataAccessLayer.addToHasStudied(studentID, courseCode, grade); //Lägger till i HasStudied
 
-                        }else {
+                        }else { //ifall personen har tidigare betyg uppdaterar vi betyget
                             dataAccessLayer.updateGrade(studentID, courseCode, grade);
                         }
                         dataAccessLayer.removeFromStudies(studentID, courseCode);
