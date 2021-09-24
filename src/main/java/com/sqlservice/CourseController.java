@@ -35,63 +35,65 @@ public class CourseController {
     }
 
     //En metod som styr knappen för att lägga till en kurs.
-    public void onAddCourseButton(ActionEvent event){
+    public void onAddCourseButton(ActionEvent event) {
 
-        try{
-            String regex = "[0-9]+\\.?[0-9]+";
-            if (courseNameTextField.getText().isBlank()){
+        try {
+            String regex = "[0-9]+\\.?[05]";
+            if (courseNameTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter a name for the course");
-            }else if (courseCreditsTextField.getText().isBlank()){
+            } else if (courseCreditsTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter credits for the course");
-            }else if (!courseCreditsTextField.getText().matches(regex)) {
-                courseFeedbackArea.setText("Please enter credits in digits only");
-            }else if (Double.parseDouble(courseCreditsTextField.getText())> 30){
+            } else if (!courseCreditsTextField.getText().matches(regex)) {
+                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
+            } else if (Double.parseDouble(courseCreditsTextField.getText()) > 30) {
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
-            }else { //Om checkarna godtas kör metoden nedan:
-                String courseCode = AppFunctions.getUniqueCode("Course","courseCode","C");
-                String courseName =  courseNameTextField.getText();
+            } else { //Om checkarna godtas kör metoden nedan:
+                String courseCode = AppFunctions.getUniqueCode("Course", "courseCode", "C");
+                String courseName = courseNameTextField.getText();
                 double courseCredits = Double.parseDouble(courseCreditsTextField.getText());
                 int i = dataAccessLayer.createCourse(courseCode, courseName, courseCredits);//skickar info från course scenen till DAL
                 if (i == 0) {
                     courseFeedbackArea.setText("No course was created!");
                 } else if (i == 1) {
-                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was created" ); //Hämtar vilken kurs som skapats
+                    courseFeedbackArea.setText(courseName + " with course code: " + courseCode + " was created"); //Hämtar vilken kurs som skapats
                 }
+
             }
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-        }catch (SQLException e){
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             e.printStackTrace();
             int errorCode = e.getErrorCode();
-            if(errorCode == 2627){
+            if (errorCode == 2627) {
                 courseFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
+            } else if (errorCode == 2628) {
+                courseFeedbackArea.setText("Name field is limited to 200 characters");
             }
         }
     }
-    //En metod som styr knappen för att ta bort en kurs.
-    public void onDeleteCourseButton(ActionEvent event){
-        try{
-            //"Please select a course"
-            //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
-            if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()){
-                courseFeedbackArea.setText("Please select a course to remove");
-            }else {
-                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                String courseName = AppFunctions.getValueOfCell(courseTableView,1);
-                int i = dataAccessLayer.deleteCourse(courseCode);
-                if (i == 0) {
-                    courseFeedbackArea.setText("No course was removed!");
-                } else if (i == 1) {
-                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
+        //En metod som styr knappen för att ta bort en kurs.
+        public void onDeleteCourseButton (ActionEvent event){
+            try {
+                //"Please select a course"
+                //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
+                if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                    courseFeedbackArea.setText("Please select a course to remove");
+                } else {
+                    String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                    String courseName = AppFunctions.getValueOfCell(courseTableView, 1);
+                    int i = dataAccessLayer.deleteCourse(courseCode);
+                    if (i == 0) {
+                        courseFeedbackArea.setText("No course was removed!");
+                    } else if (i == 1) {
+                        courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
+                    }
+                    AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
                 }
-                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+            } catch (SQLException e) {
+                System.out.println(e.getErrorCode());
+                e.printStackTrace();
             }
-        }catch (SQLException e){
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
         }
-    }
-
 
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
