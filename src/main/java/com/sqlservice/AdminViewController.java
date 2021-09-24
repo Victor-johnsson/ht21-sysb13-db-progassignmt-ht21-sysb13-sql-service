@@ -1,5 +1,7 @@
 package com.sqlservice;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,15 +28,22 @@ public class AdminViewController {
     @FXML Button showStudentsOnCourse;
     @FXML Button showCoursesStudied;
     @FXML Button showCompletedCourses;
-    @FXML ChoiceBox<String> gradesComboBox;
+    @FXML ComboBox<String> gradesComboBox;
     @FXML TextArea feedbackTextArea;
+    @FXML Button throughput;
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
+    ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
+
+
 
     public void initialize() {
         try {
-            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
-            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
+            ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
+            gradesComboBox.getItems().addAll(gradeOptions);
             //onClickingCourse();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,6 +77,11 @@ public class AdminViewController {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
+
+            if(e.getErrorCode() == 2627){
+
+
+            }
             //ERROR HANTERING BLABLABLA
         }
     }
@@ -100,21 +114,36 @@ public class AdminViewController {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                String grade = gradeTextField.getText().toUpperCase();
+                String grade = gradesComboBox.getValue();
                 if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
                     dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
                     dataAccessLayer.removeFromStudies(studentID, courseCode);
                     feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
+
+
                 } else {
                     feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
                 }
             } else {
                 feedbackTextArea.setText("Select a course and a student!");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == 2627) { //primary key violation
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String grade = gradesComboBox.getValue();
+                try {
+                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
+                        dataAccessLayer.updateGrade(studentID, courseCode, grade);
+                        dataAccessLayer.removeFromStudies(studentID, courseCode);
+                        feedbackTextArea.setText("Grade " + grade + " was updated for " + studentID + " on course " + courseCode);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println(e.getErrorCode());
+            }
         }
     }
 
@@ -188,6 +217,16 @@ public class AdminViewController {
             System.out.println(e.getErrorCode());
         }
     }
+
+    public void onThroughputButton(ActionEvent event){
+        try{
+            ResultSet resultSet = dataAccessLayer.getTopThroughput();
+            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 
     //Återställer till originalvy för Course tableView och Student tableView.
     public void onResetButton(ActionEvent event){

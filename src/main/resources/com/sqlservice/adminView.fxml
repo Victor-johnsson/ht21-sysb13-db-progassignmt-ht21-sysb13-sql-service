@@ -13,27 +13,27 @@
    <children>
       <AnchorPane fx:id="anchorRoot" prefHeight="627.0" prefWidth="950.0">
          <children>
-            <TableView fx:id="courseTableView" layoutX="33.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
-            <TableView fx:id="studentTableView" layoutX="548.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="showStudentsOnCourse" layoutX="46.0" layoutY="259.0" mnemonicParsing="false" onAction="#onShowStudentsOnCourse" text="Show Students On Course" />
-            <TextField fx:id="searchStudentTextField" layoutX="586.0" layoutY="225.0" promptText="Search Student" />
-            <TextField fx:id="searchCourseTextField" layoutX="59.0" layoutY="225.0" promptText="Search Course" />
-            <Button fx:id="setGradeButton" layoutX="289.0" layoutY="217.0" mnemonicParsing="false" onAction="#setGrade" text="Set Grade/Reg of completed Course" />
-            <Button fx:id="showCoursesStudied" layoutX="595.0" layoutY="259.0" mnemonicParsing="false" onAction="#onShowStudiedCourses" text="Show Active Courses" />
-            <Button fx:id="removeStudentFromCourseButton" layoutX="301.0" layoutY="132.0" mnemonicParsing="false" onAction="#removeStudentFromCourse" text="Remove Student From Course---&gt;" />
-            <TextField fx:id="gradeTextField" layoutX="318.0" layoutY="192.0" promptText="Grade A-F" />
-            <TextArea fx:id="feedbackTextArea" focusTraversable="false" layoutX="312.0" layoutY="278.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
-            <Button fx:id="showCompletedCourses" layoutX="601.0" layoutY="298.0" mnemonicParsing="false" onAction="#onShowCompletedCourses" text="Completed Courses" />
-            <Button fx:id="resetButton" layoutX="359.0" layoutY="488.0" mnemonicParsing="false" onAction="#onResetButton" text="ResetButton" />
-            <Button fx:id="showCourseStatistics" layoutX="53.0" layoutY="298.0" mnemonicParsing="false" onAction="#onCourseStatistics" text="Show Course Statistics" />
-            <Button fx:id="addStudentOnCourseButton" layoutX="318.0" layoutY="41.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
+            <TableView fx:id="courseTableView" layoutX="20.0" layoutY="25.0" prefHeight="200.0" prefWidth="266.0" />
+            <TableView fx:id="studentTableView" layoutX="548.0" layoutY="25.0" prefHeight="200.0" prefWidth="368.0" />
+            <Button fx:id="showStudentsOnCourse" layoutX="14.0" layoutY="250.0" mnemonicParsing="false" onAction="#onShowStudentsOnCourse" prefHeight="33.0" prefWidth="155.0" text="Show Students On Course" />
+            <TextField fx:id="searchStudentTextField" layoutX="586.0" layoutY="225.0" prefHeight="25.0" prefWidth="273.0" promptText="Search Student" />
+            <TextField fx:id="searchCourseTextField" layoutX="42.0" layoutY="225.0" prefHeight="25.0" prefWidth="214.0" promptText="Search Course" />
+            <Button fx:id="setGradeButton" layoutX="323.0" layoutY="192.0" mnemonicParsing="false" onAction="#setGrade" text="Set Grade/Reg of completed Course" />
+            <Button fx:id="showCoursesStudied" layoutX="651.0" layoutY="259.0" mnemonicParsing="false" onAction="#onShowStudiedCourses" text="Show Active Courses" />
+            <Button fx:id="removeStudentFromCourseButton" layoutX="333.0" layoutY="100.0" mnemonicParsing="false" onAction="#removeStudentFromCourse" text="Remove Student From Course---&gt;" />
+            <TextArea fx:id="feedbackTextArea" focusTraversable="false" layoutX="327.0" layoutY="354.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
+            <Button fx:id="showCompletedCourses" layoutX="663.0" layoutY="298.0" mnemonicParsing="false" onAction="#onShowCompletedCourses" text="Completed Courses" />
+            <Button fx:id="resetButton" layoutX="376.0" layoutY="311.0" mnemonicParsing="false" onAction="#onResetButton" text="ResetButton" />
+            <Button fx:id="showCourseStatistics" layoutX="178.0" layoutY="250.0" mnemonicParsing="false" onAction="#onCourseStatistics" prefHeight="33.0" prefWidth="140.0" text="Show Course Statistics" />
+            <Button fx:id="addStudentOnCourseButton" layoutX="350.0" layoutY="38.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
             <MenuButton layoutX="4.0" layoutY="2.0" mnemonicParsing="false" text="MenuButton">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#loadCourseScene" text="Courses" />
                 <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Student" />
               </items>
             </MenuButton>
-            <ComboBox layoutX="318.0" layoutY="167.0" prefWidth="150.0" />
+            <ComboBox fx:id="gradesComboBox" layoutX="386.0" layoutY="167.0" opacity="0.8" prefHeight="25.0" prefWidth="81.0" promptText="Grades" />
+            <Button fx:id="throughput" layoutX="42.0" layoutY="286.0" mnemonicParsing="false" onAction="#onThroughputButton" text="Show Courses With Highest Throughput" />
          </children>
       </AnchorPane>
    </children>
