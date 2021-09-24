@@ -35,8 +35,6 @@ public class AdminViewController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
-
-
     public void initialize() {
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
