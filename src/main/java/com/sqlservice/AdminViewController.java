@@ -44,7 +44,6 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
             gradesComboBox.getItems().addAll(gradeOptions);
-            //onClickingCourse();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -75,11 +74,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
 
             if(e.getErrorCode() == 2627){
-
+                feedbackTextArea.setText("Student is already on this course");
+            }else{
+                e.printStackTrace();
+                System.out.println(e.getErrorCode());
 
             }
             //ERROR HANTERING BLABLABLA
