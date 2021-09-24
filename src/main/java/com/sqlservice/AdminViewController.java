@@ -35,8 +35,6 @@ public class AdminViewController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
-
-
     public void initialize() {
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
@@ -49,6 +47,7 @@ public class AdminViewController {
             System.out.println(e.getErrorCode());
         }
     }
+
     //Metod för att lägga till en student på en kurs.
     //OBS: det går inte att lägga till en student om det överskrider 45 credits totalt.
     public void addStudentOnCourse(ActionEvent event) {
@@ -226,7 +225,6 @@ public class AdminViewController {
             e.printStackTrace();
         }
     }
-
 
     //Återställer till originalvy för Course tableView och Student tableView.
     public void onResetButton(ActionEvent event){
