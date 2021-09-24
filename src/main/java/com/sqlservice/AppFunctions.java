@@ -12,11 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -65,13 +61,8 @@ public class AppFunctions {
             /**Nytt table column. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
              * första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
 
-            col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() { //sätter vilket värde det ska vara i den kolumnen.
-                @Override
-                public ObservableValue call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                    return new SimpleStringProperty(param.getValue().get(j).toString());
-                }
-            });
-
+            //sätter vilket värde det ska vara i den kolumnen.
+            col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> new SimpleStringProperty(param.getValue().get(j).toString()));
             tableView.getColumns().addAll(col); //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
 
         }
@@ -165,13 +156,16 @@ public class AppFunctions {
         timeline.play();
     }
 
-    public static boolean checkSelectionModel(TableView tableView, TableView tableView2){
-        if(tableView.getSelectionModel().isEmpty() || tableView2.getSelectionModel().isEmpty()){
-            return true;
+
+    //Errorhantering för skumma SQL-fel
+    public static void unexpectedError(TextArea textArea, SQLException e){
+        if(e.getErrorCode() == 0) {
+            textArea.setText("Could not connect to database server. \nPlease contact support!");
+        } else if (e.getErrorCode() == 2628) {
+            textArea.setText("Field is limited to 200 characters");
+        } else {
+            e.printStackTrace();
+            textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
-
-        return false;
     }
-
-
 }

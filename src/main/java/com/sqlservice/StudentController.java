@@ -35,7 +35,8 @@ public class StudentController {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+           AppFunctions.unexpectedError(studentFeedbackArea,e);
         }
     }
 
