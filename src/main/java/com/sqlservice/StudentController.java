@@ -70,8 +70,10 @@ public class StudentController {
             e.printStackTrace();
             int errorCode = e.getErrorCode();
             if(errorCode == 2627){
-                //behöver 2 2627 error hanteringar, en för UNIQUE och en för PRIMARY KEY
-                studentFeedbackArea.setText("Student with this SSN already exists! Enter a different SSN" );
+                //behöver 2st 2627 error hanteringar, en för UNIQUE och en för PRIMARY KEY
+                studentFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
+            }else if(errorCode == 2628){
+                studentFeedbackArea.setText("Name and address fields are limited to 200 characters");
             }
         }
     }
