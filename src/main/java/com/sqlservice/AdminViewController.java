@@ -35,6 +35,7 @@ public class AdminViewController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
+
     public void initialize() {
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
@@ -109,6 +110,7 @@ public class AdminViewController {
         } catch (SQLException e) {
             feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
+            e.getSQLState();
             System.out.println(e.getErrorCode());
         }
     }
@@ -160,6 +162,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -180,6 +183,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -197,6 +201,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -214,6 +219,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
+            feedbackTextArea.setText("Something strange happened! Contact support!");
             e.printStackTrace();
             System.out.println(e.getErrorCode());
         }
@@ -224,6 +230,7 @@ public class AdminViewController {
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         }catch (SQLException e){
+            feedbackTextArea.setText("Something strange happened, which caused us not finding courses with highest throughput! Contact support!");
             e.printStackTrace();
         }
     }
@@ -231,8 +238,10 @@ public class AdminViewController {
     //Återställer till originalvy för Course tableView och Student tableView.
     public void onResetButton(ActionEvent event){
         try {
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
+            ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
 
         }catch (SQLException e){
             e.printStackTrace();
