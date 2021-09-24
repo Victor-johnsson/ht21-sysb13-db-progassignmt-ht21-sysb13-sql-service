@@ -259,9 +259,9 @@ public class DataAccessLayer {
     }
     public ResultSet getTopThroughput() throws SQLException{
         Connection connection = ContosoConnection.getConnection();
-        String query = "SELECT courseCode, courseName, throughput FROM TopThroughputs";
+        String query = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS 'throughput' FROM TopThroughputs";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet;
+        return resultSet; //returnerar de kurser som har högst throughput (med kurskod, namn och throughput)
     }
 }
