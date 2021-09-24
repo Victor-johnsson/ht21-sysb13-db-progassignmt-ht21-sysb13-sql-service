@@ -257,4 +257,11 @@ public class DataAccessLayer {
         return d;
 
     }
+    public ResultSet getTopThroughput() throws SQLException{
+        Connection connection = ContosoConnection.getConnection();
+        String query = "SELECT courseCode, courseName, throughput FROM TopThroughputs";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
+    }
 }

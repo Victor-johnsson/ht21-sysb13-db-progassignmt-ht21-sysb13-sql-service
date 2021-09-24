@@ -50,7 +50,7 @@ public class CourseController {
             }else if (Double.parseDouble(courseCreditsTextField.getText())> 30){
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
             }else { //Om checkarna godtas kör metoden nedan:
-                String courseCode = AppFunctions.randomCode("Course","courseCode","C");
+                String courseCode = AppFunctions.getUniqueCode("Course","courseCode","C");
                 String courseName =  courseNameTextField.getText();
                 double courseCredits = Double.parseDouble(courseCreditsTextField.getText());
                 int i = dataAccessLayer.createCourse(courseCode, courseName, courseCredits);//skickar info från course scenen till DAL

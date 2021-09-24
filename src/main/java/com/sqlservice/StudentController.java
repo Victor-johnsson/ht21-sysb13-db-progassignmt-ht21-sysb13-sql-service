@@ -1,19 +1,12 @@
 package com.sqlservice;
 
 
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.*;
@@ -59,7 +52,7 @@ public class StudentController {
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
-                String studentID = AppFunctions.randomCode("Student", "studentID", "S");
+                String studentID = AppFunctions.getUniqueCode("Student", "studentID", "S");
                 String studentName = studentNameTextField.getText();
                 String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
                 String studentAddress = studentAddressTextField.getText();
