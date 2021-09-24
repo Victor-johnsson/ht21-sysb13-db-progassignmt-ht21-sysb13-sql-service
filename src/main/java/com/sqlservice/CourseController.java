@@ -37,21 +37,21 @@ public class CourseController {
     }
 
     //En metod som styr knappen för att lägga till en kurs.
-    public void onAddCourseButton(ActionEvent event){
+    public void onAddCourseButton(ActionEvent event) {
 
-        try{
-            String regex = "[0-9]+\\.?[0-9]+";
-            if (courseNameTextField.getText().isBlank()){
+        try {
+            String regex = "[0-9]+\\.?[05]";
+            if (courseNameTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter a name for the course");
-            }else if (courseCreditsTextField.getText().isBlank()){
+            } else if (courseCreditsTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter credits for the course");
-            }else if (!courseCreditsTextField.getText().matches(regex)) {
-                courseFeedbackArea.setText("Please enter credits in digits only");
-            }else if (Double.parseDouble(courseCreditsTextField.getText())> 30){
+            } else if (!courseCreditsTextField.getText().matches(regex)) {
+                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
+            } else if (Double.parseDouble(courseCreditsTextField.getText()) > 30) {
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
-            }else { //Om checkarna godtas kör metoden nedan:
-                String courseCode = AppFunctions.getUniqueCode("Course","courseCode","C");
-                String courseName =  courseNameTextField.getText();
+            } else { //Om checkarna godtas kör metoden nedan:
+                String courseCode = AppFunctions.getUniqueCode("Course", "courseCode", "C");
+                String courseName = courseNameTextField.getText();
                 double courseCredits = Double.parseDouble(courseCreditsTextField.getText());
                 int i = dataAccessLayer.createCourse(courseCode, courseName, courseCredits);//skickar info från course scenen till DAL
                 if (i == 0) {
@@ -61,12 +61,12 @@ public class CourseController {
                 }
 
             }
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-        }catch (SQLException e){
+            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             e.printStackTrace();
             int errorCode = e.getErrorCode();
-            if(errorCode == 2627){
+            if (errorCode == 2627) {
                 courseFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
             } else if (errorCode == 2628) {
                 courseFeedbackArea.setText("Name field is limited to 200 characters");

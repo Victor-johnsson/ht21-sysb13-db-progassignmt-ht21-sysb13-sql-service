@@ -41,13 +41,16 @@ public class StudentController {
 
     //En metod som styr knappen för att lägga till en student.
     public void onAddStudentButton(ActionEvent event){
-        try{
-            String regex = "[0-9]+";
-            if (studentNameTextField.getText().isBlank()){
+        try {
+            String regexSSN = "[0-9]+";
+            //String regexName = "[a-zåäöA-ZÅÄÖ]+"; //FEL
+            if (studentNameTextField.getText().isBlank()) {
                 studentFeedbackArea.setText("Please enter a name");
+           // }else if (!(studentSSNTextField.getText().matches(regexName))){
+           //     studentFeedbackArea.setText("Please enter a name using letters only");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
-            }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regex)){
+            }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regexSSN)){
                 studentFeedbackArea.setText("SSN must be exactly 12 digits!");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
@@ -91,9 +94,8 @@ public class StudentController {
                 } else if (i == 1) {
                     studentFeedbackArea.setText("Student " + studentName + "with student ID: " + studentID + " was removed!");
                 }
+                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
             }
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-
         }catch (SQLException e){
             System.out.println(e.getErrorCode());
             e.printStackTrace();
