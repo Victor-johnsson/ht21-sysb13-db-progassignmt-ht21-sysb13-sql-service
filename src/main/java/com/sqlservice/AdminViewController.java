@@ -127,10 +127,23 @@ public class AdminViewController {
             } else {
                 feedbackTextArea.setText("Select a course and a student!");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == 2627) { //primary key violation
+                String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String grade = gradesComboBox.getValue();
+                try {
+                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
+                        dataAccessLayer.updateGrade(studentID, courseCode, grade);
+                        dataAccessLayer.removeFromStudies(studentID, courseCode);
+                        feedbackTextArea.setText("Grade " + grade + " was updated for " + studentID + " on course " + courseCode);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println(e.getErrorCode());
+            }
         }
     }
 

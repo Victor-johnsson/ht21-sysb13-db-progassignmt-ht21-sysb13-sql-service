@@ -147,8 +147,21 @@ public class DataAccessLayer {
         int i = preparedStatement.executeUpdate();
         ContosoConnection.connectionClose(preparedStatement);
         return i;
-
     }
+
+    public int updateGrade(String studentID, String courseCode, String grade) throws SQLException{
+        String query = "UPDATE HasStudied SET grade = ? WHERE studentID = ? AND courseCode = ? ;";
+        Connection connection = ContosoConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1,grade);
+        preparedStatement.setString(2,studentID);
+        preparedStatement.setString(3,courseCode);
+
+        int i = preparedStatement.executeUpdate();
+        ContosoConnection.connectionClose(preparedStatement);
+        return i;
+    }
+
     //Kontrollerar studenter som studerar kursen just nu.
     public ResultSet getStudentsOnCourse(String courseCode) throws SQLException{
         String query =
