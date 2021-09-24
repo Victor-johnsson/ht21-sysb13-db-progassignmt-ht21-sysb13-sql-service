@@ -57,43 +57,34 @@ public class CourseController {
                 } else if (i == 1) {
                     courseFeedbackArea.setText(courseName + " with course code: " + courseCode + " was created"); //Hämtar vilken kurs som skapats
                 }
-
             }
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            int errorCode = e.getErrorCode();
-            if (errorCode == 2627) {
-                courseFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
-            } else if (errorCode == 2628) {
-                courseFeedbackArea.setText("Name field is limited to 200 characters");
-            }
+            AppFunctions.unexpectedError(courseFeedbackArea, e);
         }
     }
         //En metod som styr knappen för att ta bort en kurs.
-        public void onDeleteCourseButton (ActionEvent event){
-            try {
-                //"Please select a course"
-                //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
-                if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()) {
-                    courseFeedbackArea.setText("Please select a course to remove");
-                } else {
-                    String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                    String courseName = AppFunctions.getValueOfCell(courseTableView, 1);
-                    int i = dataAccessLayer.deleteCourse(courseCode);
-                    if (i == 0) {
-                        courseFeedbackArea.setText("No course was removed!");
-                    } else if (i == 1) {
-                        courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
-                    }
-                    AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+    public void onDeleteCourseButton (ActionEvent event){
+        try {
+            //"Please select a course"
+            //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
+            if (courseTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                courseFeedbackArea.setText("Please select a course to remove");
+            } else {
+                String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
+                String courseName = AppFunctions.getValueOfCell(courseTableView, 1);
+                int i = dataAccessLayer.deleteCourse(courseCode);
+                if (i == 0) {
+                    courseFeedbackArea.setText("No course was removed!");
+                } else if (i == 1) {
+                    courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
                 }
-            } catch (SQLException e) {
-                System.out.println(e.getErrorCode());
-                e.printStackTrace();
+                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
             }
+        } catch (SQLException e) {
+            AppFunctions.unexpectedError(courseFeedbackArea, e);
         }
+    }
 
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;

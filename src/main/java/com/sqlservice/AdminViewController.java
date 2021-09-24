@@ -35,8 +35,6 @@ public class AdminViewController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
-
-
     public void initialize() {
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
@@ -64,7 +62,7 @@ public class AdminViewController {
                 if(potentialCredits<=45){
                     int i = dataAccessLayer.addToStudies(studentID, courseCode);
                     if (i == 0) {
-                        feedbackTextArea.setText("something happened");
+                        feedbackTextArea.setText("Something strange happened, try again");
 
                     } else if (i == 1) {
                         feedbackTextArea.setText("The student " + studentID + " has been added to the course: " + courseCode);
@@ -81,12 +79,8 @@ public class AdminViewController {
 
             if(e.getErrorCode() == 2627){
                 feedbackTextArea.setText("Student is already on this course");
-            }else{
-                e.printStackTrace();
-                System.out.println(e.getErrorCode());
-                feedbackTextArea.setText("Something strange happened! Contact support!");
-
             }
+            AppFunctions.unexpectedError(feedbackTextArea,e);
             //ERROR HANTERING BLABLABLA
         }
     }
@@ -108,10 +102,8 @@ public class AdminViewController {
             }
 
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-            e.printStackTrace();
-            e.getSQLState();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
+
         }
     }
 
@@ -122,14 +114,14 @@ public class AdminViewController {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
                 String grade = gradesComboBox.getValue();
-                if(grade==null){
+                if(grade==null){ //Om man inte valt ett A-F, utan står bara grade
                     feedbackTextArea.setText("Choose a grade");
                 }else{
-                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) {
-                        if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){
-                            dataAccessLayer.addToHasStudied(studentID, courseCode, grade);
+                    if (dataAccessLayer.isStudentOnCourse(studentID, courseCode)) { //Kollar om studenten finns på kursen
+                        if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){ //Om personen inte har ett tidigare grade,
+                            dataAccessLayer.addToHasStudied(studentID, courseCode, grade); //Lägger till i HasStudied
 
-                        }else {
+                        }else { //ifall personen har tidigare betyg uppdaterar vi betyget
                             dataAccessLayer.updateGrade(studentID, courseCode, grade);
                         }
                         dataAccessLayer.removeFromStudies(studentID, courseCode);
@@ -143,9 +135,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-
-            e.printStackTrace();
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -162,9 +152,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -183,9 +171,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -201,9 +187,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -219,9 +203,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            feedbackTextArea.setText("Something strange happened! Contact support!");
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -230,8 +212,7 @@ public class AdminViewController {
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         }catch (SQLException e){
-            feedbackTextArea.setText("Something strange happened, which caused us not finding courses with highest throughput! Contact support!");
-            e.printStackTrace();
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -244,8 +225,7 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
 
         }catch (SQLException e){
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea,e);
         }
     }
 
@@ -264,28 +244,7 @@ public class AdminViewController {
 
 
 
-/*
-    @FXML TextField searchCourseViewTextField;
-    public void onClickingCourse(){
-        courseTableView.setOnMouseClicked(e ->{
-            String courseCode = AppFunctions.getValueOfCell(courseTableView,0);
-            try{
-                AppFunctions.updateSearchableTableView(showOnCourseView,searchCourseViewTextField,dataAccessLayer.getStudentsOnCourse(courseCode));
-                while (dataAccessLayer.getStudentsOnCourse(courseCode).next()){
-                    System.out.println(dataAccessLayer.getStudentsOnCourse(courseCode).getString(0));
-                }
 
-            } catch (NullPointerException e1) {
-                //gör inget om man klickar i rutan fast inte på en person!
-            }catch (SQLException e2){
-                e2.printStackTrace();
-            }
-        });
-    }
-
-
-
- */
 
 
 

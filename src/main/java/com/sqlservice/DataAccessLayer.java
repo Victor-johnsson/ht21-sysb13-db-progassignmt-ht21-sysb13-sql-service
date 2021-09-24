@@ -15,15 +15,13 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnection();
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
-        //statement.setString(1, tableName); //test med '?'
+
 
         ResultSet rs = statement.executeQuery();
 
         return rs;
     }
 
-
-    //NY KOD!!!
 
     //Skapar en ny student.
     public int createStudent(String studentID, String studentSSN, String studentName, String studentAddress) throws SQLException{

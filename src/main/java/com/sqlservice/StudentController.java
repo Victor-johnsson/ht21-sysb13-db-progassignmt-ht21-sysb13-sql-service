@@ -35,7 +35,8 @@ public class StudentController {
             studentTableView.setPlaceholder(new Label("No student found"));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+           AppFunctions.unexpectedError(studentFeedbackArea,e);
         }
     }
 
@@ -69,16 +70,8 @@ public class StudentController {
             }
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
         }catch (SQLException e){
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            int errorCode = e.getErrorCode();
-            if(errorCode == 2627){
-                //behöver 2st 2627 error hanteringar, en för UNIQUE och en för PRIMARY KEY
-                studentFeedbackArea.setText("Ooops, something went wrong. Please contact system administrator");
-            }else if(errorCode == 2628){
-                studentFeedbackArea.setText("Name and address fields are limited to 200 characters");
+            AppFunctions.unexpectedError(studentFeedbackArea, e);
             }
-        }
     }
     //En metod som styr knappen för att ta bort en student.
     public void onDeleteStudentButton(ActionEvent event){
@@ -97,8 +90,7 @@ public class StudentController {
                 AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
             }
         }catch (SQLException e){
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
+            AppFunctions.unexpectedError(studentFeedbackArea, e);
         }
     }
 
