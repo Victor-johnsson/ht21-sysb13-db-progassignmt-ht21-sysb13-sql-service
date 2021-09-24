@@ -263,9 +263,16 @@ public class DataAccessLayer {
 
         ResultSet resultSet = preparedStatement.executeQuery();
         double d = 0;
-        while (resultSet.next()){ //En rad eller noll rader.
-            d = Double.valueOf(resultSet.getString(1)); // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
+        while (resultSet.next()){//En rad eller noll rader.
+            if(resultSet.getString(1) == null){
+                d=0;
+            }else{
+                d = Double.valueOf(resultSet.getString(1));
+            }
+
+             // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
         }
+
         ContosoConnection.connectionClose(resultSet);
         return d;
 

@@ -56,7 +56,9 @@ public class AdminViewController {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                if(dataAccessLayer.potentialCredits(courseCode,studentID)<=45){
+
+                double potentialCredits =  dataAccessLayer.potentialCredits(courseCode,studentID);
+                if(potentialCredits<=45){
                     int i = dataAccessLayer.addToStudies(studentID, courseCode);
                     if (i == 0) {
                         feedbackTextArea.setText("something happened");
