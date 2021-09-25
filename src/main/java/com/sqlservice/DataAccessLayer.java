@@ -24,7 +24,7 @@ public class DataAccessLayer {
 
 
     //Skapar en ny student.
-    public int createStudent(String studentID, String studentSSN, String studentName, String studentAddress) throws SQLException{
+    public int createStudent(String studentID, String studentSSN, String studentName, String studentCity) throws SQLException{
         Connection connection = ContosoConnection.getConnection();
 
         String query  = "INSERT INTO Student VALUES (?,?,?,?)";
@@ -33,7 +33,7 @@ public class DataAccessLayer {
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,studentSSN);
         preparedStatement.setString(3,studentName);
-        preparedStatement.setString(4,studentAddress);
+        preparedStatement.setString(4,studentCity);
 
         int i = preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -84,44 +84,24 @@ public class DataAccessLayer {
         return i;
     }
 
-    //Lägg till en student på en aktiv kurs.
-    public int addToStudies(String studentID, String courseCode) throws SQLException{
 
-        String query = "INSERT INTO Studies VALUES(?,?)";
-
-        Connection connection = ContosoConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,studentID);
-        preparedStatement.setString(2,courseCode);
-
-        int i = preparedStatement.executeUpdate();
-        ContosoConnection.connectionClose(preparedStatement);
-        return i;
-    }
 
     //Kontrollerar om en student studerar en specifik kurs.
     public boolean isStudentOnCourse(String studentID, String courseCode) throws SQLException{
         String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
-        Connection connection = ContosoConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,studentID);
-        preparedStatement.setString(2,courseCode);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int count = 0;
-        while (resultSet.next()){
-            count++;
-        }
-        ContosoConnection.connectionClose(resultSet);
-        if(count == 1){
-            return true;
-        }
-        return false;
+        boolean b = checkGradeOrStudies(studentID, courseCode, query);
+        return b;
     }
 
     //Kontrollerar om en student har fått ett betyg tidigare i kursen.
     public boolean hasPreviousGrade(String studentID, String courseCode) throws SQLException{
         String query = "SELECT * FROM HasStudied WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
+        boolean b = checkGradeOrStudies(studentID, courseCode, query);
+        return b;
+    }
+    //
+    private boolean checkGradeOrStudies(String studentID, String courseCode, String query) throws SQLException {
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
@@ -133,18 +113,25 @@ public class DataAccessLayer {
             count++;
         }
         ContosoConnection.connectionClose(resultSet);
-        if(count == 1){
-            return true;
-        }
-        return false;
+        return count == 1;
     }
 
 
-
     //Metod som tar bort en student från en aktiv kurs.
-    public int removeFromStudies(String studentID, String courseCode) throws SQLException{
+    public int removeStudentFromCourse(String studentID, String courseCode) throws SQLException{
 
         String query = "DELETE FROM Studies WHERE studentID = ? AND courseCode = ?;";
+        return toStudies(studentID, courseCode, query);
+    }
+    //Lägg till en student på en aktiv kurs.
+    public int addStudentToCourse(String studentID, String courseCode) throws SQLException{
+
+        String query = "INSERT INTO Studies VALUES(?,?)";
+
+        return toStudies(studentID, courseCode, query);
+    }
+
+    private int toStudies(String studentID, String courseCode, String query) throws SQLException {
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
@@ -158,6 +145,10 @@ public class DataAccessLayer {
     //Lägger till studenter som har studerat färdigt en kurs.
     public int addToHasStudied(String studentID, String courseCode, String grade) throws SQLException{
         String query = "INSERT INTO HasStudied VALUES(?,?,?);";
+        return setOrUpdateGrade(studentID, courseCode, grade, query);
+    }
+
+    private int setOrUpdateGrade(String studentID, String courseCode, String grade, String query) throws SQLException {
         Connection connection = ContosoConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
@@ -171,15 +162,7 @@ public class DataAccessLayer {
 
     public int updateGrade(String studentID, String courseCode, String grade) throws SQLException{
         String query = "UPDATE HasStudied SET grade = ? WHERE studentID = ? AND courseCode = ? ;";
-        Connection connection = ContosoConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,grade);
-        preparedStatement.setString(2,studentID);
-        preparedStatement.setString(3,courseCode);
-
-        int i = preparedStatement.executeUpdate();
-        ContosoConnection.connectionClose(preparedStatement);
-        return i;
+        return setOrUpdateGrade(grade, studentID, courseCode, query);
     }
 
     //Kontrollerar studenter som studerar kursen just nu.

@@ -22,7 +22,6 @@ public class AdminViewController {
     @FXML Button addStudentOnCourseButton;
     @FXML Button removeStudentFromCourseButton;
     @FXML Button setGradeButton;
-    @FXML TextField gradeTextField;
     @FXML Button resetButton;
     @FXML Button showCourseStatistics;
     @FXML Button showStudentsOnCourse;
@@ -45,8 +44,7 @@ public class AdminViewController {
             studentTableView.setPlaceholder(new Label("Couldn't find any students"));
             courseTableView.setPlaceholder(new Label("Couldn't find any courses"));
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            AppFunctions.unexpectedError(feedbackTextArea, e);
         }
     }
     //Metod för att lägga till en student på en kurs.
@@ -60,7 +58,7 @@ public class AdminViewController {
 
                 double potentialCredits =  dataAccessLayer.potentialCredits(courseCode,studentID);
                 if(potentialCredits<=45){
-                    int i = dataAccessLayer.addToStudies(studentID, courseCode);
+                    int i = dataAccessLayer.addStudentToCourse(studentID, courseCode);
                     if (i == 0) {
                         feedbackTextArea.setText("Something strange happened, try again");
 
@@ -76,12 +74,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-
-            if(e.getErrorCode() == 2627){
-                feedbackTextArea.setText("Student is already on this course");
-            }
             AppFunctions.unexpectedError(feedbackTextArea,e);
-            //ERROR HANTERING BLABLABLA
         }
     }
 
@@ -91,7 +84,7 @@ public class AdminViewController {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
-                int i = dataAccessLayer.removeFromStudies(studentID, courseCode);
+                int i = dataAccessLayer.removeStudentFromCourse(studentID, courseCode);
                 if (i == 0) {
                     feedbackTextArea.setText("No student was removed from course : " + courseCode);
                 } else if (i == 1) {
@@ -124,7 +117,7 @@ public class AdminViewController {
                         }else { //ifall personen har tidigare betyg uppdaterar vi betyget
                             dataAccessLayer.updateGrade(studentID, courseCode, grade);
                         }
-                        dataAccessLayer.removeFromStudies(studentID, courseCode);
+                        dataAccessLayer.removeStudentFromCourse(studentID, courseCode);
                         feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
                     } else {
                         feedbackTextArea.setText("Student doesn't study this course, can't add a grade");

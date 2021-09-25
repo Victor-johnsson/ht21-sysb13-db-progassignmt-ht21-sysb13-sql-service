@@ -9,53 +9,61 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class StudentController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-    @FXML TableView studentTableView;
-    @FXML TextField studentNameTextField;
-    @FXML TextField studentSSNTextField;
-    @FXML TextField studentAddressTextField;
-    @FXML TextField searchStudentTextField;
-    @FXML Button addStudentButton;
-    @FXML Button deleteStudentButton;
-    @FXML TextArea studentFeedbackArea;
-    @FXML MenuItem loadCourseView;
-    @FXML MenuItem loadAdminView;
+    @FXML
+    TableView studentTableView;
+    @FXML
+    TextField studentNameTextField;
+    @FXML
+    TextField studentSSNTextField;
+    @FXML
+    TextField studentAddressTextField;
+    @FXML
+    TextField searchStudentTextField;
+    @FXML
+    Button addStudentButton;
+    @FXML
+    Button deleteStudentButton;
+    @FXML
+    TextArea studentFeedbackArea;
+    @FXML
+    MenuItem loadCourseView;
+    @FXML
+    MenuItem loadAdminView;
 
 
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
-    public void initialize(){
+    public void initialize() {
         // ERRORHANTERING!
         try {
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
 
 
         } catch (SQLException e) {
-
-           AppFunctions.unexpectedError(studentFeedbackArea,e);
+            AppFunctions.unexpectedError(studentFeedbackArea, e);
         }
     }
 
     //En metod som styr knappen för att lägga till en student.
-    public void onAddStudentButton(ActionEvent event){
+    public void onAddStudentButton(ActionEvent event) {
         try {
             String regexSSN = "[0-9]+";
-            //String regexName = "[a-zåäöA-ZÅÄÖ]+"; //FEL
             if (studentNameTextField.getText().isBlank()) {
                 studentFeedbackArea.setText("Please enter a name");
-           // }else if (!(studentSSNTextField.getText().matches(regexName))){
-           //     studentFeedbackArea.setText("Please enter a name using letters only");
-            }else if (studentSSNTextField.getText().isBlank()){
+            } else if (studentSSNTextField.getText().isBlank()) {
                 studentFeedbackArea.setText("Please enter a SSN");
-            }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regexSSN)){
-                studentFeedbackArea.setText("SSN must be exactly 12 digits!");
-            }else if (studentAddressTextField.getText().isBlank()){
+            //} else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regexSSN)) {
+               // studentFeedbackArea.setText("SSN must be exactly 12 digits!");
+            } else if (studentAddressTextField.getText().isBlank()) {
                 studentFeedbackArea.setText("Please enter an address");
-            }else {
+            } else {
                 String studentID = AppFunctions.getUniqueCode("Student", "studentID", "S");
                 String studentName = studentNameTextField.getText();
                 String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
@@ -68,17 +76,19 @@ public class StudentController {
                     studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created");
                 }
             }
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
-        }catch (SQLException e){
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
+        } catch (SQLException e) {
             AppFunctions.unexpectedError(studentFeedbackArea, e);
-            }
+        }
     }
+
     //En metod som styr knappen för att ta bort en student.
-    public void onDeleteStudentButton(ActionEvent event){
-        try{
-            if (studentTableView.getSelectionModel().isEmpty()){
+    public void onDeleteStudentButton(ActionEvent event) {
+        try {
+            if (studentTableView.getSelectionModel().isEmpty()) {
                 studentFeedbackArea.setText("Please select a student to remove");
-            }else {
+            } else {
                 String studentName = AppFunctions.getValueOfCell(studentTableView, 2);
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
                 int i = dataAccessLayer.deleteStudent(studentID);
@@ -87,27 +97,31 @@ public class StudentController {
                 } else if (i == 1) {
                     studentFeedbackArea.setText("Student " + studentName + "with student ID: " + studentID + " was removed!");
                 }
-                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
+                ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             AppFunctions.unexpectedError(studentFeedbackArea, e);
         }
     }
 
 
-    @FXML private AnchorPane anchorRoot;
-    @FXML private AnchorPane parentContainer;
-
+    @FXML
+    private AnchorPane anchorRoot;
+    @FXML
+    private AnchorPane parentContainer;
 
 
     //Metod för att byta view
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+    @FXML
+    private void loadCourseScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
     //Metod som??
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+    @FXML
+    private void loadAdminScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }

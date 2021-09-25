@@ -32,7 +32,7 @@ public class CourseController {
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppFunctions.unexpectedError(courseFeedbackArea, e);
         }
     }
 

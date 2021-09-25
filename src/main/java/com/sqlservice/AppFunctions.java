@@ -90,10 +90,9 @@ public class AppFunctions {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
-                if(row.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
-                    return true;
-                }
-                else return false; //fail safe.
+                //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
+                //fail safe.
+                return row.toString().toLowerCase().contains(lowerCaseFilter);
 
             });
         });
@@ -155,14 +154,48 @@ public class AppFunctions {
 
 
     //Errorhantering för skumma SQL-fel
-    public static void unexpectedError(TextArea textArea, SQLException e){
-        if(e.getErrorCode() == 0) {
+    public static void unexpectedError(TextArea textArea, SQLException exception){
+        /*if(e.getErrorCode() == 0) {
             textArea.setText("Could not connect to database server. \nPlease contact support!");
         } else if (e.getErrorCode() == 2628) {
             textArea.setText("Field is limited to 200 characters");
+            System.out.println(e.getMessage());
         } else {
             e.printStackTrace();
             textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
+
+         */
+        String exceptionMessage = exception.getMessage();
+        int errorCode = exception.getErrorCode();
+        if(exceptionMessage.contains("pk_student")){
+            textArea.setText("StudentID is not unique, try again with a unique StudentID");
+        }else if(exceptionMessage.contains("uc_studentSSN")){
+            textArea.setText("Student with this social security number already exist");
+        }else if(exceptionMessage.contains("pk_course")){
+            textArea.setText("Course with this course code already exist, try again with unique course code");
+        }else if(exceptionMessage.contains("pk_hasStudied")) {
+            textArea.setText("This student already has a grade on this course \nand we do not allow two grades for the same student");
+        }else if(exceptionMessage.contains("pk_studies")){
+            textArea.setText("This student is already studying this course");
+        }else if(errorCode == 2628 && exceptionMessage.contains("studentName")) {
+            textArea.setText("A students name is limited to 200 characters");
+        }else if((errorCode == 2628) && exceptionMessage.contains("studentSSN")){
+            textArea.setText("A students social security number is limited to 12 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("studentCity")){
+            textArea.setText("A students city is limited to 200 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("courseName")){
+            textArea.setText("Course name is limited to 200 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("grade")){
+            textArea.setText("Grade is limited to be one character between A-F \n" +
+                    "Make sure a grade has been chosen!");
+        }else if(errorCode == 0) {
+            textArea.setText("Could not connect to database server. \nPlease contact support!");
+        }else{
+            exception.printStackTrace();
+            textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
+        }
+
     }
+
 }
