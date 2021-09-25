@@ -147,11 +147,8 @@ public class AppFunctions {
         timeline.setOnFinished(event1 -> {
             parentContainer.getChildren().remove(anchorRoot);
         });
-
-
         timeline.play();
     }
-
 
     //Errorhantering för skumma SQL-fel
     public static void unexpectedError(TextArea textArea, SQLException exception){
