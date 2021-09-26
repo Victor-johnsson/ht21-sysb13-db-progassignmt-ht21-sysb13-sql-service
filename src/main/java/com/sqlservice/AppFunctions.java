@@ -22,6 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+import org.controlsfx.control.*;
+import org.controlsfx.control.tableview2.FilteredTableView;
+import org.controlsfx.tools.*;
 
 public class AppFunctions {
     //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
@@ -44,6 +47,7 @@ public class AppFunctions {
             }
             dataSet.add(row); //lägger till row(är en observableList) i dataList.
         }
+
         return dataSet;
     }
 

@@ -15,10 +15,7 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnection();
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
-
-
         ResultSet rs = statement.executeQuery();
-
         return rs;
     }
 

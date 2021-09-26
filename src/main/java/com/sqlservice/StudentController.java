@@ -4,9 +4,12 @@ package com.sqlservice;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -38,12 +41,17 @@ public class StudentController {
 
 
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
+    ValidationSupport validationSupport = new ValidationSupport();
     public void initialize() {
         // ERRORHANTERING!
         try {
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
+            validationSupport.setErrorDecorationEnabled(true);
+            validationSupport.registerValidator(studentNameTextField,Validator.createEmptyValidator("Name must be entered!"));
+            validationSupport.registerValidator(studentSSNTextField,Validator.createEmptyValidator("Social security number must be entered!"));
+            validationSupport.registerValidator(studentAddressTextField,Validator.createEmptyValidator("Resident city of the student must be entered!"));
 
 
         } catch (SQLException e) {

@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
+import org.controlsfx.validation.ValidationSupport;
 public class HelloApplication extends Application {
     //klassen som startar hela programmet
 

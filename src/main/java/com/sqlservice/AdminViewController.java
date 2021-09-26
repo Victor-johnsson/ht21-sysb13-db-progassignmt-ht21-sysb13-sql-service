@@ -12,9 +12,11 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 public class AdminViewController {
-
+    ValidationSupport validationSupport = new ValidationSupport();
     @FXML TableView courseTableView;
     @FXML TableView studentTableView;
     @FXML TextField searchCourseTextField;
@@ -34,8 +36,10 @@ public class AdminViewController {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
+
     public void initialize() {
         try {
+
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
             ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
@@ -43,6 +47,7 @@ public class AdminViewController {
             gradesComboBox.getItems().addAll(gradeOptions);
             studentTableView.setPlaceholder(new Label("Couldn't find any students"));
             courseTableView.setPlaceholder(new Label("Couldn't find any courses"));
+            validationSupport.registerValidator(gradesComboBox, Validator.createEmptyValidator("Must choose grade"));
         } catch (SQLException e) {
             AppFunctions.unexpectedError(feedbackTextArea, e);
         }
@@ -50,6 +55,7 @@ public class AdminViewController {
     //Metod för att lägga till en student på en kurs.
     //OBS: det går inte att lägga till en student om det överskrider 45 credits totalt.
     public void addStudentOnCourse(ActionEvent event) {
+
         try {
             //kolla att course och student view har valts
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
@@ -234,6 +240,8 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
+
+
 
 
 
