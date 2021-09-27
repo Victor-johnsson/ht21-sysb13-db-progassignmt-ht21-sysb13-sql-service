@@ -103,6 +103,7 @@ public class AppFunctions {
         //ÄNTLIGEN LÄGGER VI IN DATAN I TABLEVIEW
         tableView.setItems(filteredData);
 
+
     }
 
     public static String getValueOfCell(TableView tableView, int columnIndex){
@@ -165,7 +166,6 @@ public class AppFunctions {
             e.printStackTrace();
             textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
-
          */
         String exceptionMessage = exception.getMessage();
         int errorCode = exception.getErrorCode();
