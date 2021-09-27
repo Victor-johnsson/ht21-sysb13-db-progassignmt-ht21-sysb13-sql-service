@@ -241,6 +241,10 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
+    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
+        AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
+    }
 
 
 

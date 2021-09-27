@@ -40,11 +40,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.CourseController">
+<AnchorPane fx:id="parentContainer" prefHeight="445.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.CourseController">
    <children>
-      <AnchorPane fx:id="anchorRoot">
+      <AnchorPane fx:id="anchorRoot" prefHeight="341.0" prefWidth="576.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="341.0" prefWidth="576.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                   <TextField fx:id="courseNameTextField" layoutX="31.0" layoutY="74.0" promptText="CourseName" />
                   <TextField fx:id="courseCreditsTextField" layoutX="31.0" layoutY="126.0" promptText="Credits (numbers)" />
@@ -53,9 +53,10 @@
                   <Button fx:id="deleteCourseButton" layoutX="428.0" layoutY="254.0" mnemonicParsing="false" onAction="#onDeleteCourseButton" text="Delete Course" />
                   <TextArea fx:id="courseFeedbackArea" editable="false" layoutX="134.0" layoutY="241.0" prefHeight="100.0" prefWidth="178.0" promptText="textArea För info om kurs" />
                   <TextField fx:id="searchCourseTextField" layoutX="396.0" layoutY="228.0" promptText="Search Course" />
-                  <MenuButton layoutY="2.0" mnemonicParsing="false" text="MenuButton">
+                  <MenuButton layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="105.0" text="Go To">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadAdminScene" text="Admin" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadMetaScene" text="MetaData" />
                       <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Students" />
                     </items>
                   </MenuButton>

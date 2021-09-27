@@ -18,6 +18,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -26,48 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AppFunctions {
     //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
 
-
-    public static ObservableList<ObservableList> fillList(ResultSet resultSet) throws SQLException {
-        /**
-         * ******************************
-         * Data added to ObservableList *
-         ********************************/
-        ObservableList<ObservableList> dataSet = FXCollections.observableArrayList();
-
-        while (resultSet.next()) { //itererar över resultSet. För första raden skapar vi en observable list (kallar för row).
-            ObservableList<String> row = FXCollections.observableArrayList();   //listan som är raderna.
-                                                                                //för varje kolumn i den raden, lägger vi till värdet i den observablelist.
-                                                                                //Den lägger till alla värden från resultSet till observableList.
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                //Iterate Column
-                row.add(resultSet.getString(i));
-            }
-            dataSet.add(row); //lägger till row(är en observableList) i dataList.
-        }
-        return dataSet;
-    }
-
-
-    public static void setTableColumnNames(TableView tableView, ResultSet resultSet) throws SQLException{
-        /**
-         * ********************************
-         * TABLE COLUMN NAMES ADDED DYNAMICALLY *
-         *********************************
-         */
-        for(int i=0; i<resultSet.getMetaData().getColumnCount(); i++) {
-            //We are using non property style for making dynamic table
-            final int j = i;
-            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-            /**Nytt table column. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
-             * första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
-
-            //sätter vilket värde det ska vara i den kolumnen.
-            col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> new SimpleStringProperty(param.getValue().get(j).toString()));
-            tableView.getColumns().addAll(col); //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
-        }
-    }
-
-    public static void updateSearchableTableView(TableView tableView, TextField textField, ResultSet resultSet) throws SQLException { //tar in tableView,
+    public static void updateSearchableTableView(TableView tableView, TextField searchField, ResultSet resultSet) throws SQLException { //tar in tableView,
         //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
         //table vi vill kolla på.
 
@@ -82,7 +42,7 @@ public class AppFunctions {
         FilteredList<ObservableList> filteredData = new FilteredList<>(dataList, b -> true);//Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
-        textField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
+        searchField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
             //oldValue ändras aldrig, men det gör newValue.
             filteredData.setPredicate( row -> {
                 if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
@@ -101,6 +61,55 @@ public class AppFunctions {
         tableView.setItems(filteredData);
 
     }
+
+    //Metod som bara används i updateSearchableTableView()
+    public static void setTableColumnNames(TableView tableView, ResultSet resultSet) throws SQLException{
+        /**
+         * ********************************
+         * TABLE COLUMN NAMES ADDED DYNAMICALLY *
+         *********************************
+         */
+        for(int i=0; i<resultSet.getMetaData().getColumnCount(); i++) {
+            //We are using non property style for making dynamic table
+            final int j = i;
+            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
+            /**Nytt table column. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
+             * första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
+
+            //sätter vilket värde det ska vara i den kolumnen.
+            col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> {
+                if(param.getValue().get(j) == null){
+                    return new SimpleStringProperty("NULL");
+                }else {
+                    return new SimpleStringProperty(param.getValue().get(j).toString());
+                }
+
+            });
+            tableView.getColumns().addAll(col); //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
+        }
+    }
+    //Metod som bara används i updateSearchableTableView()
+    public static ObservableList<ObservableList> fillList(ResultSet resultSet) throws SQLException {
+        /**
+         * ******************************
+         * Data added to ObservableList *
+         ********************************/
+        ObservableList<ObservableList> dataSet = FXCollections.observableArrayList();
+
+        while (resultSet.next()) { //itererar över resultSet. För första raden skapar vi en observable list (kallar för row).
+            ObservableList<String> row = FXCollections.observableArrayList();   //listan som är raderna.
+            //för varje kolumn i den raden, lägger vi till värdet i den observablelist.
+            //Den lägger till alla värden från resultSet till observableList.
+            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                //Iterate Column
+                row.add(resultSet.getString(i));
+            }
+            dataSet.add(row); //lägger till row(är en observableList) i dataList.
+        }
+        return dataSet;
+    }
+
+
 
     public static String getValueOfCell(TableView tableView, int columnIndex){
 
@@ -124,7 +133,7 @@ public class AppFunctions {
         }
         ContosoConnection.connectionClose(resultSet);
         while (true) {
-            int randomNum = ThreadLocalRandom.current().nextInt(00000, 99999);
+            int randomNum = ThreadLocalRandom.current().nextInt(10000, 99999);
             String randomCode = startingLetter + randomNum;
             if (!(arrayList.contains(randomCode))) {
 
@@ -155,13 +164,35 @@ public class AppFunctions {
 
 
     //Errorhantering för skumma SQL-fel
-    public static void unexpectedError(TextArea textArea, SQLException e){
-        if(e.getErrorCode() == 0) {
+    public static void unexpectedError(TextArea textArea, SQLException exception){
+
+        String exceptionMessage = exception.getMessage();
+        int errorCode = exception.getErrorCode();
+        if(exceptionMessage.contains("pk_student")){
+            textArea.setText("StudentID is not unique, try again with a unique StudentID");
+        }else if(exceptionMessage.contains("uc_studentSSN")){
+            textArea.setText("Student with this social security number already exist");
+        }else if(exceptionMessage.contains("pk_course")){
+            textArea.setText("Course with this course code already exist, try again with unique course code");
+        }else if(exceptionMessage.contains("pk_hasStudied")) {
+            textArea.setText("This student already has a grade on this course \nand we do not allow two grades for the same student");
+        }else if(exceptionMessage.contains("pk_studies")){
+            textArea.setText("This student is already studying this course");
+        }else if(errorCode == 2628 && exceptionMessage.contains("studentName")) {
+            textArea.setText("A students name is limited to 200 characters");
+        }else if((errorCode == 2628) && exceptionMessage.contains("studentSSN")){
+            textArea.setText("A students social security number is limited to 12 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("studentCity")){
+            textArea.setText("A students city is limited to 200 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("courseName")){
+            textArea.setText("Course name is limited to 200 characters");
+        }else if(errorCode == 2628 && exceptionMessage.contains("grade")){
+            textArea.setText("Grade is limited to be one character between A-F \n" +
+                    "Make sure a grade has been chosen!");
+        }else if(errorCode == 0) {
             textArea.setText("Could not connect to database server. \nPlease contact support!");
-        } else if (e.getErrorCode() == 2628) {
-            textArea.setText("Field is limited to 200 characters");
-        } else {
-            e.printStackTrace();
+        }else{
+            exception.printStackTrace();
             textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
     }

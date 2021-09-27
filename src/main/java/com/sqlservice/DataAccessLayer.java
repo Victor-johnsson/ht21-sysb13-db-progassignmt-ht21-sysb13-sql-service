@@ -12,7 +12,7 @@ public class DataAccessLayer {
 
     //Metod som hämtar all information från ett specifikt table.
     public ResultSet getAllFromTable(String tableName) throws SQLException{
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
 
@@ -25,7 +25,7 @@ public class DataAccessLayer {
 
     //Skapar en ny student.
     public int createStudent(String studentID, String studentSSN, String studentName, String studentAddress) throws SQLException{
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
 
         String query  = "INSERT INTO Student VALUES (?,?,?,?)";
 
@@ -44,7 +44,7 @@ public class DataAccessLayer {
     //Tar bort en specifik student.
     public int deleteStudent(String studentID) throws SQLException{ //studentID kommer från tableView Student.
         String query = "DELETE FROM Student WHERE studentID = ?"; //Vi vet inte studentID:t.
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID); //parameterindex 1 betyder att de första "?" är 1 (Alltså studentID).
@@ -56,7 +56,7 @@ public class DataAccessLayer {
 
     //Skapar en ny kurs.
     public int createCourse(String courseCode, String courseName, double courseCredits) throws SQLException{
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
 
         String query  = "INSERT INTO Course VALUES (?,?,?)"; //skapar värde till course table på index visst index.
 
@@ -74,7 +74,7 @@ public class DataAccessLayer {
     //Tar bort en specifik kurs.
     public int deleteCourse(String courseCode) throws SQLException{
         String query = "DELETE FROM Course WHERE courseCode = ?";
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
@@ -89,7 +89,7 @@ public class DataAccessLayer {
 
         String query = "INSERT INTO Studies VALUES(?,?)";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,courseCode);
@@ -102,7 +102,7 @@ public class DataAccessLayer {
     //Kontrollerar om en student studerar en specifik kurs.
     public boolean isStudentOnCourse(String studentID, String courseCode) throws SQLException{
         String query = "SELECT * FROM Studies WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,courseCode);
@@ -122,7 +122,7 @@ public class DataAccessLayer {
     //Kontrollerar om en student har fått ett betyg tidigare i kursen.
     public boolean hasPreviousGrade(String studentID, String courseCode) throws SQLException{
         String query = "SELECT * FROM HasStudied WHERE studentID = ? AND courseCode = ?;"; //PK är stundetID och courseCode composite
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,courseCode);
@@ -145,7 +145,7 @@ public class DataAccessLayer {
     public int removeFromStudies(String studentID, String courseCode) throws SQLException{
 
         String query = "DELETE FROM Studies WHERE studentID = ? AND courseCode = ?;";
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,courseCode);
@@ -158,7 +158,7 @@ public class DataAccessLayer {
     //Lägger till studenter som har studerat färdigt en kurs.
     public int addToHasStudied(String studentID, String courseCode, String grade) throws SQLException{
         String query = "INSERT INTO HasStudied VALUES(?,?,?);";
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         preparedStatement.setString(2,courseCode);
@@ -171,7 +171,7 @@ public class DataAccessLayer {
 
     public int updateGrade(String studentID, String courseCode, String grade) throws SQLException{
         String query = "UPDATE HasStudied SET grade = ? WHERE studentID = ? AND courseCode = ? ;";
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,grade);
         preparedStatement.setString(2,studentID);
@@ -189,7 +189,7 @@ public class DataAccessLayer {
                 "JOIN Studies ON Student.studentID = Studies.studentID " +
                 "WHERE Studies.courseCode = ?;";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -203,7 +203,7 @@ public class DataAccessLayer {
                         "JOIN Studies ON Course.courseCode = Studies.courseCode " +
                         "WHERE Studies.studentID = ?;";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -218,7 +218,7 @@ public class DataAccessLayer {
                         "JOIN HasStudied ON Course.courseCode = HasStudied.courseCode " +
                         "WHERE HasStudied.studentID = ?;";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -233,7 +233,7 @@ public class DataAccessLayer {
                         "JOIN HasStudied ON Student.studentID = HasStudied.studentID " +
                         "WHERE HasStudied.courseCode = ?;";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -251,7 +251,7 @@ public class DataAccessLayer {
         //efter "/" = hur många betyg som finns på denna kursen
         //till vänster om "/" = hur många som fått ut ett specifikt betyg
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         preparedStatement.setString(2,courseCode);
@@ -276,7 +276,7 @@ public class DataAccessLayer {
                 " JOIN Course on Studies.courseCode = Course.courseCode " +
                 " WHERE StudentID = ?";
 
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement= connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         preparedStatement.setString(2,studentID);
@@ -298,7 +298,7 @@ public class DataAccessLayer {
 
     }
     public ResultSet getTopThroughput() throws SQLException{
-        Connection connection = ContosoConnection.getConnection();
+        Connection connection = ContosoConnection.getConnectionLocalDB();
         String query = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS 'throughput' FROM TopThroughput";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
