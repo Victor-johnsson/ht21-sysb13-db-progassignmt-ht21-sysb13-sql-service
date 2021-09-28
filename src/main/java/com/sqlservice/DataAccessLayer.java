@@ -58,7 +58,7 @@ public class DataAccessLayer {
     public int createCourse(String courseCode, String courseName, double courseCredits) throws SQLException{
         Connection connection = ContosoConnection.getConnectionLocalDB();
 
-        String query  = "INSERT INTO Course VALUES (?,?,?)"; //skapar värde till course table på index visst index.
+        String query  = "INSERT INTO Course VALUES (?,?,?)"; //queryn för att skapa en kurs/lägga till en kurs
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
@@ -113,10 +113,10 @@ public class DataAccessLayer {
             count++;
         }
         ContosoConnection.connectionClose(resultSet);
-        if(count == 1){
+        if(count == 1){//studenten studerar kursen
             return true;
         }
-        return false;
+        return false;//studerar inte kursen
     }
 
     //Kontrollerar om en student har fått ett betyg tidigare i kursen.
@@ -193,6 +193,7 @@ public class DataAccessLayer {
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
         ResultSet resultSet = preparedStatement.executeQuery();
+
         return resultSet;
     }
 

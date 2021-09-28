@@ -7,7 +7,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Parent;
@@ -16,9 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import javafx.util.Duration;
-
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -33,12 +30,12 @@ public class AppFunctions {
 
         //ob-list som vi fyller med det som
         //metoden fillTableViewByName returnerar.
-        tableView.getColumns().clear();
+        tableView.getColumns().clear();// tömmer tableview
         AppFunctions.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
 
 
-        ObservableList<ObservableList> dataList = AppFunctions.fillList(resultSet);
-        ContosoConnection.connectionClose(resultSet);
+        ObservableList<ObservableList> dataList = AppFunctions.fillList(resultSet); //skapar listan med de object som ska synas i tableview
+
         FilteredList<ObservableList> filteredData = new FilteredList<>(dataList, b -> true);//Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
@@ -59,6 +56,7 @@ public class AppFunctions {
         });
         //ÄNTLIGEN LÄGGER VI IN DATAN I TABLEVIEW
         tableView.setItems(filteredData);
+        ContosoConnection.connectionClose(resultSet);
 
     }
 
@@ -111,12 +109,13 @@ public class AppFunctions {
 
 
 
-    public static String getValueOfCell(TableView tableView, int columnIndex){
+    public static String getValueOfCell(TableView tableView, int columnIndexOfWantedCell){
 
             ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar raden vi vill få columnen från!
             ObservableList<ObservableList> objectList = row.get(0); //Alltid vara 0. För det är alltid rad 0 den hämtar.
-            Object object = objectList.get(columnIndex); //hämtar objekt(ID, name) på index i listan.
+            Object object = objectList.get(columnIndexOfWantedCell); //hämtar objekt(ID, name) på index i listan.
             String cellValue = object.toString(); //gör objektet till en sträng för att returnera denna!
+
         return cellValue;
     }
 
