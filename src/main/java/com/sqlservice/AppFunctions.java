@@ -4,6 +4,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.File;
 
 public class AppFunctions {
     //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
@@ -194,5 +196,10 @@ public class AppFunctions {
             exception.printStackTrace();
             textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
+    }
+
+    public static void main(String[] args) {
+        File excelFile = new File("src/main/resources/reports/Excel Assignment.xlsx");
+
     }
 }
