@@ -42,7 +42,7 @@ public class CourseController {
     public void onAddCourseButton(ActionEvent event) {
 
         try {
-            String regex = "[0-9]+\\.?[05]";
+            String regex = "[0-9.]*";
             if (courseNameTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter a name for the course");
             } else if (courseCreditsTextField.getText().isBlank()) {
