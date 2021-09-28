@@ -30,17 +30,15 @@ public class AppFunctions {
         AppFunctions.setTableColumnNames(tableView, resultSet); //sätter columnName efter resultSetets columnName
         ObservableList<ObservableList> dataList = AppFunctions.fillList(resultSet); //skapar listan med de object som ska synas i tableview
         FilteredList<ObservableList> filteredData = new FilteredList<>(dataList, b -> true);//Wrappar dataList i en FilteredList.
-        //b -> true gör att den kan lyssna när vi skriver i sökfältet.
         searchField.textProperty().addListener((observable, oldValue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
             //oldValue ändras aldrig, men det gör newValue.
             filteredData.setPredicate( row -> {
                 if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
                     return true;
                 }
-                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
-                //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
+                String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
                 //fail safe.
-                return row.toString().toLowerCase().contains(lowerCaseFilter);
+                return row.toString().toLowerCase().contains(lowerCaseFilter); //returnerar de objekt som innehåller det man skrivit in
             });
         });
         //LÄGGER IN DATA I TABLEVIEW
@@ -140,9 +138,9 @@ public class AppFunctions {
         }else if(exceptionMessage.contains("uc_studentSSN")){
             textArea.setText("Student with this social security number already exist");
         }else if(exceptionMessage.contains("pk_course")){
-            textArea.setText("Course with this course code already exist, try again with unique course code");
+            textArea.setText("Course with this course code already exists, try again with unique course code");
         }else if(exceptionMessage.contains("pk_hasStudied")) {
-            textArea.setText("This student already has a grade on this course \nand we do not allow two grades for the same student");
+            textArea.setText("This student already has a grade on this course. \nOnly one grade per course");
         }else if(exceptionMessage.contains("pk_studies")){
             textArea.setText("This student is already studying this course");
         }else if(errorCode == 2628 && exceptionMessage.contains("studentName")) {

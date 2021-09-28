@@ -49,7 +49,7 @@ public class StudentController {
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
             }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regexSSN)){
-                studentFeedbackArea.setText("SSN must be exactly 12 digits!");
+                studentFeedbackArea.setText("SSN must be exactly 12 digits");
             }else if (studentAddressTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter an address");
             }else {
@@ -60,9 +60,9 @@ public class StudentController {
 
                 int i = dataAccessLayer.createStudent(studentID, studentSSN, studentName, studentAddress);
                 if (i == 0) {
-                    studentFeedbackArea.setText("Something went terribly wrong, no student was created");
+                    studentFeedbackArea.setText("Something went terribly wrong, no student was created!");
                 } else if (i == 1) {
-                    studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created");
+                    studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created!");
                 }
             }
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");

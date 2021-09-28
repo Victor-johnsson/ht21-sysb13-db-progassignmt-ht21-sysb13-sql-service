@@ -34,7 +34,7 @@ public class CourseController {
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
         try {
-            for(double i=0.5; i<=30; i=i+0.5){
+            for(double i=0.5; i<=30; i=i+0.5){ //Kollar så att credits äer under 30 poäng/kurs
                 arrayList.add(i);
             }
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
@@ -49,7 +49,7 @@ public class CourseController {
     public void onAddCourseButton() {
 
         try {
-            String regex = "[0-9.]*";
+            String regex = "[0-9.]*"; //Endast tillåtet att mata in digits
             if (courseNameTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter a name for the course");
             } else if (courseCreditsTextField.getText().isBlank()) {
@@ -105,7 +105,7 @@ public class CourseController {
     @FXML private AnchorPane parentContainer;
 
     //Metod för att byta view.
-    @FXML private void loadAdminScene() throws IOException {
+    @FXML private void loadAdminScene() throws IOException { //input-output exception
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }

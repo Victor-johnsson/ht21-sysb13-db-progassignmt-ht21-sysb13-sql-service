@@ -34,8 +34,8 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
             gradesComboBox.getItems().addAll(gradeOptions);
-            studentTableView.setPlaceholder(new Label("Couldn't find any students"));
-            courseTableView.setPlaceholder(new Label("Couldn't find any courses"));
+            studentTableView.setPlaceholder(new Label("Could not find any students"));
+            courseTableView.setPlaceholder(new Label("Could not find any courses"));
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getErrorCode());
@@ -65,7 +65,7 @@ public class AdminViewController {
                 }
 
             } else {
-                feedbackTextArea.setText("Select a course and a student!");
+                feedbackTextArea.setText("Please select a course and a student!");
             }
         } catch (SQLException e) {
             AppFunctions.unexpectedSQLError(feedbackTextArea,e);
@@ -85,7 +85,7 @@ public class AdminViewController {
                     feedbackTextArea.setText("The student " + studentID + " has been removed from the course : " + courseCode);
                 }
             } else {
-                feedbackTextArea.setText("Select a course and a student!");
+                feedbackTextArea.setText("Please select a course and a student!");
             }
 
         } catch (SQLException e) {
@@ -114,12 +114,12 @@ public class AdminViewController {
                         dataAccessLayer.removeFromStudies(studentID, courseCode); //Tar bort från Studies
                         feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
                     } else {
-                        feedbackTextArea.setText("Student doesn't study this course, can't add a grade"); //isStudentOnCourse
+                        feedbackTextArea.setText("Student does not study this course, can not add a grade"); //isStudentOnCourse
                     }
                 }
 
             } else {
-                feedbackTextArea.setText("Select a course and a student!");
+                feedbackTextArea.setText("Please select a course and a student!");
             }
         } catch (SQLException e) {
             AppFunctions.unexpectedSQLError(feedbackTextArea,e);
