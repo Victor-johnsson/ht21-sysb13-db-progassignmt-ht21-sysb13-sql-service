@@ -76,6 +76,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
+
             if(e.getErrorCode() == 2627){
                 feedbackTextArea.setText("Student is already on this course");
             }
@@ -129,6 +130,7 @@ public class AdminViewController {
                         feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
                     }
                 }
+
             } else {
                 feedbackTextArea.setText("Select a course and a student!");
             }
@@ -239,4 +241,20 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
+    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
+        AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

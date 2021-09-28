@@ -4,10 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CourseController {
@@ -26,11 +30,11 @@ public class CourseController {
     public void initialize(){
         // ERRORHANTERING!
         try {
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
-            courseTableView.setPlaceholder(new Label("No course found"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppFunctions.unexpectedError(courseFeedbackArea,e);
         }
     }
 
@@ -58,7 +62,8 @@ public class CourseController {
                     courseFeedbackArea.setText(courseName + " with course code: " + courseCode + " was created"); //Hämtar vilken kurs som skapats
                 }
             }
-            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         } catch (SQLException e) {
             AppFunctions.unexpectedError(courseFeedbackArea, e);
         }
@@ -79,7 +84,8 @@ public class CourseController {
                 } else if (i == 1) {
                     courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
                 }
-                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+                ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+                AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             }
         } catch (SQLException e) {
             AppFunctions.unexpectedError(courseFeedbackArea, e);
@@ -97,6 +103,10 @@ public class CourseController {
 
     @FXML private void loadStudentScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
+        AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
+    }
+    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }
 }

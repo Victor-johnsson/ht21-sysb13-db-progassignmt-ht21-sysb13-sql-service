@@ -41,7 +41,6 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.StudentController">
    <children>
       <AnchorPane fx:id="anchorRoot" prefHeight="553.0" prefWidth="861.0">
@@ -64,6 +63,7 @@
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadAdminScene" text="Admin" />
                       <MenuItem mnemonicParsing="false" onAction="#loadCourseScene" text="Courses" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadMetaScene" text="Metadata" />
                     </items>
                   </MenuButton>
             </children>
