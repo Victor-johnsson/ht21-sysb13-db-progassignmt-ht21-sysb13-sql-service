@@ -95,7 +95,7 @@ public class ContosoConnection {
     //Test Connection
     public static void main(String[] args) { //Det är för att testa connection med det URL:et. Funkar det inte så får man ett error.
         try(Connection connection = getConnectionAdventureWorks()){
-            System.out.println("connection worked");
+            System.out.println("Connection worked");
 
         }catch (SQLException ex){
             System.out.println(ex);

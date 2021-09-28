@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class AppFunctions {
-    //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
+    //Samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
 
     public static void updateSearchableTableView(TableView tableView, TextField searchField, ResultSet resultSet) throws SQLException { //tar in tableView,
         //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
@@ -50,7 +50,7 @@ public class AppFunctions {
                 return row.toString().toLowerCase().contains(lowerCaseFilter);
             });
         });
-        //ÄNTLIGEN LÄGGER VI IN DATAN I TABLEVIEW
+        //LÄGGER IN DATA I TABLEVIEW
         tableView.setItems(filteredData);
         ContosoConnection.connectionClose(resultSet);
     }
