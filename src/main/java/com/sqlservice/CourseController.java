@@ -55,13 +55,10 @@ public class CourseController {
                 courseFeedbackArea.setText("Please enter credits for the course");
             } else if (!courseCreditsTextField.getText().matches(regex)) {
                 courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
-
-
-            }else if(!(arrayList.contains(Double.valueOf(courseCreditsTextField.getText())))){
-                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
-
             } else if (Double.parseDouble(courseCreditsTextField.getText()) > 30) {
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
+            }else if(!(arrayList.contains(Double.valueOf(courseCreditsTextField.getText())))){
+                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
             } else { //Om checkarna godtas kör metoden nedan:
                 String courseCode = AppFunctions.getUniqueCode("Course", "courseCode", "C");
                 String courseName = courseNameTextField.getText();
