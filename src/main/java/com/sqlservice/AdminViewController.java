@@ -76,12 +76,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-
-            if(e.getErrorCode() == 2627){
-                feedbackTextArea.setText("Student is already on this course");
-            }
             AppFunctions.unexpectedError(feedbackTextArea,e);
-            //ERROR HANTERING BLABLABLA
         }
     }
 
