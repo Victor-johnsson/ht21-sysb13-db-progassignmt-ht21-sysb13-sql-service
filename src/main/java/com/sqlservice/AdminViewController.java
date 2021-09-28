@@ -2,13 +2,11 @@ package com.sqlservice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,15 +20,9 @@ public class AdminViewController {
     @FXML Button addStudentOnCourseButton;
     @FXML Button removeStudentFromCourseButton;
     @FXML Button setGradeButton;
-    @FXML TextField gradeTextField;
     @FXML Button resetButton;
-    @FXML Button showCourseStatistics;
-    @FXML Button showStudentsOnCourse;
-    @FXML Button showCoursesStudied;
-    @FXML Button showCompletedCourses;
     @FXML ComboBox<String> gradesComboBox;
     @FXML TextArea feedbackTextArea;
-    @FXML Button throughput;
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
@@ -51,7 +43,7 @@ public class AdminViewController {
     }
     //Metod för att lägga till en student på en kurs.
     //OBS: det går inte att lägga till en student om det överskrider 45 credits totalt.
-    public void addStudentOnCourse(ActionEvent event) {
+    public void addStudentOnCourse() {
         try {
             //kolla att course och student view har valts
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
@@ -76,17 +68,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-
-            if(e.getErrorCode() == 2627){
-                feedbackTextArea.setText("Student is already on this course");
-            }
-            AppFunctions.unexpectedError(feedbackTextArea,e);
-            //ERROR HANTERING BLABLABLA
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Ta bort en student från en specifik kurs.
-    public void removeStudentFromCourse(ActionEvent event) {
+    public void removeStudentFromCourse() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -102,13 +89,13 @@ public class AdminViewController {
             }
 
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
 
         }
     }
 
     //Tar bort studenten från "Studies" och flyttar till "HasStudied" och sätter ett betyg
-    public void setGrade(ActionEvent event) {
+    public void setGrade() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -135,12 +122,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Visar studenter aktiva på en kurs
-    public void onShowStudentsOnCourse(ActionEvent event) {
+    public void onShowStudentsOnCourse() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty())) {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
@@ -152,12 +139,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Metod som visar kursstatisik.
-    public void onCourseStatistics(ActionEvent event) {
+    public void onCourseStatistics() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty())) {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
@@ -171,12 +158,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Metod som visar resultat på kurser en specifik student har studerat.
-    public void onShowStudiedCourses(ActionEvent event){
+    public void onShowStudiedCourses(){
         try {
             if (!(studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -187,12 +174,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Visar resultat på en specifik students genomförda kurser.
-    public void onShowCompletedCourses(ActionEvent event){
+    public void onShowCompletedCourses(){
         try {
             if (!(studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -203,21 +190,21 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onThroughputButton(ActionEvent event){
+    public void onThroughputButton(){
         try{
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Återställer till originalvy för Course tableView och Student tableView.
-    public void onResetButton(ActionEvent event){
+    public void onResetButton(){
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
             ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
@@ -225,32 +212,21 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     @FXML AnchorPane parentContainer;
     @FXML AnchorPane anchorRoot;
 
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+    @FXML private void loadCourseScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
+    @FXML private void loadStudentScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

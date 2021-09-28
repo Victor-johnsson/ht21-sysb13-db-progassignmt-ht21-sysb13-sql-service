@@ -1,6 +1,6 @@
 package com.sqlservice;
 
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +11,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CourseController {
 
@@ -26,22 +28,28 @@ public class CourseController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
+    ArrayList<Double> arrayList  = new ArrayList<Double>();
+
+
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
-        // ERRORHANTERING!
         try {
-            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,dataAccessLayer.getAllFromTable("Course"));
+            for(double i=0.5; i<=30; i=i+0.5){
+                arrayList.add(i);
+            }
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppFunctions.unexpectedSQLError(courseFeedbackArea,e);
         }
     }
 
     //En metod som styr knappen för att lägga till en kurs.
-    public void onAddCourseButton(ActionEvent event) {
+    public void onAddCourseButton() {
 
         try {
-            String regex = "[0-9]+\\.?[05]";
+            String regex = "[0-9.]*";
             if (courseNameTextField.getText().isBlank()) {
                 courseFeedbackArea.setText("Please enter a name for the course");
             } else if (courseCreditsTextField.getText().isBlank()) {
@@ -50,6 +58,8 @@ public class CourseController {
                 courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
             } else if (Double.parseDouble(courseCreditsTextField.getText()) > 30) {
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
+            }else if(!(arrayList.contains(Double.valueOf(courseCreditsTextField.getText())))){
+                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
             } else { //Om checkarna godtas kör metoden nedan:
                 String courseCode = AppFunctions.getUniqueCode("Course", "courseCode", "C");
                 String courseName = courseNameTextField.getText();
@@ -61,13 +71,14 @@ public class CourseController {
                     courseFeedbackArea.setText(courseName + " with course code: " + courseCode + " was created"); //Hämtar vilken kurs som skapats
                 }
             }
-            AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+            AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(courseFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(courseFeedbackArea, e);
         }
     }
         //En metod som styr knappen för att ta bort en kurs.
-    public void onDeleteCourseButton (ActionEvent event){
+    public void onDeleteCourseButton (){
         try {
             //"Please select a course"
             //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
@@ -82,10 +93,11 @@ public class CourseController {
                 } else if (i == 1) {
                     courseFeedbackArea.setText("Course " + courseName + " with course code: " + courseCode + " was removed!");
                 }
-                AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, dataAccessLayer.getAllFromTable("Course"));
+                ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
+                AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(courseFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(courseFeedbackArea, e);
         }
     }
 
@@ -93,12 +105,12 @@ public class CourseController {
     @FXML private AnchorPane parentContainer;
 
     //Metod för att byta view.
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+    @FXML private void loadAdminScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
+    @FXML private void loadStudentScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }

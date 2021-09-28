@@ -1,13 +1,14 @@
 package com.sqlservice;
 
 
-import javafx.event.ActionEvent;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
@@ -22,33 +23,29 @@ public class StudentController {
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
     @FXML TextArea studentFeedbackArea;
-    @FXML MenuItem loadCourseView;
-    @FXML MenuItem loadAdminView;
+    private HostServices hostServices ;
 
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices ;
+    }
 
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
-        // ERRORHANTERING!
         try {
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
-
-
         } catch (SQLException e) {
-
-           AppFunctions.unexpectedError(studentFeedbackArea,e);
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
     }
 
     //En metod som styr knappen för att lägga till en student.
-    public void onAddStudentButton(ActionEvent event){
+    public void onAddStudentButton(){
         try {
             String regexSSN = "[0-9]+";
-            //String regexName = "[a-zåäöA-ZÅÄÖ]+"; //FEL
             if (studentNameTextField.getText().isBlank()) {
                 studentFeedbackArea.setText("Please enter a name");
-           // }else if (!(studentSSNTextField.getText().matches(regexName))){
-           //     studentFeedbackArea.setText("Please enter a name using letters only");
             }else if (studentSSNTextField.getText().isBlank()){
                 studentFeedbackArea.setText("Please enter a SSN");
             }else if (studentSSNTextField.getText().length() != 12 || !studentSSNTextField.getText().matches(regexSSN)){
@@ -58,23 +55,24 @@ public class StudentController {
             }else {
                 String studentID = AppFunctions.getUniqueCode("Student", "studentID", "S");
                 String studentName = studentNameTextField.getText();
-                String studentSSN = studentSSNTextField.getText();//kanske skapa en check som endast tillåter siffror
+                String studentSSN = studentSSNTextField.getText();
                 String studentAddress = studentAddressTextField.getText();
 
                 int i = dataAccessLayer.createStudent(studentID, studentSSN, studentName, studentAddress);
                 if (i == 0) {
-                    studentFeedbackArea.setText("No student was created");
+                    studentFeedbackArea.setText("Something went terribly wrong, no student was created");
                 } else if (i == 1) {
                     studentFeedbackArea.setText("Student " + studentName + " with " + studentID + " was created");
                 }
             }
-            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,dataAccessLayer.getAllFromTable("Student"));
+            ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+            AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(studentFeedbackArea, e);
-            }
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
+        }
     }
     //En metod som styr knappen för att ta bort en student.
-    public void onDeleteStudentButton(ActionEvent event){
+    public void onDeleteStudentButton(){
         try{
             if (studentTableView.getSelectionModel().isEmpty()){
                 studentFeedbackArea.setText("Please select a student to remove");
@@ -87,28 +85,35 @@ public class StudentController {
                 } else if (i == 1) {
                     studentFeedbackArea.setText("Student " + studentName + "with student ID: " + studentID + " was removed!");
                 }
-                AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, dataAccessLayer.getAllFromTable("Student"));
+                ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
+                AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
             }
         }catch (SQLException e){
-            AppFunctions.unexpectedError(studentFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
     }
-
 
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
 
-
-
-    //Metod för att byta view
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+    //Metoders för att byta view
+    @FXML private void loadCourseScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
-    //Metod som??
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+    @FXML private void loadAdminScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
+    }
+
+    @FXML private void loadMetaScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("metaView.fxml"));
+        Parent metaRoot = loader.load();
+        MetaController controller = loader.getController();
+        controller.setHostServices(hostServices);
+        Stage metaStage = new Stage();
+        metaStage.setScene(new Scene(metaRoot));
+        metaStage.show();
     }
 }

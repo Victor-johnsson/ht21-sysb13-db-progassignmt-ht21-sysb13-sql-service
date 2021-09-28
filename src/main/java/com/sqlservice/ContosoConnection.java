@@ -14,23 +14,24 @@ public class ContosoConnection {
             "password=G00dPassword;";
     //URL för databasen och servern
 
-    /**
-     * Get a connection to database
-     * @return Connection object
-     */
+    public static final String URLAdventureWorks = "jdbc:sqlserver://uwdb18.srv.lu.se\\icssql001;database=AdventureWorks;user=awreader;password=aw2021";
+
+    //@return Connection object
     
     //En funktion som returnerar en connection till URL.
     //throws = om det blir problem när vi ska göra connection(uppdatera en person), då kommer denna funktion
     //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
-    public static Connection getConnection() throws SQLException{ 
 
+    public static Connection getConnectionAdventureWorks() throws SQLException{
+        return getConnection(URLAdventureWorks);
+    }
 
+    private static Connection getConnection(String urlAdventureWorks) throws SQLException {
         DriverManager.registerDriver(new Driver() {
             @Override
             public Connection connect(String url, Properties info) throws SQLException {
                 return null;
             }
-
 
             @Override
             public boolean acceptsURL(String url) throws SQLException {
@@ -62,8 +63,13 @@ public class ContosoConnection {
                 return null;
             }
         });
-        return DriverManager.getConnection(URL);
+        return DriverManager.getConnection(urlAdventureWorks);
+    }
 
+    public static Connection getConnectionLocalDB() throws SQLException{
+
+
+        return getConnection(URL);
     }
 
     //Metod som...
@@ -85,16 +91,13 @@ public class ContosoConnection {
         connection.close();
     }
 
-    /**
-     * Test Connection
-     */
+    //Test Connection
     public static void main(String[] args) { //Det är för att testa connection med det URL:et. Funkar det inte så får man ett error.
-        try(Connection connection = getConnection()){
+        try(Connection connection = getConnectionAdventureWorks()){
+            System.out.println("Connection worked");
 
         }catch (SQLException ex){
             System.out.println(ex);
         }
     }
-
-
 }
