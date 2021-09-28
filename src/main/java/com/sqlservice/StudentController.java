@@ -6,8 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +29,8 @@ public class StudentController {
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
     @FXML TextArea studentFeedbackArea;
+    @FXML
+    ImageView contosoImageView;
 
 
     private HostServices hostServices ;
@@ -136,8 +142,13 @@ public class StudentController {
     }
 
     @FXML private void loadMetaScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
-        AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("metaView.fxml"));
+        Parent metaRoot = loader.load();
+        MetaController controller = loader.getController();
+        controller.setHostServices(hostServices);
+        Stage metaStage = new Stage();
+        metaStage.setScene(new Scene(metaRoot));
+        metaStage.show();
 
     }
 }

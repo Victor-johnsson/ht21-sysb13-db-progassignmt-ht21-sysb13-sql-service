@@ -198,6 +198,7 @@ public class AppFunctions {
             exception.printStackTrace();
             textArea.setText("Ooops, something went wrong. \nPlease contact system administrator");
         }
+        textArea.isVisible();
     }
 
     public static void main(String[] args) {

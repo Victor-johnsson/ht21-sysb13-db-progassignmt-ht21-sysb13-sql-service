@@ -8,39 +8,64 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane fx:id="parentContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.AdminViewController">
+<AnchorPane fx:id="parentContainer" prefHeight="553.0" prefWidth="873.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sqlservice.AdminViewController">
    <children>
-      <AnchorPane fx:id="anchorRoot" prefHeight="627.0" prefWidth="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="anchorRoot" prefHeight="553.0" prefWidth="873.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane prefHeight="627.0" prefWidth="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="14.0" layoutY="-20.0" prefHeight="553.0" prefWidth="873.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <MenuButton layoutX="29.0" layoutY="22.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="106.0" text="Go To">
+                  <MenuButton alignment="CENTER" layoutX="19.0" layoutY="14.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="76.0" text="Go To">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadCourseScene" text="Courses" />
                         <MenuItem mnemonicParsing="false" onAction="#loadMetaScene" text="MetaData" />
                       <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Student" />
                     </items>
                   </MenuButton>
-                  <TableView fx:id="courseTableView" layoutX="35.0" layoutY="84.0" prefHeight="200.0" prefWidth="266.0" />
-                  <TableView fx:id="studentTableView" layoutX="563.0" layoutY="84.0" prefHeight="200.0" prefWidth="368.0" />
-                  <Button fx:id="showStudentsOnCourse" layoutX="29.0" layoutY="309.0" mnemonicParsing="false" onAction="#onShowStudentsOnCourse" prefHeight="33.0" prefWidth="155.0" text="Show Students On Course" />
-                  <TextField fx:id="searchStudentTextField" layoutX="601.0" layoutY="284.0" prefHeight="25.0" prefWidth="273.0" promptText="Search Student" />
-                  <TextField fx:id="searchCourseTextField" layoutX="57.0" layoutY="284.0" prefHeight="25.0" prefWidth="214.0" promptText="Search Course" />
-                  <Button fx:id="setGradeButton" layoutX="338.0" layoutY="251.0" mnemonicParsing="false" onAction="#setGrade" text="Set Grade/Reg of completed Course" />
-                  <Button fx:id="showCoursesStudied" layoutX="666.0" layoutY="318.0" mnemonicParsing="false" onAction="#onShowStudiedCourses" text="Show Active Courses" />
-                  <Button fx:id="removeStudentFromCourseButton" layoutX="348.0" layoutY="159.0" mnemonicParsing="false" onAction="#removeStudentFromCourse" text="Remove Student From Course---&gt;" />
-                  <TextArea fx:id="feedbackTextArea" focusTraversable="false" layoutX="342.0" layoutY="413.0" prefHeight="200.0" prefWidth="200.0" promptText="Feedback" />
-                  <Button fx:id="showCompletedCourses" layoutX="678.0" layoutY="357.0" mnemonicParsing="false" onAction="#onShowCompletedCourses" text="Completed Courses" />
-                  <Button fx:id="resetButton" layoutX="391.0" layoutY="370.0" mnemonicParsing="false" onAction="#onResetButton" text="ResetButton" />
-                  <Button fx:id="showCourseStatistics" layoutX="193.0" layoutY="309.0" mnemonicParsing="false" onAction="#onCourseStatistics" prefHeight="33.0" prefWidth="140.0" text="Show Course Statistics" />
-                  <Button fx:id="addStudentOnCourseButton" layoutX="365.0" layoutY="97.0" mnemonicParsing="false" onAction="#addStudentOnCourse" text="&lt;---Add Student To Course" />
-                  <ComboBox fx:id="gradesComboBox" layoutX="401.0" layoutY="226.0" opacity="0.8" prefHeight="25.0" prefWidth="81.0" promptText="Grades" />
-                  <Button fx:id="throughput" layoutX="57.0" layoutY="345.0" mnemonicParsing="false" onAction="#onThroughputButton" text="Show Courses With Highest Throughput" />
+                  <TableView fx:id="courseTableView" layoutX="19.0" layoutY="84.0" prefHeight="274.0" prefWidth="404.0" />
+                  <TableView fx:id="studentTableView" layoutX="452.0" layoutY="84.0" prefHeight="274.0" prefWidth="404.0" />
+                  <TextField fx:id="searchStudentTextField" layoutX="518.0" layoutY="367.0" prefHeight="25.0" prefWidth="273.0" promptText="Search Student" />
+                  <TextField fx:id="searchCourseTextField" layoutX="85.0" layoutY="367.0" prefHeight="25.0" prefWidth="273.0" promptText="Search Course" />
+                  <Button fx:id="setGradeButton" layoutX="443.0" layoutY="473.0" mnemonicParsing="false" onAction="#setGrade" prefHeight="25.0" prefWidth="81.0" text="Set Grade" />
+                  <Button fx:id="removeStudentFromCourseButton" layoutX="349.0" layoutY="434.0" mnemonicParsing="false" onAction="#removeStudentFromCourse" text="Remove Student From Course" textFill="#ab1e1e" />
+                  <TextArea fx:id="feedbackTextArea" focusTraversable="false" layoutX="19.0" layoutY="457.0" prefHeight="83.0" prefWidth="260.0" promptText="Feedback" />
+                  <Button fx:id="resetButton" layoutX="396.0" layoutY="367.0" mnemonicParsing="false" onAction="#onResetButton" text="Reset Tables" />
+                  <Button fx:id="addStudentOnCourseButton" layoutX="349.0" layoutY="401.0" mnemonicParsing="false" onAction="#addStudentOnCourse" prefHeight="25.0" prefWidth="175.0" text="Add Student To Course" />
+                  <ComboBox fx:id="gradesComboBox" layoutX="349.0" layoutY="473.0" opacity="0.8" prefHeight="25.0" prefWidth="81.0" promptText="Grades" />
+                  <MenuButton layoutX="165.0" layoutY="401.0" mnemonicParsing="false" text="Course Actions">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onShowStudentsOnCourse" text="Show Students" />
+                      <MenuItem mnemonicParsing="false" onAction="#onCourseStatistics" text="Show Statistics" />
+                        <MenuItem mnemonicParsing="false" onAction="#onThroughputButton" text="Highest Throughput" />
+                    </items>
+                  </MenuButton>
+                  <MenuButton layoutX="596.0" layoutY="401.0" mnemonicParsing="false" text="Student Actions">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onShowStudiedCourses" text="Show Active Courses" />
+                      <MenuItem mnemonicParsing="false" onAction="#onShowCompletedCourses" text="Show Completed Courses" />
+                    </items>
+                  </MenuButton>
+                  <Text layoutX="184.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ADMIN" underline="true">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4da2b5" layoutX="661.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTOSO">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#4da2b5" layoutX="661.0" layoutY="509.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UNIVERSITY">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </children>
       </AnchorPane>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
    </children>
 </AnchorPane>

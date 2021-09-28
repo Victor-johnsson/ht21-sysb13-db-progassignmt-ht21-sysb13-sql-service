@@ -11,21 +11,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.File;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+
 import java.sql.SQLException;
 
 public class MetaController {
     @FXML
     TableView metaTableView;
-    @FXML
-    Button allKeysButton;
-    @FXML Button customerDataButton;
-    @FXML Button tableConstraintButton;
-    @FXML Button allTablesButton;
-    @FXML Button customerColumnsButton;
-    @FXML Button maxRowsButton;
     @FXML TextField searchbar;
     @FXML TextArea feedbackTextArea;
     DALAdventureWorks dalAdventureWorks = new DALAdventureWorks();
@@ -98,22 +94,33 @@ public class MetaController {
         }
     }
 
-    @FXML private AnchorPane anchorRoot;
-    @FXML private AnchorPane parentContainer;
+    public void openExcelFile(ActionEvent actionEvent){
+        File excelFile = new File("src/main/resources/reports/Excel Assignment.xlsx");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    //Metoders för att byta view
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
+    }
+    public void openCustomerReport(ActionEvent actionEvent){
+        File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\CustomerReport.accdb");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void openProductReport(ActionEvent actionEvent){
+        File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\Products.accdb");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
-    }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
-    }
 }
