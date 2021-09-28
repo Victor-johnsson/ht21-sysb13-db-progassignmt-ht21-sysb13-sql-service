@@ -16,22 +16,22 @@ public class ContosoConnection {
 
     public static final String URLAdventureWorks = "jdbc:sqlserver://uwdb18.srv.lu.se\\icssql001;database=AdventureWorks;user=awreader;password=aw2021";
 
-    /**
-     * Get a connection to database
-     * @return Connection object
-     */
+    //@return Connection object
     
     //En funktion som returnerar en connection till URL.
     //throws = om det blir problem när vi ska göra connection(uppdatera en person), då kommer denna funktion
     //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
 
     public static Connection getConnectionAdventureWorks() throws SQLException{
+        return getConnection(URLAdventureWorks);
+    }
+
+    private static Connection getConnection(String urlAdventureWorks) throws SQLException {
         DriverManager.registerDriver(new Driver() {
             @Override
             public Connection connect(String url, Properties info) throws SQLException {
                 return null;
             }
-
 
             @Override
             public boolean acceptsURL(String url) throws SQLException {
@@ -63,50 +63,13 @@ public class ContosoConnection {
                 return null;
             }
         });
-        return DriverManager.getConnection(URLAdventureWorks);
+        return DriverManager.getConnection(urlAdventureWorks);
     }
+
     public static Connection getConnectionLocalDB() throws SQLException{
 
 
-        DriverManager.registerDriver(new Driver() {
-            @Override
-            public Connection connect(String url, Properties info) throws SQLException {
-                return null;
-            }
-
-
-            @Override
-            public boolean acceptsURL(String url) throws SQLException {
-                return false;
-            }
-
-            @Override
-            public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-                return new DriverPropertyInfo[0];
-            }
-
-            @Override
-            public int getMajorVersion() {
-                return 0;
-            }
-
-            @Override
-            public int getMinorVersion() {
-                return 0;
-            }
-
-            @Override
-            public boolean jdbcCompliant() {
-                return false;
-            }
-
-            @Override
-            public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-                return null;
-            }
-        });
-        return DriverManager.getConnection(URL);
-
+        return getConnection(URL);
     }
 
     //Metod som...
@@ -128,18 +91,13 @@ public class ContosoConnection {
         connection.close();
     }
 
-    /**
-     * Test Connection
-     */
+    //Test Connection
     public static void main(String[] args) { //Det är för att testa connection med det URL:et. Funkar det inte så får man ett error.
         try(Connection connection = getConnectionAdventureWorks()){
-            System.out.println("connection worked");
+            System.out.println("Connection worked");
 
         }catch (SQLException ex){
             System.out.println(ex);
         }
     }
-
-
-
 }

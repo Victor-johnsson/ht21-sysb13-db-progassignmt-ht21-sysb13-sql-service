@@ -1,107 +1,121 @@
 package com.sqlservice;
 
-import javafx.event.ActionEvent;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class MetaController {
     @FXML
     TableView metaTableView;
-    @FXML
-    Button allKeysButton;
-    @FXML Button customerDataButton;
-    @FXML Button tableConstraintButton;
-    @FXML Button allTablesButton;
-    @FXML Button customerColumnsButton;
-    @FXML Button maxRowsButton;
     @FXML TextField searchbar;
     @FXML TextArea feedbackTextArea;
     DALAdventureWorks dalAdventureWorks = new DALAdventureWorks();
 
+    private HostServices hostServices ;
 
-    public void onAllKeysButton(ActionEvent actionEvent){
+    public HostServices getHostServices() {
+        return hostServices ;
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices ;
+    }
+
+
+
+    public void onAllKeysButton(){
         try {
            ResultSet resultSet = dalAdventureWorks.getAllKeys();
            AppFunctions.updateSearchableTableView(metaTableView,searchbar,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onCustomerContentButton(ActionEvent actionEvent) {
+    public void onCustomerContentButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getCustomerContent();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onTableConstraintsButton(ActionEvent actionEvent) {
+    public void onTableConstraintsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getTableConstraints();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onAllTablesButton(ActionEvent actionEvent) {
+    public void onAllTablesButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getAllTables();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onCustomerColumnsButton(ActionEvent actionEvent) {
+    public void onCustomerColumnsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getCustomerColumns();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onTableWithMostRowsButton(ActionEvent actionEvent) {
+    public void onTableWithMostRowsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getTableWithMostRows();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    @FXML private AnchorPane anchorRoot;
-    @FXML private AnchorPane parentContainer;
-
-    //Metoders för att byta view
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
+    public void openExcelFile(){
+        File excelFile = new File("src/main/resources/reports/Excel Assignment.xlsx");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (IOException e) {
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception) {
+            feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
+        }
     }
 
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
+    public void openCustomerReport(){
+        File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\CustomerReport.accdb");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception){
+            feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
+        }
     }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
-        AppFunctions.changeView(root, allKeysButton, parentContainer, anchorRoot);
+    public void openProductReport() {
+        File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\Products.accdb");
+        try {
+            getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception){
+        feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
+        }
     }
 }

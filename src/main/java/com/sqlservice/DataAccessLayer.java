@@ -16,9 +16,8 @@ public class DataAccessLayer {
         String table = "SELECT * FROM " + tableName + ";";
         PreparedStatement statement = connection.prepareStatement(table);
 
-        ResultSet rs = statement.executeQuery();
 
-        return rs;
+        return statement.executeQuery();
     }
 
 
@@ -112,10 +111,8 @@ public class DataAccessLayer {
             count++;
         }
         ContosoConnection.connectionClose(resultSet);
-        if(count == 1){//studenten studerar kursen
-            return true;
-        }
-        return false;//studerar inte kursen
+        //studenten studerar kursen
+        return count == 1;//studerar inte kursen
     }
 
     //Kontrollerar om en student har fått ett betyg tidigare i kursen.
@@ -132,10 +129,7 @@ public class DataAccessLayer {
             count++;
         }
         ContosoConnection.connectionClose(resultSet);
-        if(count == 1){
-            return true;
-        }
-        return false;
+        return count == 1;
     }
 
 
@@ -191,9 +185,8 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
-        ResultSet resultSet = preparedStatement.executeQuery();
 
-        return resultSet;
+        return preparedStatement.executeQuery();
     }
 
 // Hittar aktiva kurser för en given student
@@ -206,9 +199,8 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
-        ResultSet resultSet = preparedStatement.executeQuery();
 
-        return resultSet;
+        return preparedStatement.executeQuery();
     }
 
     // Ger alla kurser en specifik student studerat (med betyg)
@@ -221,9 +213,8 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,studentID);
-        ResultSet resultSet = preparedStatement.executeQuery();
 
-        return resultSet;
+        return preparedStatement.executeQuery();
     }
 
     //Hämtar studenter som har studerat färdigt en kurs.
@@ -236,8 +227,7 @@ public class DataAccessLayer {
         Connection connection = ContosoConnection.getConnectionLocalDB();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,courseCode);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet;
+        return preparedStatement.executeQuery();
     }
 
     //Räknar ut antal % som fått ett visst betyg.
@@ -262,7 +252,7 @@ public class DataAccessLayer {
 
         double d = 0;
         while (resultSet.next()){ //En rad eller noll rader.
-            d = Double.valueOf(resultSet.getString(3)); // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
+            d = Double.parseDouble(resultSet.getString(3)); // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
         }
         ContosoConnection.connectionClose(resultSet);
 
@@ -287,21 +277,21 @@ public class DataAccessLayer {
             if(resultSet.getString(1) == null){
                 d=0;
             }else{
-                d = Double.valueOf(resultSet.getString(1));
+                d = Double.parseDouble(resultSet.getString(1));
             }
-
              // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
         }
 
         ContosoConnection.connectionClose(resultSet);
         return d;
-
     }
+
     public ResultSet getTopThroughput() throws SQLException{
         Connection connection = ContosoConnection.getConnectionLocalDB();
         String query = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS 'throughput' FROM TopThroughput";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet; //returnerar de kurser som har högst throughput (med kurskod, namn och throughput)
+        String query2 = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS throughput FROM Throughput " +
+                "WHERE throughput = (SELECT MAX(throughput) FROM Throughput)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query2);
+        return preparedStatement.executeQuery(); //returnerar de kurser som har högst throughput (med kurskod, namn och throughput)
     }
 }
