@@ -169,6 +169,7 @@ public class DataAccessLayer {
         return i;
     }
 
+    //Uppdaterar en students betyg
     public int updateGrade(String studentID, String courseCode, String grade) throws SQLException{
         String query = "UPDATE HasStudied SET grade = ? WHERE studentID = ? AND courseCode = ? ;";
         Connection connection = ContosoConnection.getConnection();
@@ -269,7 +270,7 @@ public class DataAccessLayer {
         return df.format(d); //Det är värdet vi får ut, formaterat med 1 decimal.
     }
 
-    //Metod som returnerar antal credits för en specifik student inklusive den kurs som man försöker lägga till.Antalet maxcredits är 40.
+    //Metod som returnerar antal credits för en specifik student inklusive den kurs som man försöker lägga till.Antalet maxcredits är 45.
     public double potentialCredits(String courseCode, String studentID) throws SQLException{
         String query = "SELECT SUM(courseCredits) + (SELECT courseCredits FROM course WHERE courseCode = ?) " +
                 " FROM Studies " +
@@ -281,7 +282,7 @@ public class DataAccessLayer {
         preparedStatement.setString(1,courseCode);
         preparedStatement.setString(2,studentID);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
+        ResultSet resultSet = preparedStatement.executeQuery(); //KOLLA om överflödigt!!!
         double d = 0;
         while (resultSet.next()){//En rad eller noll rader.
             if(resultSet.getString(1) == null){

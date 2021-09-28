@@ -15,6 +15,7 @@ import java.sql.SQLException;
 
 public class CourseController {
 
+
     @FXML TableView courseTableView;
     @FXML TextField searchCourseTextField;
     @FXML TextField courseNameTextField;
