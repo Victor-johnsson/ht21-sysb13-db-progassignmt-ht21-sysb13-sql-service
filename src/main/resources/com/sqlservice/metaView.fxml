@@ -35,12 +35,12 @@
                         <MenuItem mnemonicParsing="false" onAction="#onTableConstraintsButton" text="Table Constraint" />
                     </items>
                   </MenuButton>
-                  <Text layoutX="415.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ADVENTURE">
+                  <Text layoutX="530.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ADVENTURE">
                      <font>
                         <Font name="Microsoft Sans Serif" size="28.0" />
                      </font>
                   </Text>
-                  <Text layoutX="449.0" layoutY="398.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WORKS">
+                  <Text layoutX="563.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WORKS">
                      <font>
                         <Font name="Microsoft Sans Serif" size="28.0" />
                      </font>
