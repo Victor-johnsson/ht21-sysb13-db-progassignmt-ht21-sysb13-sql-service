@@ -82,7 +82,7 @@ public class AdminViewController {
                 if (i == 0) {
                     feedbackTextArea.setText("No student was removed from course : " + courseCode);
                 } else if (i == 1) {
-                    feedbackTextArea.setText("The student " + studentID + "has been removed from the course : " + courseCode);
+                    feedbackTextArea.setText("The student " + studentID + " has been removed from the course : " + courseCode);
                 }
             } else {
                 feedbackTextArea.setText("Select a course and a student!");
@@ -108,13 +108,13 @@ public class AdminViewController {
                         if (!(dataAccessLayer.hasPreviousGrade(studentID,courseCode))){ //Om personen inte har ett tidigare grade,
                             dataAccessLayer.addToHasStudied(studentID, courseCode, grade); //Lägger till i HasStudied
 
-                        }else { //ifall personen har tidigare betyg uppdaterar vi betyget
+                        }else { //ifall personen har tidigare betyg uppdaterar vi betyget (om man fått F och läst om)
                             dataAccessLayer.updateGrade(studentID, courseCode, grade);
                         }
-                        dataAccessLayer.removeFromStudies(studentID, courseCode);
+                        dataAccessLayer.removeFromStudies(studentID, courseCode); //Tar bort från Studies
                         feedbackTextArea.setText("Grade " + grade + " was added for " + studentID + " on course " + courseCode);
                     } else {
-                        feedbackTextArea.setText("Student doesn't study this course, can't add a grade");
+                        feedbackTextArea.setText("Student doesn't study this course, can't add a grade"); //isStudentOnCourse
                     }
                 }
 
@@ -210,6 +210,7 @@ public class AdminViewController {
             ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
             AppFunctions.updateSearchableTableView(courseTableView, searchCourseTextField, resultSetCourse);
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
+            feedbackTextArea.setText("");
 
         }catch (SQLException e){
             AppFunctions.unexpectedSQLError(feedbackTextArea,e);
