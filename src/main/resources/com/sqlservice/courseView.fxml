@@ -53,12 +53,11 @@
                   <TableView fx:id="courseTableView" layoutX="376.0" layoutY="26.0" prefHeight="289.0" prefWidth="479.0" />
                   <Button fx:id="createCourseButton" layoutX="156.0" layoutY="241.0" mnemonicParsing="false" onAction="#onAddCourseButton" text="Create Course" />
                   <Button fx:id="deleteCourseButton" layoutX="563.0" layoutY="359.0" mnemonicParsing="false" onAction="#onDeleteCourseButton" text="Delete Course" textFill="#ee1313" />
-                  <TextArea fx:id="courseFeedbackArea" editable="false" layoutX="60.0" layoutY="372.0" prefHeight="106.0" prefWidth="187.0" promptText="Feedback" />
+                  <TextArea fx:id="courseFeedbackArea" editable="false" layoutX="60.0" layoutY="470.0" prefHeight="50.0" prefWidth="418.0" promptText="Feedback" wrapText="true" />
                   <TextField fx:id="searchCourseTextField" layoutX="476.0" layoutY="323.0" prefHeight="25.0" prefWidth="265.0" promptText="Search Course" />
                   <MenuButton alignment="CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="82.0" text="Go To">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadAdminScene" text="Admin" />
-                        <MenuItem mnemonicParsing="false" onAction="#loadMetaScene" text="MetaData" />
                       <MenuItem mnemonicParsing="false" onAction="#loadStudentScene" text="Students" />
                     </items>
                   </MenuButton>

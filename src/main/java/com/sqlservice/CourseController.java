@@ -1,6 +1,6 @@
 package com.sqlservice;
 
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CourseController {
 
@@ -26,15 +27,20 @@ public class CourseController {
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
+    ArrayList<Double> arrayList  = new ArrayList<Double>();
+
+
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
-        // ERRORHANTERING!
         try {
+            for(double i=0.5; i<=30; i=i+0.5){
+                arrayList.add(i);
+            }
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(courseFeedbackArea,e);
+            AppFunctions.unexpectedSQLError(courseFeedbackArea,e);
         }
     }
 
@@ -49,6 +55,11 @@ public class CourseController {
                 courseFeedbackArea.setText("Please enter credits for the course");
             } else if (!courseCreditsTextField.getText().matches(regex)) {
                 courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
+
+
+            }else if(!(arrayList.contains(Double.valueOf(courseCreditsTextField.getText())))){
+                courseFeedbackArea.setText("Please enter credits in digits and only .5 decimal");
+
             } else if (Double.parseDouble(courseCreditsTextField.getText()) > 30) {
                 courseFeedbackArea.setText("Sorry, the maximum credits are 30 per course");
             } else { //Om checkarna godtas kör metoden nedan:
@@ -65,7 +76,7 @@ public class CourseController {
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Course");
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(courseFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(courseFeedbackArea, e);
         }
     }
         //En metod som styr knappen för att ta bort en kurs.
@@ -88,7 +99,7 @@ public class CourseController {
                 AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(courseFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(courseFeedbackArea, e);
         }
     }
 

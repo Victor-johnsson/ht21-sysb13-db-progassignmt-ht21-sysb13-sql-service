@@ -6,8 +6,7 @@ public class DALAdventureWorks {
     public ResultSet getRS(String query) throws SQLException{
         Connection connection = ContosoConnection.getConnectionAdventureWorks();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet;
+        return preparedStatement.executeQuery();
     }
 
     public ResultSet getAllKeys() throws SQLException{
@@ -16,7 +15,8 @@ public class DALAdventureWorks {
     }
 
     public ResultSet getCustomerContent() throws SQLException {
-        String query = "SELECT * FROM SalesLT.Customer c " +
+        String query = "SELECT c.CustomerID, c.FirstName, c.LastName, c.CompanyName, c.EmailAddress, " +
+                "a.AddressID, a.AddressType, h.SalesOrderID, h.OrderDate, h.DueDate FROM SalesLT.Customer c " +
                 "JOIN SalesLT.CustomerAddress a ON c.CustomerID = a.CustomerID " +
                 "JOIN SalesLT.SalesOrderHeader h ON c.CustomerID = h.CustomerID";
         return getRS(query);

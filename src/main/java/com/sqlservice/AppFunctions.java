@@ -4,8 +4,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,7 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
-import java.io.File;
+
 
 public class AppFunctions {
     //samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
@@ -34,11 +32,8 @@ public class AppFunctions {
         //ob-list som vi fyller med det som
         //metoden fillTableViewByName returnerar.
         tableView.getColumns().clear();// tömmer tableview
-        AppFunctions.setTableColumnNames(tableView, resultSet); //sätter kolumnNamn efter resultSetets kolumnNamn
-
-
+        AppFunctions.setTableColumnNames(tableView, resultSet); //sätter columnName efter resultSetets columnName
         ObservableList<ObservableList> dataList = AppFunctions.fillList(resultSet); //skapar listan med de object som ska synas i tableview
-
         FilteredList<ObservableList> filteredData = new FilteredList<>(dataList, b -> true);//Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
 
@@ -50,11 +45,9 @@ public class AppFunctions {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
-                if(row.toString().toLowerCase().contains(lowerCaseFilter)){ //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
-                    return true;
-                }
-                else return false; //fail safe.
-
+                //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
+                //fail safe.
+                return row.toString().toLowerCase().contains(lowerCaseFilter);
             });
         });
         //ÄNTLIGEN LÄGGER VI IN DATAN I TABLEVIEW
@@ -65,17 +58,12 @@ public class AppFunctions {
 
     //Metod som bara används i updateSearchableTableView()
     public static void setTableColumnNames(TableView tableView, ResultSet resultSet) throws SQLException{
-        /**
-         * ********************************
-         * TABLE COLUMN NAMES ADDED DYNAMICALLY *
-         *********************************
-         */
+        //TABLE COLUMN NAMES ADDED DYNAMICALLY
         for(int i=0; i<resultSet.getMetaData().getColumnCount(); i++) {
-            //We are using non property style for making dynamic table
             final int j = i;
             TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-            /**Nytt table column. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
-             * första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
+            /*Ny tablecolumn. För varje kolumn skapar vi en ny kolumn som har namnet av den kolumnamnet på index i + 1.
+             * Första kolumnen är på index 1 i SQL och inte 0 som i en Array. **/
 
             //sätter vilket värde det ska vara i den kolumnen.
             col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> {
@@ -118,13 +106,9 @@ public class AppFunctions {
             ObservableList<ObservableList> objectList = row.get(0); //Alltid vara 0. För det är alltid rad 0 den hämtar.
             Object object = objectList.get(columnIndexOfWantedCell); //hämtar objekt(ID, name) på index i listan.
             String cellValue = object.toString(); //gör objektet till en sträng för att returnera denna!
-
         return cellValue;
     }
 
-
-
-    //KOLLA PÅ FUNKTONEN IFALL KODEN EJ ÄR UNIK!!
     public static String getUniqueCode(String dbTableName, String idColumnName, String startingLetter) throws SQLException{
         DataAccessLayer dataAccessLayer = new DataAccessLayer();
         ResultSet resultSet = dataAccessLayer.getAllFromTable(dbTableName);
@@ -201,8 +185,4 @@ public class AppFunctions {
         textArea.isVisible();
     }
 
-    public static void main(String[] args) {
-        File excelFile = new File("src/main/resources/reports/Excel Assignment.xlsx");
-
-    }
 }

@@ -26,6 +26,10 @@ public class ContosoConnection {
     //kasta ett SQLException och vi catchar det i en try catch funktion. (Connection slänger det till DAL).
 
     public static Connection getConnectionAdventureWorks() throws SQLException{
+        return getConnection(URLAdventureWorks);
+    }
+
+    private static Connection getConnection(String urlAdventureWorks) throws SQLException {
         DriverManager.registerDriver(new Driver() {
             @Override
             public Connection connect(String url, Properties info) throws SQLException {
@@ -63,8 +67,9 @@ public class ContosoConnection {
                 return null;
             }
         });
-        return DriverManager.getConnection(URLAdventureWorks);
+        return DriverManager.getConnection(urlAdventureWorks);
     }
+
     public static Connection getConnectionLocalDB() throws SQLException{
 
 

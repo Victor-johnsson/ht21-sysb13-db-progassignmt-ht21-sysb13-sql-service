@@ -8,14 +8,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.sql.*;
 
 public class StudentController {
@@ -29,15 +26,7 @@ public class StudentController {
     @FXML Button addStudentButton;
     @FXML Button deleteStudentButton;
     @FXML TextArea studentFeedbackArea;
-    @FXML
-    ImageView contosoImageView;
-
-
     private HostServices hostServices ;
-
-    public HostServices getHostServices() {
-        return hostServices ;
-    }
 
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices ;
@@ -56,8 +45,7 @@ public class StudentController {
 
 
         } catch (SQLException e) {
-
-            AppFunctions.unexpectedError(studentFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
 
     }
@@ -90,7 +78,7 @@ public class StudentController {
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(studentFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
     }
     //En metod som styr knappen för att ta bort en student.
@@ -111,7 +99,7 @@ public class StudentController {
                 AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
             }
         }catch (SQLException e){
-            AppFunctions.unexpectedError(studentFeedbackArea, e);
+            AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
     }
 

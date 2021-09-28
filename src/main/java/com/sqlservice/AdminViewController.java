@@ -2,7 +2,6 @@ package com.sqlservice;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,13 +23,8 @@ public class AdminViewController {
     @FXML Button setGradeButton;
     @FXML TextField gradeTextField;
     @FXML Button resetButton;
-    @FXML Button showCourseStatistics;
-    @FXML Button showStudentsOnCourse;
-    @FXML Button showCoursesStudied;
-    @FXML Button showCompletedCourses;
     @FXML ComboBox<String> gradesComboBox;
     @FXML TextArea feedbackTextArea;
-    @FXML Button throughput;
 
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
@@ -51,7 +45,7 @@ public class AdminViewController {
     }
     //Metod för att lägga till en student på en kurs.
     //OBS: det går inte att lägga till en student om det överskrider 45 credits totalt.
-    public void addStudentOnCourse(ActionEvent event) {
+    public void addStudentOnCourse() {
         try {
             //kolla att course och student view har valts
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
@@ -76,7 +70,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -97,7 +91,7 @@ public class AdminViewController {
             }
 
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
 
         }
     }
@@ -130,12 +124,12 @@ public class AdminViewController {
                 feedbackTextArea.setText("Select a course and a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
     //Visar studenter aktiva på en kurs
-    public void onShowStudentsOnCourse(ActionEvent event) {
+    public void onShowStudentsOnCourse() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty())) {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
@@ -147,7 +141,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -166,7 +160,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a course!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -182,7 +176,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -198,7 +192,7 @@ public class AdminViewController {
                 feedbackTextArea.setText("Please select a student!");
             }
         } catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -207,7 +201,7 @@ public class AdminViewController {
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -220,7 +214,7 @@ public class AdminViewController {
             AppFunctions.updateSearchableTableView(studentTableView, searchStudentTextField, resultSetStudent);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -236,20 +230,5 @@ public class AdminViewController {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
-    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
-        AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 }

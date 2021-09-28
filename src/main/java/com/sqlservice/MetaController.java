@@ -1,22 +1,14 @@
 package com.sqlservice;
 
 import javafx.application.HostServices;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-
 import java.io.File;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 
 public class MetaController {
@@ -38,40 +30,40 @@ public class MetaController {
 
 
 
-    public void onAllKeysButton(ActionEvent actionEvent){
+    public void onAllKeysButton(){
         try {
            ResultSet resultSet = dalAdventureWorks.getAllKeys();
            AppFunctions.updateSearchableTableView(metaTableView,searchbar,resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onCustomerContentButton(ActionEvent actionEvent) {
+    public void onCustomerContentButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getCustomerContent();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onTableConstraintsButton(ActionEvent actionEvent) {
+    public void onTableConstraintsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getTableConstraints();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
-    public void onAllTablesButton(ActionEvent actionEvent) {
+    public void onAllTablesButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getAllTables();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e) {
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -81,7 +73,7 @@ public class MetaController {
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
 
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
@@ -90,7 +82,7 @@ public class MetaController {
             ResultSet resultSet = dalAdventureWorks.getTableWithMostRows();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
         }catch (SQLException e){
-            AppFunctions.unexpectedError(feedbackTextArea,e);
+            AppFunctions.unexpectedSQLError(feedbackTextArea,e);
         }
     }
 
