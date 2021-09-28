@@ -66,6 +66,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#loadMetaScene" text="Metadata" />
                     </items>
                   </MenuButton>
+                  <Button layoutX="84.0" layoutY="394.0" mnemonicParsing="false" onAction="#test" text="Tesrt" />
             </children>
           </AnchorPane>
          </children>

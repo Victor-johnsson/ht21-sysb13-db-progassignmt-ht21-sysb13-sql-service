@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -143,8 +144,9 @@ public class AppFunctions {
         }
     }
 
-    public static void changeView(Parent root, Button viewButton, AnchorPane parentContainer, AnchorPane anchorRoot) {
+    public static void changeView(Parent root, Button viewButton, AnchorPane parentContainer, AnchorPane anchorRoot){
         Scene scene = viewButton.getScene();
+
 
         root.translateYProperty().set(scene.getHeight());
 
@@ -154,10 +156,10 @@ public class AppFunctions {
         KeyValue kv = new KeyValue(root.translateYProperty(), 0, Interpolator.DISCRETE);
         KeyFrame kf = new KeyFrame(Duration.seconds(0.02),kv);
         timeline.getKeyFrames().add(kf);
-
         timeline.setOnFinished(event1 -> {
             parentContainer.getChildren().remove(anchorRoot);
         });
+
 
 
         timeline.play();

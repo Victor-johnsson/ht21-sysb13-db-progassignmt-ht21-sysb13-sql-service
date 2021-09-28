@@ -1,5 +1,6 @@
 package com.sqlservice;
 
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,17 @@ public class MetaController {
     @FXML TextField searchbar;
     @FXML TextArea feedbackTextArea;
     DALAdventureWorks dalAdventureWorks = new DALAdventureWorks();
+
+    private HostServices hostServices ;
+
+    public HostServices getHostServices() {
+        return hostServices ;
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices ;
+    }
+
 
 
     public void onAllKeysButton(ActionEvent actionEvent){

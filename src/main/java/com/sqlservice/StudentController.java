@@ -1,6 +1,7 @@
 package com.sqlservice;
 
 
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.*;
 
 public class StudentController {
@@ -24,6 +27,18 @@ public class StudentController {
     @FXML TextArea studentFeedbackArea;
 
 
+    private HostServices hostServices ;
+
+    public HostServices getHostServices() {
+        return hostServices ;
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices ;
+    }
+
+
+
 
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
@@ -33,10 +48,12 @@ public class StudentController {
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
 
 
+
         } catch (SQLException e) {
 
-           AppFunctions.unexpectedError(studentFeedbackArea,e);
+            AppFunctions.unexpectedError(studentFeedbackArea, e);
         }
+
     }
 
     //En metod som styr knappen för att lägga till en student.
@@ -92,6 +109,17 @@ public class StudentController {
         }
     }
 
+    public void test(ActionEvent actionEvent){
+        try {
+            File file = new File("C:\\Users\\Victo\\IdeaProjects\\HT21_SQL_ProgrammingAssignment\\src\\main\\resources\\reports\\AW_Customers.pdf");
+            getHostServices().showDocument(file.toURI().toURL().toExternalForm());
+
+        }catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
@@ -110,5 +138,6 @@ public class StudentController {
     @FXML private void loadMetaScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
+
     }
 }
