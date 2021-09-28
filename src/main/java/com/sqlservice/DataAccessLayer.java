@@ -279,14 +279,13 @@ public class DataAccessLayer {
             }else{
                 d = Double.parseDouble(resultSet.getString(1));
             }
-
              // Är där 0 kommer värdet vara 0, då är de 0 % som fått betyget.
         }
 
         ContosoConnection.connectionClose(resultSet);
         return d;
-
     }
+
     public ResultSet getTopThroughput() throws SQLException{
         Connection connection = ContosoConnection.getConnectionLocalDB();
         String query = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS 'throughput' FROM TopThroughput";

@@ -53,7 +53,6 @@ public class AppFunctions {
         //ÄNTLIGEN LÄGGER VI IN DATAN I TABLEVIEW
         tableView.setItems(filteredData);
         ContosoConnection.connectionClose(resultSet);
-
     }
 
     //Metod som bara används i updateSearchableTableView()
@@ -72,22 +71,19 @@ public class AppFunctions {
                 }else {
                     return new SimpleStringProperty(param.getValue().get(j).toString());
                 }
-
             });
-            tableView.getColumns().addAll(col); //lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
+            tableView.getColumns().addAll(col); //Lägger till kolumner i tableView som vi har på rad 81. (kallar på metoden)
         }
     }
+
     //Metod som bara används i updateSearchableTableView()
     public static ObservableList<ObservableList> fillList(ResultSet resultSet) throws SQLException {
-        /**
-         * ******************************
-         * Data added to ObservableList *
-         ********************************/
+        //Data added to ObservableList
         ObservableList<ObservableList> dataSet = FXCollections.observableArrayList();
 
-        while (resultSet.next()) { //itererar över resultSet. För första raden skapar vi en observable list (kallar för row).
+        while (resultSet.next()) { //Itererar över resultSet. För första raden skapar vi en observable list (kallar för row).
             ObservableList<String> row = FXCollections.observableArrayList();   //listan som är raderna.
-            //för varje kolumn i den raden, lägger vi till värdet i den observablelist.
+            //För varje kolumn i den raden, lägger vi till värdet i den observablelist.
             //Den lägger till alla värden från resultSet till observableList.
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 //Iterate Column
@@ -98,11 +94,9 @@ public class AppFunctions {
         return dataSet;
     }
 
-
-
     public static String getValueOfCell(TableView tableView, int columnIndexOfWantedCell){
 
-            ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar raden vi vill få columnen från!
+            ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar raden vi vill få kolumnen från!
             ObservableList<ObservableList> objectList = row.get(0); //Alltid vara 0. För det är alltid rad 0 den hämtar.
             Object object = objectList.get(columnIndexOfWantedCell); //hämtar objekt(ID, name) på index i listan.
             String cellValue = object.toString(); //gör objektet till en sträng för att returnera denna!
@@ -130,8 +124,6 @@ public class AppFunctions {
 
     public static void changeView(Parent root, Button viewButton, AnchorPane parentContainer, AnchorPane anchorRoot){
         Scene scene = viewButton.getScene();
-
-
         root.translateYProperty().set(scene.getHeight());
 
         parentContainer.getChildren().add(root);
@@ -143,15 +135,11 @@ public class AppFunctions {
         timeline.setOnFinished(event1 -> {
             parentContainer.getChildren().remove(anchorRoot);
         });
-
-
-
         timeline.play();
     }
 
-
-    //Errorhantering för skumma SQL-fel
-    public static void unexpectedError(TextArea textArea, SQLException exception){
+    //Error-hantering för udda SQL-fel
+    public static void unexpectedSQLError(TextArea textArea, SQLException exception){
 
         String exceptionMessage = exception.getMessage();
         int errorCode = exception.getErrorCode();

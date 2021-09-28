@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     //En metod som styr knappen för att lägga till en kurs.
-    public void onAddCourseButton(ActionEvent event) {
+    public void onAddCourseButton() {
 
         try {
             String regex = "[0-9]+\\.?[05]";
@@ -80,7 +80,7 @@ public class CourseController {
         }
     }
         //En metod som styr knappen för att ta bort en kurs.
-    public void onDeleteCourseButton (ActionEvent event){
+    public void onDeleteCourseButton (){
         try {
             //"Please select a course"
             //Om användaren inte markerar en/flera rader ska ett felmeddelande skickas ut "You have to mark a row to delete"
@@ -107,17 +107,13 @@ public class CourseController {
     @FXML private AnchorPane parentContainer;
 
     //Metod för att byta view.
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+    @FXML private void loadAdminScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
+    @FXML private void loadStudentScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
-        AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
-    }
-    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(HelloApplication.class.getResource("metaView.fxml"));
         AppFunctions.changeView(root, createCourseButton, parentContainer, anchorRoot);
     }
 }

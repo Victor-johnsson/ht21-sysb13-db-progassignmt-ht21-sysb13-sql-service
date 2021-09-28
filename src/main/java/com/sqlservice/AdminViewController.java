@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -97,7 +96,7 @@ public class AdminViewController {
     }
 
     //Tar bort studenten från "Studies" och flyttar till "HasStudied" och sätter ett betyg
-    public void setGrade(ActionEvent event) {
+    public void setGrade() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -165,7 +164,7 @@ public class AdminViewController {
     }
 
     //Metod som visar resultat på kurser en specifik student har studerat.
-    public void onShowStudiedCourses(ActionEvent event){
+    public void onShowStudiedCourses(){
         try {
             if (!(studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -181,7 +180,7 @@ public class AdminViewController {
     }
 
     //Visar resultat på en specifik students genomförda kurser.
-    public void onShowCompletedCourses(ActionEvent event){
+    public void onShowCompletedCourses(){
         try {
             if (!(studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -196,7 +195,7 @@ public class AdminViewController {
         }
     }
 
-    public void onThroughputButton(ActionEvent event){
+    public void onThroughputButton(){
         try{
             ResultSet resultSet = dataAccessLayer.getTopThroughput();
             AppFunctions.updateSearchableTableView(courseTableView,searchCourseTextField,resultSet);
@@ -206,7 +205,7 @@ public class AdminViewController {
     }
 
     //Återställer till originalvy för Course tableView och Student tableView.
-    public void onResetButton(ActionEvent event){
+    public void onResetButton(){
         try {
             ResultSet resultSetCourse = dataAccessLayer.getAllFromTable("Course");
             ResultSet resultSetStudent = dataAccessLayer.getAllFromTable("Student");
@@ -221,12 +220,12 @@ public class AdminViewController {
     @FXML AnchorPane parentContainer;
     @FXML AnchorPane anchorRoot;
 
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+    @FXML private void loadCourseScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadStudentScene(ActionEvent event) throws IOException {
+    @FXML private void loadStudentScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("studentView.fxml"));
         AppFunctions.changeView(root, addStudentOnCourseButton, parentContainer, anchorRoot);
     }

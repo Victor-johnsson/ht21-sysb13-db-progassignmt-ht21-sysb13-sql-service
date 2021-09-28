@@ -2,7 +2,6 @@ package com.sqlservice;
 
 
 import javafx.application.HostServices;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 
@@ -51,7 +48,7 @@ public class StudentController {
     }
 
     //En metod som styr knappen för att lägga till en student.
-    public void onAddStudentButton(ActionEvent event){
+    public void onAddStudentButton(){
         try {
             String regexSSN = "[0-9]+";
             if (studentNameTextField.getText().isBlank()) {
@@ -82,7 +79,7 @@ public class StudentController {
         }
     }
     //En metod som styr knappen för att ta bort en student.
-    public void onDeleteStudentButton(ActionEvent event){
+    public void onDeleteStudentButton(){
         try{
             if (studentTableView.getSelectionModel().isEmpty()){
                 studentFeedbackArea.setText("Please select a student to remove");
@@ -103,33 +100,21 @@ public class StudentController {
         }
     }
 
-    public void test(ActionEvent actionEvent){
-        try {
-            File file = new File("C:\\Users\\Victo\\IdeaProjects\\HT21_SQL_ProgrammingAssignment\\src\\main\\resources\\reports\\AW_Customers.pdf");
-            getHostServices().showDocument(file.toURI().toURL().toExternalForm());
-
-        }catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
     @FXML private AnchorPane anchorRoot;
     @FXML private AnchorPane parentContainer;
 
     //Metoders för att byta view
-    @FXML private void loadCourseScene(ActionEvent event) throws IOException {
+    @FXML private void loadCourseScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("courseView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadAdminScene(ActionEvent event) throws IOException {
+    @FXML private void loadAdminScene() throws IOException {
         Parent root = FXMLLoader.load(HelloApplication.class.getResource("adminView.fxml"));
         AppFunctions.changeView(root, addStudentButton, parentContainer, anchorRoot);
     }
 
-    @FXML private void loadMetaScene(ActionEvent event) throws IOException {
+    @FXML private void loadMetaScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("metaView.fxml"));
         Parent metaRoot = loader.load();
         MetaController controller = loader.getController();
@@ -137,6 +122,5 @@ public class StudentController {
         Stage metaStage = new Stage();
         metaStage.setScene(new Scene(metaRoot));
         metaStage.show();
-
     }
 }

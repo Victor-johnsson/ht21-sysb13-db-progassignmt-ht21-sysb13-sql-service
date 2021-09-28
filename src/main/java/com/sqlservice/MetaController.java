@@ -93,7 +93,6 @@ public class MetaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     public void openCustomerReport(ActionEvent actionEvent){
         File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\CustomerReport.accdb");
@@ -102,7 +101,6 @@ public class MetaController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
     }
     public void openProductReport(ActionEvent actionEvent){
         File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\Products.accdb");
@@ -111,8 +109,5 @@ public class MetaController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
