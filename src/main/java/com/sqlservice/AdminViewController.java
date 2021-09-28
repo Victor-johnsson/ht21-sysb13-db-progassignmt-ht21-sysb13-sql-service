@@ -24,8 +24,8 @@ public class AdminViewController {
     @FXML ComboBox<String> gradesComboBox;
     @FXML TextArea feedbackTextArea;
 
-    DataAccessLayer dataAccessLayer = new DataAccessLayer();
-    ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
+    final DataAccessLayer dataAccessLayer = new DataAccessLayer();
+    final ObservableList<String> gradeOptions = FXCollections.observableArrayList("A","B","C","D","E","F");
 
     public void initialize() {
         try {

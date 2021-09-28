@@ -26,9 +26,9 @@ public class CourseController {
     @FXML Button createCourseButton;
     @FXML Button deleteCourseButton;
 
-    DataAccessLayer dataAccessLayer = new DataAccessLayer();
+    final DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
-    ArrayList<Double> arrayList  = new ArrayList<Double>();
+    final ArrayList<Double> arrayList  = new ArrayList<Double>();
 
 
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.

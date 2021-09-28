@@ -16,7 +16,7 @@ public class MetaController {
     TableView metaTableView;
     @FXML TextField searchbar;
     @FXML TextArea feedbackTextArea;
-    DALAdventureWorks dalAdventureWorks = new DALAdventureWorks();
+    final DALAdventureWorks dalAdventureWorks = new DALAdventureWorks();
 
     private HostServices hostServices ;
 

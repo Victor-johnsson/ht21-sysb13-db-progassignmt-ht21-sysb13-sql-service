@@ -90,7 +90,7 @@ public class AppFunctions {
             ObservableList<ObservableList> row = tableView.getSelectionModel().getSelectedItems();//Hämtar den markerade listan(en rad). Lista som ligger i lista.
             ObservableList<ObservableList> objectList = row.get(0); //columnindex 0.
             Object object = objectList.get(columnIndexOfWantedCell); //hämtar objekt(ID, name) på index i listan.
-            String cellValue = object.toString(); //gör objektet till en sträng för att returnera denna!
+            @SuppressWarnings("UnnecessaryLocalVariable") String cellValue = object.toString(); //gör objektet till en sträng för att returnera denna!
         return cellValue;
     }
 

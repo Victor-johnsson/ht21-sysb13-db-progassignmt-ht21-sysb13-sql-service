@@ -26,6 +26,10 @@ public class ContosoConnection {
         return getConnection(URLAdventureWorks);
     }
 
+    public static Connection getConnectionLocalDB() throws SQLException{
+        return getConnection(URL);
+    }
+
     private static Connection getConnection(String urlAdventureWorks) throws SQLException {
         DriverManager.registerDriver(new Driver() {
             @Override
@@ -66,13 +70,9 @@ public class ContosoConnection {
         return DriverManager.getConnection(urlAdventureWorks);
     }
 
-    public static Connection getConnectionLocalDB() throws SQLException{
 
 
-        return getConnection(URL);
-    }
-
-    //Metod som...
+    //Metod som stänger anslutning.
     public static void connectionClose(ResultSet rs) throws SQLException{ //stänger Connection för den ResultSet man stoppar in när man anropar.
         Statement statement = rs.getStatement();
         Connection connection = statement.getConnection();
@@ -91,7 +91,7 @@ public class ContosoConnection {
         connection.close();
     }
 
-    //Test Connection
+    //Test Connection to database for Developer!
     public static void main(String[] args) { //Det är för att testa connection med det URL:et. Funkar det inte så får man ett error.
         try(Connection connection = getConnectionAdventureWorks()){
             System.out.println("Connection worked");

@@ -3,6 +3,7 @@ package com.sqlservice;
 import java.sql.*;
 import java.text.DecimalFormat;
 
+@SuppressWarnings("GrazieInspection")
 public class DataAccessLayer {
     //En metod som returnerar resultSet. Även throws SQLException. Startat en ny connection till vår databas.
     //En sträng med SQL-statement. Metoden tar in en sträng som är ett tablename. Course, Student etc.
@@ -289,7 +290,6 @@ public class DataAccessLayer {
 
     public ResultSet getTopThroughput() throws SQLException{
         Connection connection = ContosoConnection.getConnectionLocalDB();
-        String query = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS 'throughput' FROM TopThroughput";
         String query2 = "SELECT courseCode, courseName, FORMAT(throughput, '##.#') + '%' AS throughput FROM Throughput " +
                 "WHERE throughput = (SELECT MAX(throughput) FROM Throughput)";
         PreparedStatement preparedStatement = connection.prepareStatement(query2);

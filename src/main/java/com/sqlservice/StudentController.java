@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.*;
 
 public class StudentController {
-    DataAccessLayer dataAccessLayer = new DataAccessLayer();
+    final DataAccessLayer dataAccessLayer = new DataAccessLayer();
 
     @FXML TableView studentTableView;
     @FXML TextField studentNameTextField;
