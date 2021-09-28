@@ -25,25 +25,18 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AppFunctions {
     //Samlar alla metoder som är universella som kan kalla på dem från alla andra klasser, generella metoder.
 
-    public static void updateSearchableTableView(TableView tableView, TextField searchField, ResultSet resultSet) throws SQLException { //tar in tableView,
-        //textField, String som är namnet på table som vi vill fylla. När vi kallar på denna metoden kan vi säga vilket
-        //table vi vill kolla på.
-
-        //ob-list som vi fyller med det som
-        //metoden fillTableViewByName returnerar.
+    public static void updateSearchableTableView(TableView tableView, TextField searchField, ResultSet resultSet) throws SQLException {
         tableView.getColumns().clear();// tömmer tableview
         AppFunctions.setTableColumnNames(tableView, resultSet); //sätter columnName efter resultSetets columnName
         ObservableList<ObservableList> dataList = AppFunctions.fillList(resultSet); //skapar listan med de object som ska synas i tableview
         FilteredList<ObservableList> filteredData = new FilteredList<>(dataList, b -> true);//Wrappar dataList i en FilteredList.
         //b -> true gör att den kan lyssna när vi skriver i sökfältet.
-
-        searchField.textProperty().addListener((observable, oldvalue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
+        searchField.textProperty().addListener((observable, oldValue, newValue) ->{ //lägger till en listener som lyssnar efter när man skriver in något i searchfieldet
             //oldValue ändras aldrig, men det gör newValue.
             filteredData.setPredicate( row -> {
                 if(newValue == null || newValue.isEmpty()){ //ifall inget är skrivet i sökfältet visas hela resultsetet!
                     return true;
                 }
-
                 String lowerCaseFilter = newValue.toLowerCase(Locale.ROOT); //gör att vi allt är lowercase
                 //Ifall någon entitet i resultsetet överensstämmer med söksträngen returneras den/dessa!
                 //fail safe.
@@ -125,7 +118,6 @@ public class AppFunctions {
     public static void changeView(Parent root, Button viewButton, AnchorPane parentContainer, AnchorPane anchorRoot){
         Scene scene = viewButton.getScene();
         root.translateYProperty().set(scene.getHeight());
-
         parentContainer.getChildren().add(root);
 
         Timeline timeline = new Timeline();

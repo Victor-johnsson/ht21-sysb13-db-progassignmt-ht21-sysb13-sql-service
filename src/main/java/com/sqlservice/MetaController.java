@@ -67,7 +67,7 @@ public class MetaController {
         }
     }
 
-    public void onCustomerColumnsButton(ActionEvent actionEvent) {
+    public void onCustomerColumnsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getCustomerColumns();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
@@ -77,7 +77,7 @@ public class MetaController {
         }
     }
 
-    public void onTableWithMostRowsButton(ActionEvent actionEvent) {
+    public void onTableWithMostRowsButton() {
         try {
             ResultSet resultSet = dalAdventureWorks.getTableWithMostRows();
             AppFunctions.updateSearchableTableView(metaTableView, searchbar, resultSet);
@@ -86,7 +86,7 @@ public class MetaController {
         }
     }
 
-    public void openExcelFile(ActionEvent actionEvent){
+    public void openExcelFile(){
         File excelFile = new File("src/main/resources/reports/Excel Assignment.xlsx");
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
@@ -94,7 +94,8 @@ public class MetaController {
             e.printStackTrace();
         }
     }
-    public void openCustomerReport(ActionEvent actionEvent){
+
+    public void openCustomerReport(){
         File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\CustomerReport.accdb");
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
@@ -102,7 +103,8 @@ public class MetaController {
             e.printStackTrace();
         }
     }
-    public void openProductReport(ActionEvent actionEvent){
+
+    public void openProductReport() {
         File excelFile = new File("C:\\Users\\Victo\\Desktop\\AdventureWorks Reports\\Products.accdb");
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());

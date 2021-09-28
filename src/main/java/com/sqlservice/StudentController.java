@@ -29,22 +29,15 @@ public class StudentController {
         this.hostServices = hostServices ;
     }
 
-
-
-
     //JavaFX metod. När man startar projektet så är detta det absolut första som körs innan något annat händer.
     public void initialize(){
         try {
             ResultSet resultSet = dataAccessLayer.getAllFromTable("Student");
             AppFunctions.updateSearchableTableView(studentTableView,searchStudentTextField,resultSet);
             //dataAccessLayer gör att vi kan välja vilken resultSet vi vill visa.
-
-
-
         } catch (SQLException e) {
             AppFunctions.unexpectedSQLError(studentFeedbackArea, e);
         }
-
     }
 
     //En metod som styr knappen för att lägga till en student.

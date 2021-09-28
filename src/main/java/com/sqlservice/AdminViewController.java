@@ -20,7 +20,6 @@ public class AdminViewController {
     @FXML Button addStudentOnCourseButton;
     @FXML Button removeStudentFromCourseButton;
     @FXML Button setGradeButton;
-    @FXML TextField gradeTextField;
     @FXML Button resetButton;
     @FXML ComboBox<String> gradesComboBox;
     @FXML TextArea feedbackTextArea;
@@ -74,7 +73,7 @@ public class AdminViewController {
     }
 
     //Ta bort en student från en specifik kurs.
-    public void removeStudentFromCourse(ActionEvent event) {
+    public void removeStudentFromCourse() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty() || studentTableView.getSelectionModel().isEmpty())) {
                 String studentID = AppFunctions.getValueOfCell(studentTableView, 0);
@@ -145,7 +144,7 @@ public class AdminViewController {
     }
 
     //Metod som visar kursstatisik.
-    public void onCourseStatistics(ActionEvent event) {
+    public void onCourseStatistics() {
         try {
             if (!(courseTableView.getSelectionModel().isEmpty())) {
                 String courseCode = AppFunctions.getValueOfCell(courseTableView, 0);
