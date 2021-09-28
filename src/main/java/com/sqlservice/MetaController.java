@@ -91,7 +91,9 @@ public class MetaController {
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
         } catch (IOException e) {
-            e.printStackTrace();
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception) {
+            feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
         }
     }
 
@@ -100,7 +102,9 @@ public class MetaController {
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception){
+            feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
         }
     }
 
@@ -109,7 +113,9 @@ public class MetaController {
         try {
             getHostServices().showDocument(excelFile.toURI().toURL().toExternalForm());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            feedbackTextArea.setText("Something went terribly wrong trying to find the file");
+        }catch (NullPointerException exception){
+        feedbackTextArea.setText("Could not find the local services to open this kind of file, we are working on a fix");
         }
     }
 }
