@@ -30,7 +30,7 @@ public class ContosoConnection {
         return getConnection(URL);
     }
 
-    private static Connection getConnection(String urlAdventureWorks) throws SQLException {
+    private static Connection getConnection(String connectionURL) throws SQLException {
         DriverManager.registerDriver(new Driver() {
             @Override
             public Connection connect(String url, Properties info) throws SQLException {
@@ -67,7 +67,7 @@ public class ContosoConnection {
                 return null;
             }
         });
-        return DriverManager.getConnection(urlAdventureWorks);
+        return DriverManager.getConnection(connectionURL);
     }
 
 
